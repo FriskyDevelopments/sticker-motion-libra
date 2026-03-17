@@ -1,14 +1,26 @@
 # Planning Guide
 
-A conversion-focused sticker style gallery where users see complete animated sticker results first, then choose how to create them - transforming the experience from "browse abstract presets" to "see result → choose style → apply to image".
+A modular sticker magic system that transforms from a simple preset gallery into a scalable library capable of producing 200+ polished style outcomes through intelligent combination of base styles, overlays, motion behaviors, loaders, and size profiles.
 
 **Experience Qualities**: 
-1. **Conversion-Driven** - Every interaction moves users toward creating their sticker pack by showing finished results, not abstract concepts
-2. **Desire-First** - Users see "oh shit, I want THAT" before needing to understand masks or motion presets
-3. **Magical** - Animations should feel like discovering a toybox of delightful transformations for your images
+1. **Modular & Scalable** - A design system where components combine to create vast variety without chaos
+2. **Layered Magic** - Users understand base styles, then discover how overlays and motions multiply possibilities
+3. **Systematically Delightful** - Every combination feels intentional, branded, and premium rather than random
 
-**Complexity Level**: Light Application (multiple features with basic state)
-This is a style gallery and preview tool with organized categories, filtering by intensity, and conversion-focused interactions - the complexity lies in the product positioning rather than technical implementation.
+**Complexity Level**: Complex Application (advanced functionality with multiple interconnected systems)
+This is a multi-layered magic engine with a style library, combo logic, loader system, overlay effects, and size profiles - requiring sophisticated architecture to maintain coherence at scale.
+
+## Architecture Summary
+
+The system produces 200+ style outcomes through modular combination:
+
+- **50 base styles** across 10 families (neon, magic, cute, techno, mascot, glitch, dreamy, cosmic, soft-glow, energy)
+- **25 motion behaviors** organized into 6 categories
+- **20 overlay effects** across 5 families
+- **20 branded loaders** for 5 processing stages
+- **6 size/format profiles** for different platforms
+
+**Combo Engine:** Validates and generates combinations using compatibility rules, preventing chaotic randomness while enabling vast variety.
 
 ## Essential Features
 
