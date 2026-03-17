@@ -1,171 +1,171 @@
 # Planning Guide
 
-A comprehensive sticker animation design system that provides motion presets for creative sticker artwork, enabling designers and users to bring static stickers to life with categorized, reusable animations.
+A conversion-focused sticker style gallery where users see complete animated sticker results first, then choose how to create them - transforming the experience from "browse abstract presets" to "see result → choose style → apply to image".
 
 **Experience Qualities**: 
-1. **Playful** - Animations should feel whimsical and fun, sparking joy and creative expression
-2. **Precise** - Each motion preset has clear parameters and predictable behavior for consistent results
-3. **Expressive** - Wide range of emotional vibes from cute to techno, enabling diverse creative applications
+1. **Conversion-Driven** - Every interaction moves users toward creating their sticker pack by showing finished results, not abstract concepts
+2. **Desire-First** - Users see "oh shit, I want THAT" before needing to understand masks or motion presets
+3. **Magical** - Animations should feel like discovering a toybox of delightful transformations for your images
 
 **Complexity Level**: Light Application (multiple features with basic state)
-This is a design specification viewer and animation preview tool with organized categories, filtering, and interactive previews - not requiring complex state management beyond selection and filtering.
+This is a style gallery and preview tool with organized categories, filtering by intensity, and conversion-focused interactions - the complexity lies in the product positioning rather than technical implementation.
 
 ## Essential Features
 
-### Motion Preset Library Browser
-- **Functionality**: Browse 20+ categorized motion presets with detailed specifications
-- **Purpose**: Help creators discover and understand available animations for their stickers
+### Unified Sticker Style Gallery
+- **Functionality**: Browse 20 complete sticker styles combining mask + motion into single conversion-ready experiences
+- **Purpose**: Show users the final result they'll get, not abstract technical components
 - **Trigger**: User opens the application
-- **Progression**: View category tabs → Browse presets in grid → Click preset card → See detailed specifications and preview
-- **Success criteria**: All 20+ presets are visible, organized into 6 categories, with complete metadata
+- **Progression**: Land on gallery → See live animated sticker previews → Each card shows final result with emoji preview → Click to explore details
+- **Success criteria**: All 20 unified styles visible with animated previews showing complete final output
 
-### Live Animation Preview
-- **Functionality**: Interactive preview of each motion preset applied to sample sticker artwork
-- **Purpose**: Enable creators to visualize how animations behave before applying them
-- **Trigger**: User selects a motion preset card
-- **Progression**: Click preset → Animation plays on sample sticker → Loop behavior demonstrates → User observes timing and intensity
-- **Success criteria**: Smooth 60fps animations that accurately represent each preset's behavior
+### Vibe-Based Category Navigation
+- **Functionality**: Organize styles into 4 emotional/aesthetic vibes rather than technical categories
+- **Purpose**: Help users think in terms of desired outcome ("I want magic effects") not technical specs
+- **Trigger**: User browses tab navigation
+- **Progression**: View vibe tabs (Magic Effects, Energy & Tech, Character Motion, Atmosphere) → Select vibe → Grid filters to matching styles → Visual count updates
+- **Success criteria**: Instant filtering with styles grouped by emotional outcome and visual aesthetic
 
-### Export Individual Presets
-- **Functionality**: Download single preset in multiple formats (JSON, TypeScript, CSS, Framer Motion)
-- **Purpose**: Allow developers to integrate presets into their own projects
-- **Trigger**: User clicks export button in preset detail panel
-- **Progression**: Open preset detail → Select export format → File downloads automatically → Toast notification confirms success
-- **Success criteria**: Downloaded files contain properly formatted, ready-to-use code
+### Live Animated Style Cards
+- **Functionality**: Each card shows the complete sticker transformation with live looping animation
+- **Purpose**: Users see the "after" state immediately - desire is created before technical understanding
+- **Trigger**: Cards auto-animate on page load
+- **Progression**: Card appears → Emoji animates with full style applied → User sees mask + motion combined → Conversion pitch visible → Click for details
+- **Success criteria**: Smooth 60fps animations showing complete final result, not abstract motion behavior
 
-### Bulk Export Library
-- **Functionality**: Export all presets or filtered subset as JSON collection
-- **Purpose**: Enable batch downloads for comprehensive integration
-- **Trigger**: User clicks "Export All" button in header
-- **Progression**: Click export → System bundles visible/filtered presets → JSON file downloads → Confirmation toast appears
-- **Success criteria**: JSON array contains all selected presets with complete metadata
+### Conversion-Focused Detail Panel
+- **Functionality**: Expanded view emphasizing "Apply to My Image" CTA with style breakdown as secondary info
+- **Purpose**: Move users from inspiration to action - the details support the conversion, not the other way around
+- **Trigger**: User clicks any style card
+- **Progression**: Click card → Sheet opens with large animated preview → Conversion pitch prominent → Main CTA "Apply to My Image" → Optional: view breakdown of mask + motion used → Export style
+- **Success criteria**: CTA is primary focus, technical details available but not blocking conversion
 
-### Filter by Style System
-- **Functionality**: Filter presets by sticker style (cute, neon, magic, techno, mascot)
-- **Purpose**: Quickly find animations that match specific aesthetic requirements
-- **Trigger**: User selects style filter buttons
-- **Progression**: Click style badge → Grid filters to matching presets → Visual count updates → Reset to see all
-- **Success criteria**: Instant filtering with visual feedback, showing only compatible presets
+### Intensity Filtering
+- **Functionality**: Filter styles by visual intensity (subtle, medium, intense) rather than technical parameters
+- **Purpose**: Match user's mood and use case without requiring technical knowledge
+- **Trigger**: User clicks intensity filter buttons
+- **Progression**: Click intensity → Grid filters instantly → Visual count updates → Combine with vibe filters → Reset option available
+- **Success criteria**: Instant filtering showing only matching intensity levels
 
-### Specification Detail Panel
-- **Functionality**: Display comprehensive technical and creative specifications for selected preset
-- **Purpose**: Provide creators with implementation details and usage guidance
-- **Trigger**: User clicks on a preset card
-- **Progression**: Select preset → Panel slides in → Shows all metadata (name, behavior, vibe, intensity, loop style, use cases, styles) → Visual preview plays → Export options available
-- **Success criteria**: All specification fields populated with clear, actionable information
+### Style Export System
+- **Functionality**: Download individual styles or full library as JSON for developer implementation
+- **Purpose**: Bridge inspiration → technical implementation for developers who want to build these effects
+- **Trigger**: Export button in detail panel or header
+- **Progression**: Select export → JSON file downloads with complete style spec (mask type + motion ID + parameters) → Toast confirmation
+- **Success criteria**: Downloaded JSON contains all necessary information to recreate the style
 
-### Category Navigation
-- **Functionality**: Quick navigation between 6 animation categories
-- **Purpose**: Organize presets into logical groupings for efficient discovery
-- **Trigger**: User clicks category tab
-- **Progression**: Click category → View filters to category → Count badge updates → Presets display in grid
-- **Success criteria**: Instant category switching with smooth transitions
-
-### Custom Animation Playground
-- **Functionality**: Interactive playground for testing and customizing motion parameters in real-time
-- **Purpose**: Allow creators to experiment with animation timing, intensity, and behavior before implementation
-- **Trigger**: User clicks "Playground" button in header or detail panel
-- **Progression**: Open playground → Select preset as starting point → Adjust timing/scale/intensity controls → Preview changes live → Copy custom parameters
-- **Success criteria**: Real-time parameter updates with smooth preview, exportable custom configurations
+### Animation Playground (Retained)
+- **Functionality**: Experimental space for tweaking motion parameters in real-time
+- **Purpose**: Advanced users can customize intensity, timing, and behavior before applying
+- **Trigger**: "Playground" button in header or detail panel
+- **Progression**: Open playground → Select style as base → Adjust controls → Preview changes live → Export custom parameters
+- **Success criteria**: Real-time parameter updates with smooth preview
 
 ## Edge Case Handling
 
 - **No Matching Filters**: Display empty state with friendly message and "Clear Filters" action
 - **Export Errors**: Show error toast with helpful message if file download fails
-- **Unsupported Export Formats**: Gracefully handle presets without CSS/Framer implementations by providing template comments
-- **Slow Device Performance**: Animations gracefully degrade to simpler versions while maintaining visual intent
-- **Mobile Touch**: All interactive elements have proper touch targets and gesture support
-- **Rapid Category Switching**: Debounce filtering to prevent UI thrashing during fast clicks
-- **Long Preset Names**: Text truncates elegantly with tooltips showing full content
-- **Multiple Simultaneous Exports**: Queue exports to prevent browser blocking on bulk operations
+- **Rapid Filter Switching**: Debounce to prevent UI thrashing during fast interactions
+- **Mobile Touch**: All cards and CTAs have proper touch targets (min 44x44px) for mobile conversion
+- **Animation Performance**: Stagger card animations on load to prevent simultaneous rendering lag
+- **Long Style Names**: Text truncates elegantly without breaking layout
+- **Missing Emoji Support**: Fallback to colored circle if emoji doesn't render
+- **Conversion Button States**: Disabled state for "Apply to My Image" until upload feature is implemented
 
 ## Design Direction
 
-The design should evoke a sense of creative studio magic - vibrant, energetic, and inspiring. Think of a digital workshop where motion comes alive, blending playful charm with professional polish. The interface should feel like opening a toybox of delightful animations while maintaining clarity and usability.
+The design should evoke a sense of immediate desire and magical possibility - users should feel like they've discovered a secret workshop where they can transform any image into something extraordinary. Think conversion-focused product gallery meets creative playground, with the emphasis on showing finished results that make users think "I need that for my sticker" before understanding how it works.
 
 ## Color Selection
 
-A vibrant, energetic palette that reflects the creative and playful nature of sticker culture with pops of neon and magical gradients.
+A vibrant, energetic palette that reflects creative transformation and digital magic, with bold accents that drive conversion actions.
 
-- **Primary Color**: Deep Purple `oklch(0.45 0.18 300)` - Represents creativity, magic, and digital artistry
-- **Secondary Colors**: Electric Blue `oklch(0.55 0.20 250)` for techno/digital vibes, Warm Pink `oklch(0.70 0.18 350)` for cute/playful elements
-- **Accent Color**: Neon Cyan `oklch(0.75 0.15 200)` - High-energy highlight for interactive elements and motion indicators
+- **Primary Color**: Deep Creative Purple `oklch(0.65 0.20 160)` - Represents creative transformation and innovation
+- **Secondary Colors**: Soft Teal `oklch(0.70 0.12 200)` for calm professional touches, Warm Accent Purple `oklch(0.75 0.15 280)` for magic and atmosphere vibes
+- **Accent Color**: Neon Cyan `oklch(0.75 0.15 200)` - High-energy highlight for CTAs, interactive elements, and conversion-focused UI
 - **Foreground/Background Pairings**: 
-  - Background (Deep Slate `oklch(0.12 0.02 270)`): White text `oklch(0.98 0 0)` - Ratio 14.2:1 ✓
-  - Primary (Deep Purple): White text `oklch(0.98 0 0)` - Ratio 6.8:1 ✓
-  - Accent (Neon Cyan): Dark text `oklch(0.15 0.02 270)` - Ratio 8.5:1 ✓
-  - Card (Elevated Dark `oklch(0.18 0.02 270)`): White text `oklch(0.98 0 0)` - Ratio 11.4:1 ✓
+  - Background (Soft Cool White `oklch(0.98 0.01 180)`): Dark text `oklch(0.15 0.02 240)` - Ratio 15.2:1 ✓
+  - Primary (Creative Purple): White text `oklch(0.98 0.01 180)` - Ratio 5.1:1 ✓
+  - Accent (Neon Cyan): Dark text `oklch(0.15 0.02 240)` - Ratio 9.3:1 ✓
+  - Card (Bright White `oklch(0.99 0.005 180)`): Dark text `oklch(0.15 0.02 240)` - Ratio 16.1:1 ✓
 
 ## Font Selection
 
-Typography should balance playful creativity with technical precision, using modern geometric forms that feel both friendly and professional.
+Typography should balance approachable creativity with modern polish - friendly enough to inspire but professional enough to trust with your images.
 
-- **Primary Font**: Space Grotesk - Bold geometric sans-serif that feels modern, creative, and slightly quirky
-- **Secondary Font**: JetBrains Mono - For technical specifications and code-like details, adding digital authenticity
+- **Primary Font**: Inter - Clean, modern sans-serif that feels professional yet approachable
+- **Secondary Font**: Lora - Elegant serif for conversion-focused headlines and pitch copy
+- **Accent Font**: JetBrains Mono - For technical details, JSON exports, and developer-focused content
 
 - **Typographic Hierarchy**: 
-  - H1 (Page Title): Space Grotesk Bold / 42px / tight letter-spacing (-0.02em) / gradient text effect
-  - H2 (Category Headers): Space Grotesk Semibold / 28px / normal spacing
-  - H3 (Preset Names): Space Grotesk Medium / 20px / slight tracking (0.01em)
-  - Body (Descriptions): Space Grotesk Regular / 16px / 1.6 line-height
-  - Labels (Metadata): Space Grotesk Medium / 14px / uppercase / wide tracking (0.08em)
-  - Code (Technical Specs): JetBrains Mono Regular / 14px / monospace
+  - H1 (App Title): Inter Bold / 48-60px / tight letter-spacing (-0.01em) / gradient text effect
+  - Conversion Pitch (Style Cards): Lora Medium / 14px / normal spacing / emphasis color
+  - H3 (Style Names): Inter Semibold / 20px / slight tracking (0.005em)
+  - Body (Descriptions): Inter Regular / 16px / 1.5 line-height
+  - Labels (Metadata): Inter Medium / 12px / uppercase / wide tracking (0.06em)
+  - CTA Buttons: Inter Semibold / 16px / normal spacing
+  - Code/Tech Specs: JetBrains Mono Regular / 13px / monospace
 
 ## Animations
 
-Animations should create moments of delightful discovery while serving functional purposes - reinforcing interactions, guiding attention to active presets, and bringing the motion library itself to life with subtle meta-animations.
+Animations create moments of discovery and delight while serving the conversion goal - every motion reinforces that these styles are alive, ready to transform images, and worth choosing.
 
-- **Preset Card Hover**: Gentle lift with shadow expansion (200ms) and subtle scale (1.02x)
-- **Category Tab Switch**: Smooth slide transition with fade (300ms ease-out)
-- **Preset Selection**: Elastic pop-in for detail panel (400ms spring physics)
-- **Filter Application**: Stagger animation for grid items (50ms delay between cards)
-- **Preview Loop Indicator**: Pulsing glow around active preview area
-- **Background Ambiance**: Slow-moving gradient mesh (30s loop) for magical atmosphere
+- **Style Card Entrance**: Staggered fade-up (30ms delay between cards) to create flowing reveal
+- **Card Hover**: Gentle lift (2% scale) with accent-colored shadow expansion (200ms) - tactile invitation to click
+- **Style Preview Loop**: Continuous animation matching the actual motion behavior - this IS the product
+- **Vibe Tab Switch**: Smooth content crossfade (250ms) with minimal layout shift
+- **Detail Panel Open**: Elastic slide-in from right (400ms spring physics) - feels substantial and premium
+- **CTA Button Hover**: Subtle gradient shift and scale (1.02x) to emphasize conversion action
+- **Background**: Slow-moving radial gradient mesh (60s loop) for magical atmosphere without distraction
 
 ## Component Selection
 
 - **Components**: 
-  - `Card` for preset containers with custom gradient borders
-  - `Tabs` for category navigation with custom styling
-  - `Badge` for intensity levels, styles, and metadata tags
-  - `Dialog` or `Sheet` for detailed specification panel on mobile
-  - `Scroll-Area` for long preset lists
-  - `Separator` for visual section breaks
-  - `Button` for filter toggles and actions
-  - `Avatar` or custom component for animated sticker previews
+  - `Card` for style containers with custom gradient borders and hover effects
+  - `Tabs` for vibe navigation with custom styling emphasizing categories
+  - `Badge` for intensity levels, tags, and metadata
+  - `Sheet` for style detail panel (mobile-responsive full-screen on small viewports)
+  - `Button` with gradient variant for primary CTAs ("Apply to My Image")
+  - `Separator` for visual section breaks in detail panel
+  - `Scroll-Area` for detail panel content overflow
 
 - **Customizations**: 
-  - Custom animated preview component using framer-motion
-  - Gradient border cards with glow effects on hover
-  - Custom tab indicator with sliding underline animation
-  - Glassmorphic detail panel with backdrop blur
+  - **StickerStyleCard**: Custom component showing unified mask+motion result with live animation
+  - **StyleDetailPanel**: Conversion-focused sheet with prominent CTA and secondary technical breakdown
+  - Gradient border cards with color-coded vibe accents
+  - Live emoji animations using framer-motion for authentic preview
+  - Conversion pitch text with elevated typography (serif font for impact)
 
 - **States**: 
-  - Preset cards: default (subtle border), hover (glowing border + lift), active (strong glow)
-  - Category tabs: inactive (muted), hover (slight glow), active (gradient underline + bright text)
-  - Filter badges: unselected (outline), selected (filled with gradient), hover (scale + glow)
-  - Preview animation: playing (visible loop indicator), paused (dimmed)
+  - Style cards: default (subtle border), hover (glowing accent border + lift + shadow), active (strong glow retained)
+  - Vibe tabs: inactive (muted), hover (slight accent glow), active (bold with colored badge)
+  - Intensity filters: unselected (outline), selected (filled primary), hover (scale + glow)
+  - CTA Button: default (gradient), hover (opacity shift + scale), active (pressed state), disabled (muted + cursor not-allowed)
+  - Preview animation: continuous loop (infinite repeat with proper easing)
 
 - **Icon Selection**: 
-  - Sparkles (magic/particles)
-  - Lightning (glitch/flash)
-  - CircleNotch/Spinner (rotation/orbit)
-  - Heart (pulse/heartbeat)
-  - Crosshair (target/precision)
-  - Eye (preview)
-  - Funnel (filter)
-  - X (clear/close)
+  - MagicWand (app icon - represents transformation)
+  - Sparkle (magic/atmosphere vibes)
+  - Lightning (energy/tech vibes)
+  - Funnel (filters)
+  - X (clear filters)
+  - Sliders (playground)
+  - DownloadSimple (export)
+  - CheckCircle (best use cases)
+  - Info (technical details)
 
 - **Spacing**: 
   - Page padding: `p-6` (md: `p-8`, lg: `p-12`)
   - Card grid gap: `gap-4` (md: `gap-6`)
-  - Internal card padding: `p-5`
-  - Section spacing: `space-y-8`
-  - Tag groups: `gap-2`
+  - Card internal padding: `p-6`
+  - Section spacing: `space-y-6`
+  - Detail panel sections: `space-y-4`
+  - Tag groups: `gap-1.5`
 
 - **Mobile**: 
-  - Stack category tabs horizontally with scroll on mobile
+  - Vibe tabs scroll horizontally on mobile with snap-scroll behavior
   - Grid shifts from 3 columns (lg) → 2 columns (md) → 1 column (sm)
-  - Detail panel uses full-screen Sheet instead of side Dialog
-  - Reduce preview size on mobile while maintaining animation clarity
-  - Touch-friendly filter badges with larger tap targets (min 44x44px)
+  - Detail panel uses full-screen Sheet on mobile for immersive experience
+  - CTA buttons remain fixed-size and prominent (no size reduction)
+  - Card previews scale to maintain animation clarity
+  - Touch targets all meet 44x44px minimum for conversion-critical buttons

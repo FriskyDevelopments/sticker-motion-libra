@@ -4,58 +4,55 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Toaster } from '@/components/ui/sonner'
 import { 
-  motionPresets, 
-  categoryInfo, 
-  styleInfo, 
-  type MotionCategory, 
-  type MotionPreset,
+  stickerStyles,
+  vibeInfo,
+  type VibeCategory,
   type StickerStyle 
-} from '@/lib/motionPresets'
-import { MotionPresetCard } from '@/components/MotionPresetCard'
-import { PresetDetailPanel } from '@/components/PresetDetailPanel'
+} from '@/lib/stickerStyles'
+import { StickerStyleCard } from '@/components/StickerStyleCard'
+import { StyleDetailPanel } from '@/components/StyleDetailPanel'
 import { AnimationPlayground } from '@/components/AnimationPlayground'
-import { ArrowsClockwise, Funnel, X, DownloadSimple, Sliders } from '@phosphor-icons/react'
-import { downloadFile, exportPresetAsJSON } from '@/lib/exportUtils'
+import { Sparkle, Funnel, X, DownloadSimple, Sliders, MagicWand } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
 function App() {
-  const [selectedCategory, setSelectedCategory] = useState<MotionCategory | 'all'>('all')
-  const [selectedStyles, setSelectedStyles] = useState<StickerStyle[]>([])
-  const [selectedPreset, setSelectedPreset] = useState<MotionPreset | null>(null)
+  const [selectedVibe, setSelectedVibe] = useState<VibeCategory | 'all'>('all')
+  const [selectedIntensity, setSelectedIntensity] = useState<string[]>([])
+  const [selectedStyle, setSelectedStyle] = useState<StickerStyle | null>(null)
   const [detailPanelOpen, setDetailPanelOpen] = useState(false)
   const [playgroundOpen, setPlaygroundOpen] = useState(false)
 
-  const filteredPresets = useMemo(() => {
-    let filtered = motionPresets
+  const filteredStyles = useMemo(() => {
+    let filtered = stickerStyles
 
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(p => p.category === selectedCategory)
+    if (selectedVibe !== 'all') {
+      filtered = filtered.filter(s => s.vibe === selectedVibe)
     }
 
-    if (selectedStyles.length > 0) {
-      filtered = filtered.filter(p => 
-        selectedStyles.some(style => p.compatibleStyles.includes(style))
+    if (selectedIntensity.length > 0) {
+      filtered = filtered.filter(s => 
+        selectedIntensity.includes(s.intensity)
       )
     }
 
     return filtered
-  }, [selectedCategory, selectedStyles])
+  }, [selectedVibe, selectedIntensity])
 
-  const handleStyleToggle = (style: StickerStyle) => {
-    setSelectedStyles(prev => 
-      prev.includes(style) 
-        ? prev.filter(s => s !== style)
-        : [...prev, style]
+  const handleIntensityToggle = (intensity: string) => {
+    setSelectedIntensity(prev => 
+      prev.includes(intensity) 
+        ? prev.filter(i => i !== intensity)
+        : [...prev, intensity]
     )
   }
 
   const handleClearFilters = () => {
-    setSelectedCategory('all')
-    setSelectedStyles([])
+    setSelectedVibe('all')
+    setSelectedIntensity([])
   }
 
-  const handlePresetClick = (preset: MotionPreset) => {
-    setSelectedPreset(preset)
+  const handleStyleClick = (style: StickerStyle) => {
+    setSelectedStyle(style)
     setDetailPanelOpen(true)
   }
 
@@ -65,21 +62,31 @@ function App() {
 
   const handleExportAll = () => {
     try {
-      const presetsToExport = filteredPresets.length > 0 ? filteredPresets : motionPresets
-      const content = JSON.stringify(presetsToExport, null, 2)
-      const count = presetsToExport.length
-      downloadFile(content, 'motion-presets-library.json', 'application/json')
-      toast.success(`Exported ${count} presets`, {
-        description: 'All presets have been downloaded as JSON'
+      const stylesToExport = filteredStyles.length > 0 ? filteredStyles : stickerStyles
+      const content = JSON.stringify(stylesToExport, null, 2)
+      const count = stylesToExport.length
+      
+      const blob = new Blob([content], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'stix-magic-styles-library.json'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+      
+      toast.success(`Exported ${count} sticker styles`, {
+        description: 'Complete styles library downloaded as JSON'
       })
     } catch (error) {
       toast.error('Export failed', {
-        description: 'There was an error exporting the presets'
+        description: 'There was an error exporting the styles'
       })
     }
   }
 
-  const hasActiveFilters = selectedCategory !== 'all' || selectedStyles.length > 0
+  const hasActiveFilters = selectedVibe !== 'all' || selectedIntensity.length > 0
 
   return (
     <div className="min-h-screen mesh-background">
@@ -87,15 +94,15 @@ function App() {
       <div className="container mx-auto px-6 md:px-8 lg:px-12 py-8 md:py-12">
         <header className="mb-12 space-y-4">
           <div className="flex items-center gap-4">
-            <ArrowsClockwise size={48} weight="duotone" className="text-accent" />
+            <MagicWand size={48} weight="duotone" className="text-accent" />
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text tracking-tight">
-              Sticker Motion Library
+              STIX MAGIC Studio
             </h1>
           </div>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <p className="text-lg text-muted-foreground max-w-3xl">
-              A comprehensive collection of reusable motion presets for creative sticker artwork. 
-              Explore {motionPresets.length} animations across 6 categories.
+              Pick a vibe, apply to your image, get a full animated sticker pack. 
+              Explore {stickerStyles.length} conversion-ready styles.
             </p>
             <div className="flex gap-2">
               <Button
@@ -123,25 +130,17 @@ function App() {
             <div className="flex items-center gap-2 flex-wrap">
               <Funnel className="text-muted-foreground" weight="bold" />
               <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                Filter by Style:
+                Intensity:
               </span>
-              {(Object.keys(styleInfo) as StickerStyle[]).map(style => (
+              {['subtle', 'medium', 'intense'].map(intensity => (
                 <Button
-                  key={style}
-                  variant={selectedStyles.includes(style) ? 'default' : 'outline'}
+                  key={intensity}
+                  variant={selectedIntensity.includes(intensity) ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() => handleStyleToggle(style)}
-                  className="text-xs"
-                  style={
-                    selectedStyles.includes(style)
-                      ? {
-                          backgroundColor: styleInfo[style].color,
-                          borderColor: styleInfo[style].color,
-                        }
-                      : { borderColor: styleInfo[style].color + '60' }
-                  }
+                  onClick={() => handleIntensityToggle(intensity)}
+                  className="text-xs capitalize"
                 >
-                  {styleInfo[style].label}
+                  {intensity}
                 </Button>
               ))}
             </div>
@@ -159,24 +158,25 @@ function App() {
             )}
           </div>
 
-          <Tabs value={selectedCategory} onValueChange={(val) => setSelectedCategory(val as MotionCategory | 'all')}>
+          <Tabs value={selectedVibe} onValueChange={(val) => setSelectedVibe(val as VibeCategory | 'all')}>
             <TabsList className="w-full flex-wrap h-auto p-1 bg-card/50 backdrop-blur">
               <TabsTrigger value="all" className="flex items-center gap-2">
-                All Presets
+                <Sparkle weight="fill" />
+                All Styles
                 <Badge variant="secondary" className="ml-1 text-xs">
-                  {selectedCategory === 'all' && selectedStyles.length === 0 
-                    ? motionPresets.length 
-                    : filteredPresets.length}
+                  {selectedVibe === 'all' && selectedIntensity.length === 0 
+                    ? stickerStyles.length 
+                    : filteredStyles.length}
                 </Badge>
               </TabsTrigger>
-              {(Object.keys(categoryInfo) as MotionCategory[]).map(category => {
-                const count = selectedCategory === category && selectedStyles.length > 0
-                  ? filteredPresets.length
-                  : motionPresets.filter(p => p.category === category).length
+              {(Object.keys(vibeInfo) as VibeCategory[]).map(vibe => {
+                const count = selectedVibe === vibe && selectedIntensity.length > 0
+                  ? filteredStyles.length
+                  : stickerStyles.filter(s => s.vibe === vibe).length
                 
                 return (
-                  <TabsTrigger key={category} value={category} className="flex items-center gap-2">
-                    {categoryInfo[category].name}
+                  <TabsTrigger key={vibe} value={vibe} className="flex items-center gap-2">
+                    {vibeInfo[vibe].name}
                     <Badge variant="secondary" className="ml-1 text-xs">
                       {count}
                     </Badge>
@@ -185,11 +185,11 @@ function App() {
               })}
             </TabsList>
 
-            <TabsContent value={selectedCategory} className="mt-8">
-              {filteredPresets.length === 0 ? (
+            <TabsContent value={selectedVibe} className="mt-8">
+              {filteredStyles.length === 0 ? (
                 <div className="text-center py-20">
                   <div className="text-6xl mb-4 opacity-20">✨</div>
-                  <h3 className="text-2xl font-semibold mb-2">No presets found</h3>
+                  <h3 className="text-2xl font-semibold mb-2">No styles found</h3>
                   <p className="text-muted-foreground mb-6">
                     Try adjusting your filters to see more results
                   </p>
@@ -199,11 +199,11 @@ function App() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {filteredPresets.map((preset, index) => (
-                    <MotionPresetCard
-                      key={preset.id}
-                      preset={preset}
-                      onClick={() => handlePresetClick(preset)}
+                  {filteredStyles.map((style, index) => (
+                    <StickerStyleCard
+                      key={style.id}
+                      style={style}
+                      onClick={() => handleStyleClick(style)}
                       index={index}
                     />
                   ))}
@@ -214,8 +214,8 @@ function App() {
         </div>
       </div>
 
-      <PresetDetailPanel
-        preset={selectedPreset}
+      <StyleDetailPanel
+        style={selectedStyle}
         open={detailPanelOpen}
         onOpenChange={setDetailPanelOpen}
         onOpenPlayground={handleOpenPlayground}
@@ -224,7 +224,7 @@ function App() {
       <AnimationPlayground
         open={playgroundOpen}
         onOpenChange={setPlaygroundOpen}
-        initialPreset={selectedPreset}
+        initialPreset={null}
       />
     </div>
   )
