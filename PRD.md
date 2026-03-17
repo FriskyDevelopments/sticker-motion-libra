@@ -61,6 +61,13 @@ This is a design specification viewer and animation preview tool with organized 
 - **Progression**: Click category → View filters to category → Count badge updates → Presets display in grid
 - **Success criteria**: Instant category switching with smooth transitions
 
+### Custom Animation Playground
+- **Functionality**: Interactive playground for testing and customizing motion parameters in real-time
+- **Purpose**: Allow creators to experiment with animation timing, intensity, and behavior before implementation
+- **Trigger**: User clicks "Playground" button in header or detail panel
+- **Progression**: Open playground → Select preset as starting point → Adjust timing/scale/intensity controls → Preview changes live → Copy custom parameters
+- **Success criteria**: Real-time parameter updates with smooth preview, exportable custom configurations
+
 ## Edge Case Handling
 
 - **No Matching Filters**: Display empty state with friendly message and "Clear Filters" action

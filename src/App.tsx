@@ -13,7 +13,8 @@ import {
 } from '@/lib/motionPresets'
 import { MotionPresetCard } from '@/components/MotionPresetCard'
 import { PresetDetailPanel } from '@/components/PresetDetailPanel'
-import { ArrowsClockwise, Funnel, X, DownloadSimple } from '@phosphor-icons/react'
+import { AnimationPlayground } from '@/components/AnimationPlayground'
+import { ArrowsClockwise, Funnel, X, DownloadSimple, Sliders } from '@phosphor-icons/react'
 import { downloadFile, exportPresetAsJSON } from '@/lib/exportUtils'
 import { toast } from 'sonner'
 
@@ -22,6 +23,7 @@ function App() {
   const [selectedStyles, setSelectedStyles] = useState<StickerStyle[]>([])
   const [selectedPreset, setSelectedPreset] = useState<MotionPreset | null>(null)
   const [detailPanelOpen, setDetailPanelOpen] = useState(false)
+  const [playgroundOpen, setPlaygroundOpen] = useState(false)
 
   const filteredPresets = useMemo(() => {
     let filtered = motionPresets
@@ -55,6 +57,10 @@ function App() {
   const handlePresetClick = (preset: MotionPreset) => {
     setSelectedPreset(preset)
     setDetailPanelOpen(true)
+  }
+
+  const handleOpenPlayground = () => {
+    setPlaygroundOpen(true)
   }
 
   const handleExportAll = () => {
@@ -91,14 +97,24 @@ function App() {
               A comprehensive collection of reusable motion presets for creative sticker artwork. 
               Explore {motionPresets.length} animations across 6 categories.
             </p>
-            <Button
-              onClick={handleExportAll}
-              variant="outline"
-              className="gap-2 border-accent/40 hover:border-accent hover:bg-accent/10"
-            >
-              <DownloadSimple weight="bold" />
-              Export All
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => setPlaygroundOpen(true)}
+                variant="default"
+                className="gap-2 bg-gradient-to-r from-primary to-accent hover:opacity-90"
+              >
+                <Sliders weight="bold" />
+                Playground
+              </Button>
+              <Button
+                onClick={handleExportAll}
+                variant="outline"
+                className="gap-2 border-accent/40 hover:border-accent hover:bg-accent/10"
+              >
+                <DownloadSimple weight="bold" />
+                Export All
+              </Button>
+            </div>
           </div>
         </header>
 
@@ -202,6 +218,13 @@ function App() {
         preset={selectedPreset}
         open={detailPanelOpen}
         onOpenChange={setDetailPanelOpen}
+        onOpenPlayground={handleOpenPlayground}
+      />
+
+      <AnimationPlayground
+        open={playgroundOpen}
+        onOpenChange={setPlaygroundOpen}
+        initialPreset={selectedPreset}
       />
     </div>
   )

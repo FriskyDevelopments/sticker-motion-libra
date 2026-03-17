@@ -11,7 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { MotionPreset, styleInfo, categoryInfo } from '@/lib/motionPresets'
 import { AnimatedPreview } from './AnimatedPreview'
-import { Sparkle, Clock, Target, Repeat, DownloadSimple, Code, FileJs, FileTs, FileCss } from '@phosphor-icons/react'
+import { Sparkle, Clock, Target, Repeat, DownloadSimple, Code, FileJs, FileTs, FileCss, Sliders } from '@phosphor-icons/react'
 import { downloadPreset, type ExportFormat } from '@/lib/exportUtils'
 import { toast } from 'sonner'
 
@@ -19,6 +19,7 @@ interface PresetDetailPanelProps {
   preset: MotionPreset | null
   open: boolean
   onOpenChange: (open: boolean) => void
+  onOpenPlayground?: () => void
 }
 
 const intensityInfo = {
@@ -34,7 +35,7 @@ const loopStyleInfo = {
   bounce: { label: 'Bounce', description: 'Back-and-forth motion' }
 }
 
-export function PresetDetailPanel({ preset, open, onOpenChange }: PresetDetailPanelProps) {
+export function PresetDetailPanel({ preset, open, onOpenChange, onOpenPlayground }: PresetDetailPanelProps) {
   if (!preset) return null
 
   const categoryConfig = categoryInfo[preset.category]
@@ -52,6 +53,11 @@ export function PresetDetailPanel({ preset, open, onOpenChange }: PresetDetailPa
     }
   }
 
+  const handleOpenPlayground = () => {
+    onOpenPlayground?.()
+    onOpenChange(false)
+  }
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-xl backdrop-blur-md bg-card/95">
@@ -67,6 +73,17 @@ export function PresetDetailPanel({ preset, open, onOpenChange }: PresetDetailPa
             <div className="flex items-center justify-center py-8 bg-muted/30 rounded-xl">
               <AnimatedPreview preset={preset} className="w-32 h-32" />
             </div>
+
+            {onOpenPlayground && (
+              <Button
+                onClick={handleOpenPlayground}
+                className="w-full gap-2 bg-gradient-to-r from-primary to-accent hover:opacity-90"
+                size="lg"
+              >
+                <Sliders weight="bold" />
+                Test in Playground
+              </Button>
+            )}
 
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-2">
