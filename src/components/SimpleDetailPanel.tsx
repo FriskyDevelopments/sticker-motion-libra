@@ -40,10 +40,10 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
   const multipliers = getAnimationMultipliers(enhancement)
 
   const handleApply = () => {
-    toast.success('Ready to apply!', {
+    toast.success('Magic applied ✦', {
       description: magicEnabled 
         ? `${style.name} with ${getEnergyLabel(enhancement.energy).toLowerCase()} at ${getSpeedLabel(enhancement.speed).toLowerCase()}`
-        : `${style.name} applied with default settings`
+        : `${style.name} ready to go`
     })
   }
 
@@ -83,7 +83,7 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
               >
                 <Badge className="bg-accent/90 text-accent-foreground border-0 gap-2 px-3 py-1">
                   <Sparkle weight="fill" size={14} />
-                  Magic Enhanced
+                  Extra magic ✧
                 </Badge>
               </motion.div>
             )}
@@ -104,10 +104,10 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
                 <Sliders size={24} weight="duotone" className="text-accent" />
                 <div>
                   <Label htmlFor="magic-toggle" className="text-base font-semibold cursor-pointer">
-                    Add Extra Magic
+                    Add extra magic ✧
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    Fine-tune energy and speed
+                    Boost energy and speed
                   </p>
                 </div>
               </div>
@@ -131,7 +131,7 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
                   <div className="p-5 rounded-lg bg-gradient-to-br from-accent/5 to-primary/5 border border-accent/20 space-y-4">
                     <div className="space-y-3">
                       <Label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                        Energy Level
+                        Energy ✧
                       </Label>
                       <div className="grid grid-cols-3 gap-2">
                         {(['clean', 'enhanced', 'intense'] as MagicLevel[]).map((level) => (
@@ -155,7 +155,7 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
 
                     <div className="space-y-3">
                       <Label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                        Motion Speed
+                        Speed △
                       </Label>
                       <div className="grid grid-cols-3 gap-2">
                         {(['slow', 'normal', 'fast'] as SpeedLevel[]).map((level) => (
@@ -188,7 +188,7 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
             onClick={handleApply}
           >
             <ImageSquare weight="duotone" size={24} />
-            Apply to My Image
+            Apply to my image ✦
           </Button>
 
           <div className="grid grid-cols-2 gap-3 pt-2">

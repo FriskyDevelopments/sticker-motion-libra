@@ -65,7 +65,7 @@ export function SimpleStyleCard({ style, onClick, index }: SimpleStyleCardProps)
 
           <div className="pt-2 border-t border-border/50">
             <div className="text-sm font-medium text-primary group-hover:text-accent transition-colors">
-              Pick this style →
+              Try this ✦
             </div>
           </div>
         </div>

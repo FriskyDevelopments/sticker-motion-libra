@@ -32,18 +32,18 @@ function App() {
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Pick a style, bring it to life
+            Pick a style ✦ Bring it to life
           </p>
           
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <Badge variant="secondary" className="px-4 py-2 text-sm">
-              {featuredStyles.length} Premium Styles
+              {featuredStyles.length} Styles ✦
             </Badge>
             <Badge variant="secondary" className="px-4 py-2 text-sm">
-              Magic Enhancement
+              Extra Magic ✧
             </Badge>
             <Badge variant="secondary" className="px-4 py-2 text-sm">
-              Instant Preview
+              Live Preview
             </Badge>
           </div>
         </header>
@@ -52,10 +52,10 @@ function App() {
           <div className="text-center space-y-3">
             <h2 className="text-2xl font-bold flex items-center justify-center gap-3">
               <ImageSquare size={32} weight="duotone" className="text-primary" />
-              Pick Your Style
+              Pick a style ✦
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Each style combines motion, effects, and visual treatment. Click to preview and customize.
+              Each style is ready to apply. Click any style to preview and add extra magic.
             </p>
           </div>
 
@@ -75,9 +75,9 @@ function App() {
           <div className="inline-flex flex-col items-center gap-4 p-8 rounded-2xl bg-gradient-to-br from-muted/30 to-muted/10 border border-border/50">
             <Sparkle size={40} weight="duotone" className="text-accent" />
             <div>
-              <h3 className="text-lg font-semibold mb-1">Ready to create?</h3>
+              <h3 className="text-lg font-semibold mb-1">Ready to apply? ✦</h3>
               <p className="text-sm text-muted-foreground">
-                Pick any style above to get started
+                Pick a style to see your magic
               </p>
             </div>
           </div>

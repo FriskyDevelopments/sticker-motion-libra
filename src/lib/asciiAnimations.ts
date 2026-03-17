@@ -85,7 +85,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
         content: `
     ◌ ◌ ◌ ◌ ◌
     
- Uploading to cloud...
+ Uploading ◌
     `,
         duration: 150
       },
@@ -93,7 +93,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
         content: `
     ○ ◌ ◌ ◌ ◌
     
- Uploading to cloud...
+ Uploading ◌
     `,
         duration: 150
       },
@@ -101,7 +101,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
         content: `
     ○ ○ ◌ ◌ ◌
     
- Uploading to cloud...
+ Uploading ◌
     `,
         duration: 150
       },
@@ -109,7 +109,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
         content: `
     ○ ○ ○ ◌ ◌
     
- Uploading to cloud...
+ Uploading ◌
     `,
         duration: 150
       },
@@ -117,7 +117,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
         content: `
     ○ ○ ○ ○ ◌
     
- Uploading to cloud...
+ Uploading ◌
     `,
         duration: 150
       },
@@ -125,7 +125,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
         content: `
     ○ ○ ○ ○ ○
     
- Uploading to cloud...
+ Uploading ◌
     `,
         duration: 150
       },
@@ -133,7 +133,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
         content: `
     ✦ ○ ○ ○ ○
     
-   Upload complete!
+   Ready ✦
     `,
         duration: 300
       }
@@ -155,7 +155,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
      ◇ img ◇
       ◇ ◇ ◇
     
-  Applying mask...
+  Applying style ◌
     `,
         duration: 200
       },
@@ -166,7 +166,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
      ◇ img ◇
      ✦◇ ◇ ◇✦
     
-  Applying mask...
+  Applying style ◌
     `,
         duration: 200
       },
@@ -177,7 +177,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
      ◇ img ◇
     ✦ ◇ ✧ ◇ ✦
     
-  Applying mask...
+  Applying style ◌
     `,
         duration: 200
       },
@@ -188,7 +188,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
      ◇ img ◇
    ✧✦ ◇ ✧ ◇✦✧
     
-  Soft edge applied
+  Style applied ✧
     `,
         duration: 400
       },
@@ -199,7 +199,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
      ◌ img ◌
    ~ ✧ ✦ ✧ ~
     
-   Mask complete!
+   Ready ✦
     `,
         duration: 600
       }
@@ -221,7 +221,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
      ◌ ○ ◌
       ·
     
- Infusing motion...
+ Infusing motion ◌
     `,
         duration: 250
       },
@@ -232,7 +232,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
      ◌ ○ ◌
       △
     
- Infusing motion...
+ Infusing motion ◌
     `,
         duration: 250
       },
@@ -243,7 +243,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
     ◌ ○ ○ ◌
       △
     
- Infusing motion...
+ Infusing motion ◌
     `,
         duration: 250
       },
@@ -254,7 +254,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
    ◌ ○ ○ ○ ◌
      △ ✧
     
-  Motion applied!
+  Motion applied ✧
     `,
         duration: 400
       },
@@ -265,7 +265,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
   ◌ ○ ✧ ○ ◌
     ✦ ✧ ✦
     
- Breathing effect
+ Bringing it to life
     `,
         duration: 850
       }
@@ -286,7 +286,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
   ░ ░ ░ ░ ░
   ░ ░ ░ ░ ░
     
- Rendering frame 1
+ Your sticker is forming ◌
     `,
         duration: 200
       },
@@ -296,7 +296,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
   ▒ ░ ░ ░ ░
   ▒ ░ ░ ░ ░
     
- Rendering frame 2
+ Your sticker is forming ◌
     `,
         duration: 200
       },
@@ -306,7 +306,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
   ▒ ▒ ░ ░ ░
   ▒ ▒ ░ ░ ░
     
- Rendering frame 4
+ Your sticker is forming ◌
     `,
         duration: 200
       },
@@ -316,7 +316,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
   ▒ ▓ ▒ ░ ░
   ▒ ▒ ▒ ░ ░
     
- Rendering frame 7
+ Your sticker is forming ◌
     `,
         duration: 200
       },
@@ -326,7 +326,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
   ▒ ▓ ▓ ▒ ░
   ▒ ▒ ▒ ▒ ░
     
- Rendering frame 11
+ Your sticker is forming ◌
     `,
         duration: 200
       },
@@ -336,7 +336,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
   ▒ ▓ ▓ ▓ ▒
   ▒ ▒ ▒ ▒ ▒
     
- Rendering frame 16
+ Your sticker is forming ◌
     `,
         duration: 200
       },
@@ -346,7 +346,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
   ▓ ✦ ✧ ✦ ▓
   ▓ ▓ ▓ ▓ ▓
     
- Render complete!
+ Ready ✦
     `,
         duration: 600
       }
@@ -366,7 +366,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
     
     ◌ ◌ ◌ ◌
     
-  Generating pack...
+  Building your pack ◌
     `,
         duration: 300
       },
@@ -375,7 +375,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
     
     ○ ◌ ◌ ◌
     
-  Assembling frames
+  Assembling frames ✧
     `,
         duration: 400
       },
@@ -384,7 +384,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
     
     ○ ○ ◌ ◌
     
- Optimizing assets
+ Adding your magic ✧
     `,
         duration: 400
       },
@@ -393,7 +393,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
     
     ○ ○ ○ ◌
     
- Adding sparkle...
+ Final touches △
     `,
         duration: 400
       },
@@ -402,7 +402,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
     
    ✦○ ○ ○ ○✦
     
-  Pack generation
+  Almost there ✧
     `,
         duration: 500
       },
@@ -411,7 +411,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
     
   ✧✦○ ○ ○ ○✦✧
     
-   Pack ready! ✨
+   Pack ready ✦
     `,
         duration: 1200
       }
@@ -431,7 +431,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
     
       · · ·
       
-  Preparing deploy
+  Preparing deploy ◌
     `,
         duration: 300
       },
@@ -441,7 +441,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
     · · · · ·
       ~ ~ ~
       
-  Routing to edge
+  Routing to edge ◌
     `,
         duration: 400
       },
@@ -451,7 +451,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
    ~ ~ ~ ~ ~ ~
     ○ ○ ○ ○
       
- Deploying nodes...
+ Deploying now ◌
     `,
         duration: 500
       },
@@ -461,7 +461,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
   ~ ~ ○ ○ ○ ~ ~
    ○ ○ ○ ○ ○
       
- Global propagation
+ Spreading globally △
     `,
         duration: 600
       },
@@ -471,7 +471,7 @@ export const asciiAnimations: Record<string, AsciiAnimation> = {
  ~ ○ ○ ○ ○ ○ ~
   ○ ○ ○ ○ ○ ○
       
-  Deploy complete!
+  Deploy complete ✦
     `,
         duration: 1000
       }
