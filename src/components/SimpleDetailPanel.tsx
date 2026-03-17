@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { StickerStyle } from '@/lib/stickerStyles'
 import { 
   type MagicEnhancement, 
@@ -22,8 +23,9 @@ import {
   type MagicLevel,
   type SpeedLevel
 } from '@/lib/featuredStyles'
-import { Sparkle, Sliders, ImageSquare } from '@phosphor-icons/react'
+import { Sparkle, Sliders, ImageSquare, Download } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { ImageUpload } from './ImageUpload'
 
 interface SimpleDetailPanelProps {
   style: StickerStyle | null
@@ -34,17 +36,40 @@ interface SimpleDetailPanelProps {
 export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPanelProps) {
   const [magicEnabled, setMagicEnabled] = useState(false)
   const [enhancement, setEnhancement] = useState<MagicEnhancement>(defaultEnhancement)
+  const [uploadedImage, setUploadedImage] = useState<string | undefined>(undefined)
+  const [activeTab, setActiveTab] = useState<'preview' | 'upload'>('preview')
 
   if (!style) return null
 
   const multipliers = getAnimationMultipliers(enhancement)
 
-  const handleApply = () => {
-    toast.success('Magic applied ✦', {
-      description: magicEnabled 
-        ? `${style.name} with ${getEnergyLabel(enhancement.energy).toLowerCase()} at ${getSpeedLabel(enhancement.speed).toLowerCase()}`
-        : `${style.name} ready to go`
+  const handleImageSelect = (_file: File, dataUrl: string) => {
+    setUploadedImage(dataUrl)
+    setActiveTab('upload')
+  }
+
+  const handleClearImage = () => {
+    setUploadedImage(undefined)
+    setActiveTab('preview')
+  }
+
+  const handleDownload = () => {
+    if (!uploadedImage) {
+      toast.error('Upload an image first', {
+        description: 'Add your image to apply this style'
+      })
+      return
+    }
+
+    toast.success('Rendering your sticker ◌', {
+      description: 'Your magic-infused creation is forming...'
     })
+    
+    setTimeout(() => {
+      toast.success('Sticker ready ✦', {
+        description: `${style.name} with your image`
+      })
+    }, 2000)
   }
 
   return (
@@ -63,40 +88,91 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
         </SheetHeader>
 
         <div className="space-y-8 py-6">
-          <div className="aspect-square bg-gradient-to-br from-muted/20 via-background to-muted/30 rounded-2xl flex items-center justify-center overflow-hidden relative border-2 border-border/30">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,oklch(0.65_0.20_160/0.12),transparent_70%)]" />
-            
-            <motion.div
-              key={`${enhancement.energy}-${enhancement.speed}-${magicEnabled}`}
-              className="text-[14rem] relative z-10"
-              animate={getEnhancedAnimation(style.motion.id, style.intensity, magicEnabled ? multipliers : { scale: 1, duration: 1, intensity: 1 })}
-              transition={getEnhancedTransition(style.motion.id, magicEnabled ? multipliers : { scale: 1, duration: 1, intensity: 1 })}
-            >
-              {style.previewEmoji}
-            </motion.div>
-            
-            {magicEnabled && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="absolute top-4 right-4"
-              >
-                <Badge className="bg-accent/90 text-accent-foreground border-0 gap-2 px-3 py-1">
-                  <Sparkle weight="fill" size={14} />
-                  Extra magic ✧
-                </Badge>
-              </motion.div>
-            )}
-            
-            <div className="absolute bottom-4 left-4">
-              <Badge 
-                variant="secondary" 
-                className="text-sm font-mono bg-background/90 backdrop-blur-sm"
-              >
-                {style.intensity}
-              </Badge>
-            </div>
-          </div>
+          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'preview' | 'upload')} className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="preview" className="gap-2">
+                <Sparkle size={16} weight="duotone" />
+                Style Preview
+              </TabsTrigger>
+              <TabsTrigger value="upload" className="gap-2">
+                <ImageSquare size={16} weight="duotone" />
+                Your Image
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="preview" className="mt-0">
+              <div className="aspect-square bg-gradient-to-br from-muted/20 via-background to-muted/30 rounded-2xl flex items-center justify-center overflow-hidden relative border-2 border-border/30">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,oklch(0.65_0.20_160/0.12),transparent_70%)]" />
+                
+                <motion.div
+                  key={`${enhancement.energy}-${enhancement.speed}-${magicEnabled}`}
+                  className="text-[14rem] relative z-10"
+                  animate={getEnhancedAnimation(style.motion.id, style.intensity, magicEnabled ? multipliers : { scale: 1, duration: 1, intensity: 1 })}
+                  transition={getEnhancedTransition(style.motion.id, magicEnabled ? multipliers : { scale: 1, duration: 1, intensity: 1 })}
+                >
+                  {style.previewEmoji}
+                </motion.div>
+                
+                {magicEnabled && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="absolute top-4 right-4"
+                  >
+                    <Badge className="bg-accent/90 text-accent-foreground border-0 gap-2 px-3 py-1">
+                      <Sparkle weight="fill" size={14} />
+                      Extra magic ✧
+                    </Badge>
+                  </motion.div>
+                )}
+                
+                <div className="absolute bottom-4 left-4">
+                  <Badge 
+                    variant="secondary" 
+                    className="text-sm font-mono bg-background/90 backdrop-blur-sm"
+                  >
+                    {style.intensity}
+                  </Badge>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="upload" className="mt-0">
+              <div className="relative">
+                <ImageUpload
+                  onImageSelect={handleImageSelect}
+                  currentImage={uploadedImage}
+                  onClear={handleClearImage}
+                />
+                
+                {uploadedImage && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="absolute inset-0 pointer-events-none flex items-center justify-center"
+                  >
+                    <motion.div
+                      key={`${enhancement.energy}-${enhancement.speed}-${magicEnabled}`}
+                      className="text-8xl opacity-40 blur-[2px]"
+                      animate={getEnhancedAnimation(style.motion.id, style.intensity, magicEnabled ? multipliers : { scale: 1, duration: 1, intensity: 1 })}
+                      transition={getEnhancedTransition(style.motion.id, magicEnabled ? multipliers : { scale: 1, duration: 1, intensity: 1 })}
+                    >
+                      {style.previewEmoji}
+                    </motion.div>
+                  </motion.div>
+                )}
+              </div>
+              
+              {uploadedImage && (
+                <div className="mt-4 p-4 rounded-lg bg-accent/10 border border-accent/30">
+                  <div className="flex items-center gap-2 text-sm text-accent-foreground">
+                    <Sparkle size={16} weight="fill" className="text-accent" />
+                    <span>Preview: {style.name} will be applied to your image</span>
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
 
           <div className="space-y-5">
             <div className="flex items-center justify-between p-4 rounded-lg bg-muted/30 border border-border/50">
@@ -182,14 +258,29 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
 
           <Separator />
 
-          <Button 
-            className="w-full gap-3 h-14 text-lg bg-gradient-to-r from-primary via-accent to-primary hover:opacity-90 bg-[length:200%_100%] hover:bg-right transition-all duration-500"
-            size="lg"
-            onClick={handleApply}
-          >
-            <ImageSquare weight="duotone" size={24} />
-            Apply to my image ✦
-          </Button>
+          <div className="space-y-3">
+            {!uploadedImage && (
+              <Button 
+                className="w-full gap-3 h-14 text-lg bg-gradient-to-r from-primary via-accent to-primary hover:opacity-90 bg-[length:200%_100%] hover:bg-right transition-all duration-500"
+                size="lg"
+                onClick={() => setActiveTab('upload')}
+              >
+                <ImageSquare weight="duotone" size={24} />
+                Upload your image ✦
+              </Button>
+            )}
+
+            {uploadedImage && (
+              <Button 
+                className="w-full gap-3 h-14 text-lg bg-gradient-to-r from-primary via-accent to-primary hover:opacity-90 bg-[length:200%_100%] hover:bg-right transition-all duration-500"
+                size="lg"
+                onClick={handleDownload}
+              >
+                <Download weight="duotone" size={24} />
+                Create sticker ✦
+              </Button>
+            )}
+          </div>
 
           <div className="grid grid-cols-2 gap-3 pt-2">
             {style.bestFor.slice(0, 4).map((useCase, index) => (

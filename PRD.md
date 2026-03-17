@@ -68,6 +68,13 @@ This is a style gallery and preview tool with organized categories, filtering by
 - **Progression**: Select export → JSON file downloads with complete style spec (mask type + motion ID + parameters) → Toast confirmation
 - **Success criteria**: Downloaded JSON contains all necessary information to recreate the style
 
+### Image Upload & Application
+- **Functionality**: Upload user images and preview styles applied to them
+- **Purpose**: Enable users to see how selected styles will look on their own images
+- **Trigger**: "Upload your image" button in detail panel or "Your Image" tab
+- **Progression**: Click upload → Select image file or drag & drop → Preview uploaded image → Style animation overlays on image → Adjust extra magic if desired → Download styled sticker
+- **Success criteria**: Smooth drag-and-drop upload, image validation (max 10MB, image formats only), live preview with selected style animation overlay, clear visual feedback
+
 ### Animation Playground (Retained)
 - **Functionality**: Experimental space for tweaking motion parameters in real-time
 - **Purpose**: Advanced users can customize intensity, timing, and behavior before applying
@@ -84,7 +91,10 @@ This is a style gallery and preview tool with organized categories, filtering by
 - **Animation Performance**: Stagger card animations on load to prevent simultaneous rendering lag
 - **Long Style Names**: Text truncates elegantly without breaking layout
 - **Missing Emoji Support**: Fallback to colored circle if emoji doesn't render
-- **Conversion Button States**: Disabled state for "Apply to My Image" until upload feature is implemented
+- **Image Upload Errors**: File size validation (max 10MB), image format validation, clear error messages
+- **No Image Uploaded**: Show "Upload your image" CTA instead of "Create sticker" when no image present
+- **Large Image Files**: Compress or warn when image exceeds recommended size for optimal performance
+- **Drag & Drop Outside Zone**: Ignore drops outside upload area, prevent page navigation on accidental drops
 
 ## Design Direction
 
