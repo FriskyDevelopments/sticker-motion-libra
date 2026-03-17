@@ -47,6 +47,20 @@ This is a style gallery and preview tool with organized categories, filtering by
 - **Progression**: Click intensity → Grid filters instantly → Visual count updates → Combine with vibe filters → Reset option available
 - **Success criteria**: Instant filtering showing only matching intensity levels
 
+### Mask Type Filtering
+- **Functionality**: Filter styles by the mask effect type (Soft Edge Glow, Hard Cutout, Gradient Fade, etc.)
+- **Purpose**: Allow users to find styles with specific visual edge treatments and masking techniques
+- **Trigger**: User clicks mask filter buttons
+- **Progression**: Click mask type → Grid filters to matching styles → Counts update → Combine with other filters → Clear all filters available
+- **Success criteria**: Instant filtering showing only styles with selected mask types
+
+### Pagination
+- **Functionality**: Break style gallery into pages of 9 items per page for easier browsing
+- **Purpose**: Improve performance and reduce cognitive load when browsing large style collections
+- **Trigger**: Automatic when more than 9 filtered styles exist
+- **Progression**: View page 1 → Click page number or next/previous → Grid updates → Scroll to top → Navigate between pages
+- **Success criteria**: Smooth page transitions with disabled states on boundary pages (first/last)
+
 ### Style Export System
 - **Functionality**: Download individual styles or full library as JSON for developer implementation
 - **Purpose**: Bridge inspiration → technical implementation for developers who want to build these effects
