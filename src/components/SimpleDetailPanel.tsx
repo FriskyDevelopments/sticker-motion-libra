@@ -23,7 +23,8 @@ import {
   type MagicLevel,
   type SpeedLevel
 } from '@/lib/featuredStyles'
-import { Sparkle, Sliders, ImageSquare, Download } from '@phosphor-icons/react'
+import { removeBackground } from '@/lib/backgroundRemoval'
+import { Sparkle, Sliders, ImageSquare, Download, Scissors } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { ImageUpload } from './ImageUpload'
 
@@ -37,20 +38,69 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
   const [magicEnabled, setMagicEnabled] = useState(false)
   const [enhancement, setEnhancement] = useState<MagicEnhancement>(defaultEnhancement)
   const [uploadedImage, setUploadedImage] = useState<string | undefined>(undefined)
+  const [processedImage, setProcessedImage] = useState<string | undefined>(undefined)
+  const [bgRemovalEnabled, setBgRemovalEnabled] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const [activeTab, setActiveTab] = useState<'preview' | 'upload'>('preview')
 
   if (!style) return null
 
   const multipliers = getAnimationMultipliers(enhancement)
+  const displayImage = bgRemovalEnabled && processedImage ? processedImage : uploadedImage
 
   const handleImageSelect = (_file: File, dataUrl: string) => {
     setUploadedImage(dataUrl)
+    setProcessedImage(undefined)
+    setBgRemovalEnabled(false)
     setActiveTab('upload')
   }
 
   const handleClearImage = () => {
     setUploadedImage(undefined)
+    setProcessedImage(undefined)
+    setBgRemovalEnabled(false)
     setActiveTab('preview')
+  }
+
+  const handleBgRemovalToggle = async (enabled: boolean) => {
+    if (!uploadedImage) return
+
+    if (enabled) {
+      setIsProcessing(true)
+      toast.loading('Removing background...', { id: 'bg-removal' })
+      
+      try {
+        const result = await removeBackground(uploadedImage)
+        
+        if (result.success && result.processedImageUrl) {
+          setProcessedImage(result.processedImageUrl)
+          setBgRemovalEnabled(true)
+          toast.success('Background removed ✦', {
+            id: 'bg-removal',
+            description: 'Your sticker is ready for magic'
+          })
+        } else {
+          setBgRemovalEnabled(false)
+          toast.error('Could not remove background', {
+            id: 'bg-removal',
+            description: result.error || 'Please try a different image'
+          })
+        }
+      } catch (error) {
+        setBgRemovalEnabled(false)
+        toast.error('Processing failed', {
+          id: 'bg-removal',
+          description: 'Please try again'
+        })
+      } finally {
+        setIsProcessing(false)
+      }
+    } else {
+      setBgRemovalEnabled(false)
+      toast.info('Using original image', {
+        description: 'Background removal disabled'
+      })
+    }
   }
 
   const handleDownload = () => {
@@ -141,7 +191,7 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
               <div className="relative">
                 <ImageUpload
                   onImageSelect={handleImageSelect}
-                  currentImage={uploadedImage}
+                  currentImage={displayImage}
                   onClear={handleClearImage}
                 />
                 
@@ -164,12 +214,41 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
               </div>
               
               {uploadedImage && (
-                <div className="mt-4 p-4 rounded-lg bg-accent/10 border border-accent/30">
-                  <div className="flex items-center gap-2 text-sm text-accent-foreground">
-                    <Sparkle size={16} weight="fill" className="text-accent" />
-                    <span>Preview: {style.name} will be applied to your image</span>
+                <>
+                  <div className="mt-4 p-4 rounded-lg bg-muted/30 border border-border/50">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Scissors size={24} weight="duotone" className="text-primary" />
+                        <div>
+                          <Label htmlFor="bg-removal-toggle" className="text-base font-semibold cursor-pointer">
+                            Remove background ✂
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            AI-powered subject isolation
+                          </p>
+                        </div>
+                      </div>
+                      <Switch
+                        id="bg-removal-toggle"
+                        checked={bgRemovalEnabled}
+                        onCheckedChange={handleBgRemovalToggle}
+                        disabled={isProcessing}
+                        className="data-[state=checked]:bg-primary"
+                      />
+                    </div>
                   </div>
-                </div>
+                  
+                  <div className="mt-4 p-4 rounded-lg bg-accent/10 border border-accent/30">
+                    <div className="flex items-center gap-2 text-sm text-accent-foreground">
+                      <Sparkle size={16} weight="fill" className="text-accent" />
+                      <span>
+                        {bgRemovalEnabled && processedImage 
+                          ? `Clean cutout ready! ${style.name} will be applied.` 
+                          : `${style.name} will be applied to your image`}
+                      </span>
+                    </div>
+                  </div>
+                </>
               )}
             </TabsContent>
           </Tabs>

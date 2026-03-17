@@ -75,6 +75,13 @@ This is a style gallery and preview tool with organized categories, filtering by
 - **Progression**: Click upload → Select image file or drag & drop → Preview uploaded image → Style animation overlays on image → Adjust extra magic if desired → Download styled sticker
 - **Success criteria**: Smooth drag-and-drop upload, image validation (max 10MB, image formats only), live preview with selected style animation overlay, clear visual feedback
 
+### AI-Powered Background Removal
+- **Functionality**: Automatically remove backgrounds from uploaded images using AI before applying sticker styles
+- **Purpose**: Create clean, professional stickers by isolating subjects from their backgrounds
+- **Trigger**: Toggle "Remove background" option after image upload
+- **Progression**: Upload image → Toggle background removal → AI processes image → Preview cleaned image → Apply style to transparent background image → Download sticker with clean cutout
+- **Success criteria**: Fast AI processing (< 3 seconds), accurate subject detection, toggle on/off to compare original vs removed, smooth integration with style preview, loading state during processing
+
 ### Animation Playground (Retained)
 - **Functionality**: Experimental space for tweaking motion parameters in real-time
 - **Purpose**: Advanced users can customize intensity, timing, and behavior before applying
@@ -95,6 +102,9 @@ This is a style gallery and preview tool with organized categories, filtering by
 - **No Image Uploaded**: Show "Upload your image" CTA instead of "Create sticker" when no image present
 - **Large Image Files**: Compress or warn when image exceeds recommended size for optimal performance
 - **Drag & Drop Outside Zone**: Ignore drops outside upload area, prevent page navigation on accidental drops
+- **AI Background Removal Failure**: Gracefully handle AI errors with fallback to original image and retry option
+- **Processing Timeout**: Show timeout message if AI takes longer than expected, allow user to continue with original
+- **No Subject Detected**: If AI cannot detect a clear subject, inform user and suggest manual cropping or using original
 
 ## Design Direction
 
