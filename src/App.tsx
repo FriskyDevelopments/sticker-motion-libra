@@ -14,7 +14,8 @@ import {
 import { StickerStyleCard } from '@/components/StickerStyleCard'
 import { StyleDetailPanel } from '@/components/StyleDetailPanel'
 import { AnimationPlayground } from '@/components/AnimationPlayground'
-import { Sparkle, Funnel, X, DownloadSimple, Sliders, MagicWand, CaretLeft, CaretRight, Scissors } from '@phosphor-icons/react'
+import { AsciiShowcase } from '@/components/AsciiShowcase'
+import { Sparkle, Funnel, X, DownloadSimple, Sliders, MagicWand, CaretLeft, CaretRight, Scissors, CloudArrowUp } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
 const ITEMS_PER_PAGE = 9
@@ -27,6 +28,7 @@ function App() {
   const [selectedStyle, setSelectedStyle] = useState<StickerStyle | null>(null)
   const [detailPanelOpen, setDetailPanelOpen] = useState(false)
   const [playgroundOpen, setPlaygroundOpen] = useState(false)
+  const [asciiShowcaseOpen, setAsciiShowcaseOpen] = useState(false)
 
   const filteredStyles = useMemo(() => {
     let filtered = stickerStyles
@@ -148,6 +150,14 @@ function App() {
               Explore {stickerStyles.length} conversion-ready styles.
             </p>
             <div className="flex gap-2">
+              <Button
+                onClick={() => setAsciiShowcaseOpen(true)}
+                variant="outline"
+                className="gap-2 border-primary/40 hover:border-primary hover:bg-primary/10"
+              >
+                <CloudArrowUp weight="bold" />
+                ASCII Cloud
+              </Button>
               <Button
                 onClick={() => setPlaygroundOpen(true)}
                 variant="default"
@@ -331,6 +341,11 @@ function App() {
         open={playgroundOpen}
         onOpenChange={setPlaygroundOpen}
         initialPreset={null}
+      />
+
+      <AsciiShowcase
+        open={asciiShowcaseOpen}
+        onOpenChange={setAsciiShowcaseOpen}
       />
     </div>
   )
