@@ -2,13 +2,15 @@ import { Toaster } from '@/components/ui/sonner'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Sparkle, Stack, Cube, Circle, Resize, Lightning } from '@phosphor-icons/react'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { Sparkle, Stack, Cube, Circle, Resize, Lightning, HourglassMedium } from '@phosphor-icons/react'
 import { baseStyles, styleFamilyInfo, type StyleFamily } from '@/lib/styleLibrary'
 import { overlays, overlayFamilyInfo } from '@/lib/overlaySystem'
 import { loaders, loaderFamilyInfo } from '@/lib/loaderSystem'
 import { sizeProfiles } from '@/lib/sizeProfiles'
 import { motionPresets } from '@/lib/motionPresets'
 import { exploreComboSpace } from '@/lib/comboEngine'
+import { LoaderShowcase } from '@/components/LoaderShowcase'
 import { useMemo } from 'react'
 
 function App() {
@@ -24,7 +26,7 @@ function App() {
       <Toaster position="top-right" richColors />
       
       <div className="container mx-auto px-6 md:px-8 lg:px-12 py-12 md:py-16">
-        <header className="mb-20 text-center space-y-8">
+        <header className="mb-12 text-center space-y-8">
           <div className="inline-flex items-center gap-3 mb-6">
             <Sparkle size={72} weight="duotone" className="text-accent animate-pulse" />
           </div>
@@ -41,6 +43,20 @@ function App() {
             From a simple preset gallery to a scalable library producing <span className="text-accent font-bold">{comboStats.validCombos.toLocaleString()}+</span> polished style outcomes through intelligent combination
           </p>
         </header>
+
+        <Tabs defaultValue="overview" className="space-y-8">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 h-auto p-1">
+            <TabsTrigger value="overview" className="flex items-center gap-2 py-3">
+              <Stack size={20} weight="duotone" />
+              System Overview
+            </TabsTrigger>
+            <TabsTrigger value="loaders" className="flex items-center gap-2 py-3">
+              <HourglassMedium size={20} weight="duotone" />
+              Loader Showcase
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-16">
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           <Card className="gradient-border p-8 space-y-6">
@@ -274,6 +290,12 @@ function App() {
             </div>
           </Card>
         </div>
+          </TabsContent>
+
+          <TabsContent value="loaders">
+            <LoaderShowcase />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )
