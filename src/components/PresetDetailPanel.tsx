@@ -8,9 +8,12 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Button } from '@/components/ui/button'
 import { MotionPreset, styleInfo, categoryInfo } from '@/lib/motionPresets'
 import { AnimatedPreview } from './AnimatedPreview'
-import { Sparkle, Clock, Target, Repeat } from '@phosphor-icons/react'
+import { Sparkle, Clock, Target, Repeat, DownloadSimple, Code, FileJs, FileTs, FileCss } from '@phosphor-icons/react'
+import { downloadPreset, type ExportFormat } from '@/lib/exportUtils'
+import { toast } from 'sonner'
 
 interface PresetDetailPanelProps {
   preset: MotionPreset | null
@@ -36,6 +39,19 @@ export function PresetDetailPanel({ preset, open, onOpenChange }: PresetDetailPa
 
   const categoryConfig = categoryInfo[preset.category]
 
+  const handleExport = (format: ExportFormat) => {
+    try {
+      downloadPreset(preset, format)
+      toast.success(`Exported as ${format.toUpperCase()}`, {
+        description: `${preset.name} preset downloaded successfully`
+      })
+    } catch (error) {
+      toast.error('Export failed', {
+        description: 'There was an error exporting the preset'
+      })
+    }
+  }
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-xl backdrop-blur-md bg-card/95">
@@ -51,6 +67,53 @@ export function PresetDetailPanel({ preset, open, onOpenChange }: PresetDetailPa
             <div className="flex items-center justify-center py-8 bg-muted/30 rounded-xl">
               <AnimatedPreview preset={preset} className="w-32 h-32" />
             </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-2">
+                <DownloadSimple className="text-accent" weight="duotone" />
+                <h3 className="font-semibold text-sm uppercase tracking-wider">Export Preset</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleExport('json')}
+                  className="gap-2"
+                >
+                  <FileJs />
+                  JSON
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleExport('typescript')}
+                  className="gap-2"
+                >
+                  <FileTs />
+                  TypeScript
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleExport('css')}
+                  className="gap-2"
+                >
+                  <FileCss />
+                  CSS
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleExport('framer-motion')}
+                  className="gap-2"
+                >
+                  <Code />
+                  Framer
+                </Button>
+              </div>
+            </div>
+
+            <Separator />
 
             <div className="space-y-4">
               <div>

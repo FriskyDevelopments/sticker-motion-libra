@@ -26,6 +26,20 @@ This is a design specification viewer and animation preview tool with organized 
 - **Progression**: Click preset → Animation plays on sample sticker → Loop behavior demonstrates → User observes timing and intensity
 - **Success criteria**: Smooth 60fps animations that accurately represent each preset's behavior
 
+### Export Individual Presets
+- **Functionality**: Download single preset in multiple formats (JSON, TypeScript, CSS, Framer Motion)
+- **Purpose**: Allow developers to integrate presets into their own projects
+- **Trigger**: User clicks export button in preset detail panel
+- **Progression**: Open preset detail → Select export format → File downloads automatically → Toast notification confirms success
+- **Success criteria**: Downloaded files contain properly formatted, ready-to-use code
+
+### Bulk Export Library
+- **Functionality**: Export all presets or filtered subset as JSON collection
+- **Purpose**: Enable batch downloads for comprehensive integration
+- **Trigger**: User clicks "Export All" button in header
+- **Progression**: Click export → System bundles visible/filtered presets → JSON file downloads → Confirmation toast appears
+- **Success criteria**: JSON array contains all selected presets with complete metadata
+
 ### Filter by Style System
 - **Functionality**: Filter presets by sticker style (cute, neon, magic, techno, mascot)
 - **Purpose**: Quickly find animations that match specific aesthetic requirements
@@ -37,7 +51,7 @@ This is a design specification viewer and animation preview tool with organized 
 - **Functionality**: Display comprehensive technical and creative specifications for selected preset
 - **Purpose**: Provide creators with implementation details and usage guidance
 - **Trigger**: User clicks on a preset card
-- **Progression**: Select preset → Panel slides in → Shows all metadata (name, behavior, vibe, intensity, loop style, use cases, styles) → Visual preview plays
+- **Progression**: Select preset → Panel slides in → Shows all metadata (name, behavior, vibe, intensity, loop style, use cases, styles) → Visual preview plays → Export options available
 - **Success criteria**: All specification fields populated with clear, actionable information
 
 ### Category Navigation
@@ -50,10 +64,13 @@ This is a design specification viewer and animation preview tool with organized 
 ## Edge Case Handling
 
 - **No Matching Filters**: Display empty state with friendly message and "Clear Filters" action
+- **Export Errors**: Show error toast with helpful message if file download fails
+- **Unsupported Export Formats**: Gracefully handle presets without CSS/Framer implementations by providing template comments
 - **Slow Device Performance**: Animations gracefully degrade to simpler versions while maintaining visual intent
 - **Mobile Touch**: All interactive elements have proper touch targets and gesture support
 - **Rapid Category Switching**: Debounce filtering to prevent UI thrashing during fast clicks
 - **Long Preset Names**: Text truncates elegantly with tooltips showing full content
+- **Multiple Simultaneous Exports**: Queue exports to prevent browser blocking on bulk operations
 
 ## Design Direction
 

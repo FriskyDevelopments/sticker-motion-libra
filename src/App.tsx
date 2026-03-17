@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Toaster } from '@/components/ui/sonner'
 import { 
   motionPresets, 
   categoryInfo, 
@@ -12,7 +13,9 @@ import {
 } from '@/lib/motionPresets'
 import { MotionPresetCard } from '@/components/MotionPresetCard'
 import { PresetDetailPanel } from '@/components/PresetDetailPanel'
-import { ArrowsClockwise, Funnel, X } from '@phosphor-icons/react'
+import { ArrowsClockwise, Funnel, X, DownloadSimple } from '@phosphor-icons/react'
+import { downloadFile, exportPresetAsJSON } from '@/lib/exportUtils'
+import { toast } from 'sonner'
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState<MotionCategory | 'all'>('all')
@@ -54,10 +57,27 @@ function App() {
     setDetailPanelOpen(true)
   }
 
+  const handleExportAll = () => {
+    try {
+      const presetsToExport = filteredPresets.length > 0 ? filteredPresets : motionPresets
+      const content = JSON.stringify(presetsToExport, null, 2)
+      const count = presetsToExport.length
+      downloadFile(content, 'motion-presets-library.json', 'application/json')
+      toast.success(`Exported ${count} presets`, {
+        description: 'All presets have been downloaded as JSON'
+      })
+    } catch (error) {
+      toast.error('Export failed', {
+        description: 'There was an error exporting the presets'
+      })
+    }
+  }
+
   const hasActiveFilters = selectedCategory !== 'all' || selectedStyles.length > 0
 
   return (
     <div className="min-h-screen mesh-background">
+      <Toaster position="top-right" richColors />
       <div className="container mx-auto px-6 md:px-8 lg:px-12 py-8 md:py-12">
         <header className="mb-12 space-y-4">
           <div className="flex items-center gap-4">
@@ -66,10 +86,20 @@ function App() {
               Sticker Motion Library
             </h1>
           </div>
-          <p className="text-lg text-muted-foreground max-w-3xl">
-            A comprehensive collection of reusable motion presets for creative sticker artwork. 
-            Explore {motionPresets.length} animations across 6 categories.
-          </p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <p className="text-lg text-muted-foreground max-w-3xl">
+              A comprehensive collection of reusable motion presets for creative sticker artwork. 
+              Explore {motionPresets.length} animations across 6 categories.
+            </p>
+            <Button
+              onClick={handleExportAll}
+              variant="outline"
+              className="gap-2 border-accent/40 hover:border-accent hover:bg-accent/10"
+            >
+              <DownloadSimple weight="bold" />
+              Export All
+            </Button>
+          </div>
         </header>
 
         <div className="space-y-6">
