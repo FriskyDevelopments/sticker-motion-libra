@@ -14,11 +14,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'breathing-glow',
       name: 'Breathing Glow',
-      behavior: 'Pulsing radiance that expands and contracts like breathing'
+      behavior: 'Pulsing radiance that expands and contracts like breathing',
+      speed: 'slow',
+      energy: 'soft'
     },
     previewEmoji: '🌙',
     description: 'Soft dreamy glow perfect for peaceful, magical stickers',
     conversionPitch: 'Transform into a luminous dream',
+    movementPersonality: 'Glows with gentle floating motion',
     intensity: 'subtle',
     bestFor: ['Peaceful', 'Magical', 'Dreamy', 'Wellness']
   },
@@ -36,11 +39,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'pulse-ring',
       name: 'Pulse Ring',
-      behavior: 'Radiating rings emanate outward like sonar'
+      behavior: 'Radiating rings emanate outward like sonar',
+      speed: 'normal',
+      energy: 'strong'
     },
     previewEmoji: '⚡',
     description: 'Electric pulsing energy for high-impact stickers',
     conversionPitch: 'Electrify with neon power',
+    movementPersonality: 'Pulses with high-energy neon movement',
     intensity: 'intense',
     bestFor: ['Tech', 'Energy', 'Modern', 'Impact']
   },
@@ -58,11 +64,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'bounce',
       name: 'Bounce',
-      behavior: 'Vertical bounce with squash-and-stretch physics'
+      behavior: 'Vertical bounce with squash-and-stretch physics',
+      speed: 'normal',
+      energy: 'medium'
     },
     previewEmoji: '🎾',
     description: 'Playful bouncing perfect for characters and mascots',
     conversionPitch: 'Add joyful bouncing energy',
+    movementPersonality: 'Moves with cheerful bounce and wobble',
     intensity: 'medium',
     bestFor: ['Characters', 'Playful', 'Happy', 'Mascots']
   },
@@ -80,11 +89,18 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'orbit',
       name: 'Orbit',
-      behavior: 'Particles orbit around the sticker perimeter'
+      behavior: 'Particles orbit around the sticker perimeter',
+      speed: 'slow',
+      energy: 'medium',
+      secondaryMotion: {
+        id: 'cloud-drift',
+        name: 'Cloud Drift'
+      }
     },
     previewEmoji: '🌍',
     description: 'Celestial orbit effect for space and magical themes',
     conversionPitch: 'Float in cosmic space',
+    movementPersonality: 'Drifts with particle trail',
     intensity: 'medium',
     bestFor: ['Space', 'Magic', 'Flowing', 'Celestial']
   },
@@ -102,11 +118,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'rgb-glitch',
       name: 'RGB Glitch',
-      behavior: 'Color channel separation with random triggers'
+      behavior: 'Color channel separation with random triggers',
+      speed: 'fast',
+      energy: 'strong'
     },
     previewEmoji: '📺',
     description: 'Digital glitch effect for cyberpunk aesthetics',
     conversionPitch: 'Break into digital glitch',
+    movementPersonality: 'Glitch jump with RGB distortion',
     intensity: 'intense',
     bestFor: ['Cyberpunk', 'Digital', 'Tech', 'Glitch']
   },
@@ -124,11 +143,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'shimmer',
       name: 'Shimmer',
-      behavior: 'Light sweep across surface like catching reflection'
+      behavior: 'Light sweep across surface like catching reflection',
+      speed: 'slow',
+      energy: 'soft'
     },
     previewEmoji: '💎',
     description: 'Premium shimmer for luxury and achievement',
     conversionPitch: 'Add premium polish',
+    movementPersonality: 'Shimmers with elegant sweep',
     intensity: 'subtle',
     bestFor: ['Luxury', 'Premium', 'Achievement', 'Elegant']
   },
@@ -146,11 +168,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'heartbeat',
       name: 'Heartbeat',
-      behavior: 'Double-pump rhythm like a heart beating'
+      behavior: 'Double-pump rhythm like a heart beating',
+      speed: 'normal',
+      energy: 'medium'
     },
     previewEmoji: '💗',
     description: 'Sweet rhythmic pulse for romantic stickers',
     conversionPitch: 'Beat with love and warmth',
+    movementPersonality: 'Beats with loving rhythm',
     intensity: 'subtle',
     bestFor: ['Love', 'Romance', 'Cute', 'Emotional']
   },
@@ -168,11 +193,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'sparkle-burst',
       name: 'Sparkle Burst',
-      behavior: 'Particles emit in starburst pattern with fade'
+      behavior: 'Particles emit in starburst pattern with fade',
+      speed: 'normal',
+      energy: 'medium'
     },
     previewEmoji: '✨',
     description: 'Magical sparkle explosion for special moments',
     conversionPitch: 'Burst with magical sparkles',
+    movementPersonality: 'Bursts with particle sparkles',
     intensity: 'medium',
     bestFor: ['Magic', 'Celebration', 'Special', 'Sparkles']
   },
@@ -190,11 +218,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'wobble',
       name: 'Wobble',
-      behavior: 'Gentle rocking side-to-side motion'
+      behavior: 'Gentle rocking side-to-side motion',
+      speed: 'slow',
+      energy: 'soft'
     },
     previewEmoji: '🍮',
     description: 'Jiggly wobble for soft, squishy characters',
     conversionPitch: 'Wobble with cute softness',
+    movementPersonality: 'Wobbles with playful sway',
     intensity: 'subtle',
     bestFor: ['Cute', 'Soft', 'Squishy', 'Playful']
   },
@@ -212,11 +243,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'cloud-drift',
       name: 'Cloud Drift',
-      behavior: 'Gentle drifting like floating clouds'
+      behavior: 'Gentle drifting like floating clouds',
+      speed: 'slow',
+      energy: 'soft'
     },
     previewEmoji: '☁️',
     description: 'Peaceful cloud drift for dreamy atmospheres',
     conversionPitch: 'Float in dreamy clouds',
+    movementPersonality: 'Drifts with gentle float',
     intensity: 'subtle',
     bestFor: ['Dreams', 'Peaceful', 'Sky', 'Soft']
   },
@@ -234,11 +268,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'lightning-flash',
       name: 'Lightning Flash',
-      behavior: 'Sudden bright flash with electric afterglow'
+      behavior: 'Sudden bright flash with electric afterglow',
+      speed: 'fast',
+      energy: 'strong'
     },
     previewEmoji: '⚡',
     description: 'Powerful electric flash for high-impact moments',
     conversionPitch: 'Strike with lightning power',
+    movementPersonality: 'Flashes with electric flicker',
     intensity: 'intense',
     bestFor: ['Power', 'Electric', 'Impact', 'Energy']
   },
@@ -256,11 +293,14 @@ export const featuredStyles: StickerStyle[] = [
     motion: {
       id: 'spin',
       name: 'Spin',
-      behavior: 'Steady 360° continuous rotation'
+      behavior: 'Steady 360° continuous rotation',
+      speed: 'normal',
+      energy: 'medium'
     },
     previewEmoji: '💫',
     description: 'Smooth perpetual spin for continuous motion',
     conversionPitch: 'Spin in endless rotation',
+    movementPersonality: 'Spins with steady rotation',
     intensity: 'medium',
     bestFor: ['Loading', 'Spin', 'Dynamic', 'Continuous']
   }

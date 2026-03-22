@@ -167,10 +167,15 @@ export function StickerStyleCard({ style, onClick }: StickerStyleCardProps) {
           </div>
 
           <motion.div 
-            className="pt-3 border-t border-border/50 group-hover:border-primary/30 transition-colors duration-300"
+            className="pt-3 border-t border-border/50 group-hover:border-primary/30 transition-colors duration-300 space-y-2"
             whileHover={{ x: 3 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
           >
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-muted-foreground/80">
+                {style.movementPersonality}
+              </p>
+            </div>
             <div className="flex items-center gap-2">
               <p className="text-xs font-medium text-primary/80 group-hover:text-accent transition-colors duration-300 flex-1">
                 {style.conversionPitch}

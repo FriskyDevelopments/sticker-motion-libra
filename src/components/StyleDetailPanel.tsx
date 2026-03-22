@@ -35,7 +35,7 @@ export function StyleDetailPanel({
 }: StyleDetailPanelProps) {
   const [extraMagic, setExtraMagic] = useState(false)
   const [energy, setEnergy] = useState<MagicLevel>('enhanced')
-  const [speed, setSpeed] = useState<SpeedLevel>('normal')
+  const [speed, setSpeed] = useState<SpeedLevel>(style?.motion.speed || 'normal')
 
   if (!style) return null
 
@@ -46,8 +46,14 @@ export function StyleDetailPanel({
   }
 
   const maskInfo = maskPresets[style.mask.type]
-  const energyMultiplier = energy === 'clean' ? 0.7 : energy === 'intense' ? 1.4 : 1
-  const speedMultiplier = speed === 'slow' ? 1.5 : speed === 'fast' ? 0.65 : 1
+  
+  const baseEnergyMultiplier = style.motion.energy === 'soft' ? 0.7 : style.motion.energy === 'strong' ? 1.4 : 1
+  const extraMultiplier = extraMagic ? (energy === 'clean' ? 0.85 : energy === 'intense' ? 1.3 : 1.1) : 1
+  const energyMultiplier = baseEnergyMultiplier * extraMultiplier
+  
+  const baseSpeedMultiplier = style.motion.speed === 'slow' ? 1.5 : style.motion.speed === 'fast' ? 0.65 : 1
+  const adjustedSpeedMultiplier = extraMagic ? (speed === 'slow' ? 1.3 : speed === 'fast' ? 0.75 : 1) : 1
+  const speedMultiplier = baseSpeedMultiplier * adjustedSpeedMultiplier
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -90,14 +96,19 @@ export function StyleDetailPanel({
           </div>
 
           <div 
-            className="p-4 rounded-lg text-center font-semibold text-lg"
+            className="p-4 rounded-lg text-center space-y-3"
             style={{ 
               backgroundColor: vibeInfo[style.vibe].color + '15',
               color: vibeInfo[style.vibe].color,
               border: `2px solid ${vibeInfo[style.vibe].color}40`
             }}
           >
-            ✧ {style.conversionPitch}
+            <p className="font-semibold text-lg">
+              ✧ {style.conversionPitch}
+            </p>
+            <p className="text-sm opacity-80">
+              {style.movementPersonality}
+            </p>
           </div>
 
           <Button 

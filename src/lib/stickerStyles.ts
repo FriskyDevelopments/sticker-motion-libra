@@ -17,6 +17,9 @@ export interface MaskPreset {
   technicalSpec: string
 }
 
+export type MovementSpeed = 'slow' | 'normal' | 'fast'
+export type MovementEnergy = 'soft' | 'medium' | 'strong'
+
 export interface StickerStyle {
   id: string
   name: string
@@ -33,11 +36,18 @@ export interface StickerStyle {
     id: string
     name: string
     behavior: string
+    speed: MovementSpeed
+    energy: MovementEnergy
+    secondaryMotion?: {
+      id: string
+      name: string
+    }
   }
   
   previewEmoji: string
   description: string
   conversionPitch: string
+  movementPersonality: string
   
   intensity: 'subtle' | 'medium' | 'intense'
   bestFor: string[]
