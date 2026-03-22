@@ -3,6 +3,8 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowRight } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import exampleGif from '@/assets/images/gemini_generated_video_7DC02353.gif'
+import logoExample from '@/assets/images/lorelogp2.jpeg'
 
 interface ExampleTransformationProps {
   className?: string
@@ -20,7 +22,7 @@ export function ExampleTransformation({ className }: ExampleTransformationProps)
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4 items-center max-w-5xl mx-auto">
         <TransformStep
-          emoji="🌸"
+          image={logoExample}
           label="Your Image"
           description="Upload or select"
           delay={0}
@@ -29,8 +31,8 @@ export function ExampleTransformation({ className }: ExampleTransformationProps)
         <ArrowIcon delay={0.1} />
 
         <TransformStep
-          emoji="🌸"
-          label="Edge refined"
+          image={logoExample}
+          label="Edge refined △"
           description="Mask applied"
           delay={0.2}
           withGlow
@@ -39,24 +41,26 @@ export function ExampleTransformation({ className }: ExampleTransformationProps)
         <ArrowIcon delay={0.3} />
 
         <TransformStep
-          emoji="🌸"
-          label="Motion infused"
+          image={exampleGif}
+          label="Motion infused ✧"
           description="Magic added"
           delay={0.4}
           withGlow
           withPulse
+          isAnimated
         />
 
         <ArrowIcon delay={0.5} />
 
         <TransformStep
-          emoji="🌸"
+          image={exampleGif}
           label="Ready to apply ✦"
           description="Your sticker"
           delay={0.6}
           withGlow
           withPulse
           isFinal
+          isAnimated
         />
       </div>
 
@@ -70,16 +74,17 @@ export function ExampleTransformation({ className }: ExampleTransformationProps)
 }
 
 interface TransformStepProps {
-  emoji: string
+  image: string
   label: string
   description: string
   delay: number
   withGlow?: boolean
   withPulse?: boolean
   isFinal?: boolean
+  isAnimated?: boolean
 }
 
-function TransformStep({ emoji, label, description, delay, withGlow, withPulse, isFinal }: TransformStepProps) {
+function TransformStep({ image, label, description, delay, withGlow, withPulse, isFinal, isAnimated }: TransformStepProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -98,18 +103,25 @@ function TransformStep({ emoji, label, description, delay, withGlow, withPulse, 
             ease: "easeInOut"
           }}
           className={cn(
-            "text-6xl md:text-7xl",
-            withGlow && "drop-shadow-[0_0_12px_oklch(0.65_0.20_160)]"
+            "w-24 h-24 md:w-28 md:h-28 rounded-xl overflow-hidden",
+            withGlow && "shadow-lg shadow-primary/50"
           )}
         >
-          {emoji}
+          <img 
+            src={image} 
+            alt={label}
+            className={cn(
+              "w-full h-full object-cover",
+              isAnimated ? "" : "animate-none"
+            )}
+          />
         </motion.div>
         {isFinal && (
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1, rotate: [0, 10, 0] }}
             transition={{ delay: delay + 0.3, duration: 0.5 }}
-            className="absolute -top-2 -right-2 text-2xl"
+            className="absolute -top-2 -right-2 text-3xl animate-glow-pulse"
           >
             ✦
           </motion.div>
