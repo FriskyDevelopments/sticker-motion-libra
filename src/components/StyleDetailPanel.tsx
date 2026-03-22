@@ -9,57 +9,45 @@ import {
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 import type { StickerStyle } from '@/lib/stickerStyles'
 import { vibeInfo, maskPresets } from '@/lib/stickerStyles'
+import type { MagicLevel, SpeedLevel } from '@/lib/featuredStyles'
 import { 
-  DownloadSimple, 
-  Sliders, 
   Sparkle, 
   Lightning,
   Info,
-  CheckCircle 
 } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useState } from 'react'
 
 interface StyleDetailPanelProps {
   style: StickerStyle | null
   open: boolean
   onOpenChange: (open: boolean) => void
-  onOpenPlayground: () => void
 }
 
 export function StyleDetailPanel({ 
   style, 
   open, 
   onOpenChange,
-  onOpenPlayground 
 }: StyleDetailPanelProps) {
+  const [extraMagic, setExtraMagic] = useState(false)
+  const [energy, setEnergy] = useState<MagicLevel>('enhanced')
+  const [speed, setSpeed] = useState<SpeedLevel>('normal')
+
   if (!style) return null
 
-  const handleExportJSON = () => {
-    try {
-      const content = JSON.stringify(style, null, 2)
-      const blob = new Blob([content], { type: 'application/json' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `${style.id}-style.json`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
-      
-      toast.success('Style exported', {
-        description: `${style.name} downloaded as JSON`
-      })
-    } catch (error) {
-      toast.error('Export failed', {
-        description: 'Could not export the style'
-      })
-    }
+  const handleApply = () => {
+    toast.success('Ready to apply ✦', {
+      description: `${style.name} will be applied to your image`
+    })
   }
 
   const maskInfo = maskPresets[style.mask.type]
+  const energyMultiplier = energy === 'clean' ? 0.7 : energy === 'intense' ? 1.4 : 1
+  const speedMultiplier = speed === 'slow' ? 1.5 : speed === 'fast' ? 0.65 : 1
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -81,7 +69,12 @@ export function StyleDetailPanel({
             <motion.div
               className="text-[12rem]"
               animate={getDetailMotionAnimation(style.motion.id)}
-              transition={getDetailMotionTransition(style.motion.id)}
+              transition={getDetailMotionTransition(style.motion.id, speedMultiplier)}
+              style={{
+                filter: extraMagic && energy !== 'clean' 
+                  ? `drop-shadow(0 0 ${12 * energyMultiplier}px rgba(var(--primary), ${0.5 * energyMultiplier}))` 
+                  : 'none'
+              }}
             >
               {style.previewEmoji}
             </motion.div>
@@ -104,26 +97,107 @@ export function StyleDetailPanel({
               border: `2px solid ${vibeInfo[style.vibe].color}40`
             }}
           >
-            {style.conversionPitch}
+            ✧ {style.conversionPitch}
           </div>
 
-          <div className="flex gap-2">
-            <Button 
-              className="flex-1 gap-2 bg-gradient-to-r from-primary to-accent hover:opacity-90"
-              size="lg"
-            >
-              <Sparkle weight="fill" />
-              Apply to My Image
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={onOpenPlayground}
-              className="gap-2"
-            >
-              <Sliders weight="bold" />
-              Playground
-            </Button>
+          <Button 
+            className="w-full gap-2 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-lg py-6"
+            size="lg"
+            onClick={handleApply}
+          >
+            <Sparkle weight="fill" size={24} />
+            Apply to my image ✦
+          </Button>
+
+          <Separator />
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="extra-magic" className="text-base font-semibold flex items-center gap-2">
+                <Sparkle size={18} weight="duotone" className="text-accent" />
+                Add extra magic ✧
+              </Label>
+              <Switch
+                id="extra-magic"
+                checked={extraMagic}
+                onCheckedChange={setExtraMagic}
+              />
+            </div>
+
+            {extraMagic && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="space-y-4 pt-2"
+              >
+                <div className="p-4 rounded-lg bg-accent/10 border border-accent/20 space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-semibold">Energy</Label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <Button
+                        variant={energy === 'clean' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setEnergy('clean')}
+                        className="text-xs"
+                      >
+                        Soft
+                      </Button>
+                      <Button
+                        variant={energy === 'enhanced' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setEnergy('enhanced')}
+                        className="text-xs"
+                      >
+                        Medium
+                      </Button>
+                      <Button
+                        variant={energy === 'intense' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setEnergy('intense')}
+                        className="text-xs"
+                      >
+                        Strong
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-semibold">Speed</Label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <Button
+                        variant={speed === 'slow' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSpeed('slow')}
+                        className="text-xs"
+                      >
+                        Slow
+                      </Button>
+                      <Button
+                        variant={speed === 'normal' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSpeed('normal')}
+                        className="text-xs"
+                      >
+                        Normal
+                      </Button>
+                      <Button
+                        variant={speed === 'fast' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSpeed('fast')}
+                        className="text-xs"
+                      >
+                        Fast
+                      </Button>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-muted-foreground text-center pt-2">
+                    {extraMagic && energy !== 'enhanced' ? 'Magic enhanced ✦' : 'Adjusting motion and effects...'}
+                  </p>
+                </div>
+              </motion.div>
+            )}
           </div>
 
           <Separator />
@@ -131,112 +205,34 @@ export function StyleDetailPanel({
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold uppercase tracking-wider">
               <Info weight="fill" />
-              Style Breakdown
+              What's in this style
             </div>
 
             <div className="space-y-3">
               <div className="p-4 rounded-lg bg-card border border-border/50">
-                <div className="flex items-start gap-3 mb-2">
+                <div className="flex items-start gap-3">
                   <Lightning weight="duotone" className="text-accent mt-0.5" size={20} />
                   <div className="flex-1">
-                    <h4 className="font-semibold mb-1">Motion Effect</h4>
-                    <p className="text-sm text-muted-foreground mb-2">
+                    <h4 className="font-semibold mb-1 text-sm">Motion</h4>
+                    <p className="text-xs text-muted-foreground">
                       {style.motion.behavior}
                     </p>
-                    <Badge variant="outline" className="font-mono text-xs">
-                      {style.motion.name}
-                    </Badge>
                   </div>
                 </div>
               </div>
 
               <div className="p-4 rounded-lg bg-card border border-border/50">
-                <div className="flex items-start gap-3 mb-2">
+                <div className="flex items-start gap-3">
                   <Sparkle weight="duotone" className="text-accent mt-0.5" size={20} />
                   <div className="flex-1">
-                    <h4 className="font-semibold mb-1">Mask Treatment</h4>
-                    <p className="text-sm text-muted-foreground mb-2">
+                    <h4 className="font-semibold mb-1 text-sm">Finish</h4>
+                    <p className="text-xs text-muted-foreground">
                       {maskInfo.description}
                     </p>
-                    <Badge variant="outline" className="font-mono text-xs">
-                      {style.mask.name}
-                    </Badge>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <Separator />
-
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold uppercase tracking-wider">
-              <CheckCircle weight="fill" />
-              Best Used For
-            </div>
-
-            <div className="grid grid-cols-1 gap-2">
-              {style.bestFor.map((useCase, index) => (
-                <div 
-                  key={index}
-                  className="flex items-center gap-2 p-3 rounded-md bg-muted/30 text-sm"
-                >
-                  <div className="w-1.5 h-1.5 rounded-full bg-accent" />
-                  {useCase}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <Separator />
-
-          <div className="space-y-3">
-            <div className="text-muted-foreground text-sm font-semibold uppercase tracking-wider">
-              Tags
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {style.tags.map((tag) => (
-                <Badge 
-                  key={tag} 
-                  variant="outline" 
-                  className="border-accent/40 text-accent"
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="text-muted-foreground text-sm font-semibold uppercase tracking-wider">
-              Vibe Category
-            </div>
-            <div 
-              className="p-3 rounded-md font-medium"
-              style={{ 
-                backgroundColor: vibeInfo[style.vibe].color + '20',
-                color: vibeInfo[style.vibe].color,
-                border: `1px solid ${vibeInfo[style.vibe].color}40`
-              }}
-            >
-              {vibeInfo[style.vibe].name}
-            </div>
-            <p className="text-sm text-muted-foreground">
-              {vibeInfo[style.vibe].description}
-            </p>
-          </div>
-
-          <Separator />
-
-          <div className="space-y-3">
-            <Button
-              variant="outline"
-              className="w-full gap-2"
-              onClick={handleExportJSON}
-            >
-              <DownloadSimple weight="bold" />
-              Export Style as JSON
-            </Button>
           </div>
         </div>
       </SheetContent>
@@ -291,49 +287,51 @@ function getDetailMotionAnimation(motionId: string) {
   }
 }
 
-function getDetailMotionTransition(motionId: string) {
+function getDetailMotionTransition(motionId: string, speedMultiplier: number = 1) {
+  const baseDuration = (duration: number) => duration * speedMultiplier
+
   switch (motionId) {
     case 'breathing-glow':
-      return { duration: 3, repeat: Infinity, ease: 'easeInOut' as const }
+      return { duration: baseDuration(3), repeat: Infinity, ease: 'easeInOut' as const }
     case 'pulse-ring':
-      return { duration: 1.5, repeat: Infinity, ease: 'easeOut' as const, repeatDelay: 0.5 }
+      return { duration: baseDuration(1.5), repeat: Infinity, ease: 'easeOut' as const, repeatDelay: 0.5 }
     case 'shimmer':
-      return { duration: 2, repeat: Infinity, ease: 'easeInOut' as const, repeatDelay: 1 }
+      return { duration: baseDuration(2), repeat: Infinity, ease: 'easeInOut' as const, repeatDelay: 1 }
     case 'data-corrupt':
-      return { duration: 0.3, repeat: Infinity, repeatDelay: 1.5 }
+      return { duration: baseDuration(0.3), repeat: Infinity, repeatDelay: 1.5 }
     case 'rgb-glitch':
-      return { duration: 0.15, repeat: Infinity, repeatDelay: 2 }
+      return { duration: baseDuration(0.15), repeat: Infinity, repeatDelay: 2 }
     case 'bounce':
-      return { duration: 1, repeat: Infinity, ease: 'easeOut' as const }
+      return { duration: baseDuration(1), repeat: Infinity, ease: 'easeOut' as const }
     case 'heartbeat':
-      return { duration: 1.2, repeat: Infinity, times: [0, 0.2, 0.35, 0.5, 1], repeatDelay: 0.5 }
+      return { duration: baseDuration(1.2), repeat: Infinity, times: [0, 0.2, 0.35, 0.5, 1], repeatDelay: 0.5 }
     case 'wobble':
-      return { duration: 2.5, repeat: Infinity, ease: 'easeInOut' as const }
+      return { duration: baseDuration(2.5), repeat: Infinity, ease: 'easeInOut' as const }
     case 'sparkle-burst':
-      return { duration: 1, repeat: Infinity, repeatDelay: 1 }
+      return { duration: baseDuration(1), repeat: Infinity, repeatDelay: 1 }
     case 'confetti-rain':
-      return { duration: 3, repeat: Infinity, ease: 'linear' as const }
+      return { duration: baseDuration(3), repeat: Infinity, ease: 'linear' as const }
     case 'cloud-drift':
-      return { duration: 8, repeat: Infinity, ease: 'easeInOut' as const }
+      return { duration: baseDuration(8), repeat: Infinity, ease: 'easeInOut' as const }
     case 'lightning-flash':
-      return { duration: 0.8, repeat: Infinity, repeatDelay: 2, times: [0, 0.1, 0.2, 0.3, 1] }
+      return { duration: baseDuration(0.8), repeat: Infinity, repeatDelay: 2, times: [0, 0.1, 0.2, 0.3, 1] }
     case 'spin':
-      return { duration: 4, repeat: Infinity, ease: 'linear' as const }
+      return { duration: baseDuration(4), repeat: Infinity, ease: 'linear' as const }
     case 'orbit':
-      return { duration: 3, repeat: Infinity, ease: 'linear' as const }
+      return { duration: baseDuration(3), repeat: Infinity, ease: 'linear' as const }
     case 'spiral':
-      return { duration: 5, repeat: Infinity, ease: 'linear' as const }
+      return { duration: baseDuration(5), repeat: Infinity, ease: 'linear' as const }
     case 'elastic-pop':
-      return { duration: 0.6, repeat: Infinity, repeatDelay: 1.5, ease: 'easeOut' as const }
+      return { duration: baseDuration(0.6), repeat: Infinity, repeatDelay: 1.5, ease: 'easeOut' as const }
     case 'flicker':
-      return { duration: 0.5, repeat: Infinity, times: [0, 0.2, 0.4, 0.7, 1] }
+      return { duration: baseDuration(0.5), repeat: Infinity, times: [0, 0.2, 0.4, 0.7, 1] }
     case 'sway':
-      return { duration: 3.5, repeat: Infinity, ease: 'easeInOut' as const }
+      return { duration: baseDuration(3.5), repeat: Infinity, ease: 'easeInOut' as const }
     case 'pixel-trail':
-      return { duration: 0.4, repeat: Infinity, ease: 'easeOut' as const, repeatDelay: 0.3 }
+      return { duration: baseDuration(0.4), repeat: Infinity, ease: 'easeOut' as const, repeatDelay: 0.3 }
     case 'static-noise':
-      return { duration: 0.2, repeat: Infinity, times: [0, 0.3, 0.5, 0.8, 1] }
+      return { duration: baseDuration(0.2), repeat: Infinity, times: [0, 0.3, 0.5, 0.8, 1] }
     default:
-      return { duration: 2, repeat: Infinity, ease: 'easeInOut' as const }
+      return { duration: baseDuration(2), repeat: Infinity, ease: 'easeInOut' as const }
   }
 }
