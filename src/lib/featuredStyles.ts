@@ -309,6 +309,16 @@ export const featuredStyles: StickerStyle[] = [
 export type MagicLevel = 'clean' | 'enhanced' | 'intense'
 export type SpeedLevel = 'slow' | 'normal' | 'fast'
 
+export interface MagicEnhancement {
+  energy: MagicLevel
+  speed: SpeedLevel
+}
+
+export const defaultEnhancement: MagicEnhancement = {
+  energy: 'enhanced',
+  speed: 'normal'
+}
+
 export interface FinishOption {
   type: MaskType
   name: string
@@ -337,3 +347,45 @@ export const finishOptions: FinishOption[] = [
     description: 'Diffused atmospheric halo'
   }
 ]
+
+export function getAnimationMultipliers(enhancement: MagicEnhancement): {
+  scale: number
+  duration: number
+  intensity: number
+} {
+  const energyMap: Record<MagicLevel, number> = {
+    clean: 0.7,
+    enhanced: 1.0,
+    intense: 1.4
+  }
+  
+  const speedMap: Record<SpeedLevel, number> = {
+    slow: 1.5,
+    normal: 1.0,
+    fast: 0.6
+  }
+  
+  return {
+    scale: energyMap[enhancement.energy],
+    duration: speedMap[enhancement.speed],
+    intensity: energyMap[enhancement.energy]
+  }
+}
+
+export function getEnergyLabel(level: MagicLevel): string {
+  const labels: Record<MagicLevel, string> = {
+    clean: 'Clean • Subtle motion',
+    enhanced: 'Enhanced • Balanced magic',
+    intense: 'Intense • Maximum energy'
+  }
+  return labels[level]
+}
+
+export function getSpeedLabel(level: SpeedLevel): string {
+  const labels: Record<SpeedLevel, string> = {
+    slow: 'Slow • Calm drift',
+    normal: 'Normal • Smooth flow',
+    fast: 'Fast • Quick pulse'
+  }
+  return labels[level]
+}

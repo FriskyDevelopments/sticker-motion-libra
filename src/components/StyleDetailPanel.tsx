@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Sheet,
   SheetContent,
@@ -11,16 +12,21 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { StickerStyle } from '@/lib/stickerStyles'
-import { vibeInfo, maskPresets } from '@/lib/stickerStyles'
-import type { MagicLevel, SpeedLevel } from '@/lib/featuredStyles'
 import { 
-  Sparkle, 
-  Lightning,
-  Info,
-} from '@phosphor-icons/react'
+  type MagicEnhancement, 
+  defaultEnhancement, 
+  getAnimationMultipliers,
+  getEnergyLabel,
+  getSpeedLabel,
+  type MagicLevel,
+  type SpeedLevel
+} from '@/lib/featuredStyles'
+import { removeBackground } from '@/lib/backgroundRemoval'
+import { Sparkle, Sliders, ImageSquare, Download, Scissors, Info } from '@phosphor-icons/react'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { ImageUpload } from './ImageUpload'
 
 interface StyleDetailPanelProps {
   style: StickerStyle | null
@@ -28,222 +34,377 @@ interface StyleDetailPanelProps {
   onOpenChange: (open: boolean) => void
 }
 
-export function StyleDetailPanel({ 
-  style, 
-  open, 
-  onOpenChange,
-}: StyleDetailPanelProps) {
-  const [extraMagic, setExtraMagic] = useState(false)
-  const [energy, setEnergy] = useState<MagicLevel>('enhanced')
-  const [speed, setSpeed] = useState<SpeedLevel>(style?.motion.speed || 'normal')
+export function StyleDetailPanel({ style, open, onOpenChange }: StyleDetailPanelProps) {
+  const [magicEnabled, setMagicEnabled] = useState(false)
+  const [enhancement, setEnhancement] = useState<MagicEnhancement>(defaultEnhancement)
+  const [uploadedImage, setUploadedImage] = useState<string | undefined>(undefined)
+  const [processedImage, setProcessedImage] = useState<string | undefined>(undefined)
+  const [bgRemovalEnabled, setBgRemovalEnabled] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [activeTab, setActiveTab] = useState<'preview' | 'upload'>('preview')
 
   if (!style) return null
 
-  const handleApply = () => {
-    toast.success('Ready to apply ✦', {
-      description: `${style.name} will be applied to your image`
-    })
+  const multipliers = getAnimationMultipliers(enhancement)
+  const displayImage = bgRemovalEnabled && processedImage ? processedImage : uploadedImage
+
+  const handleImageSelect = (_file: File, dataUrl: string) => {
+    setUploadedImage(dataUrl)
+    setProcessedImage(undefined)
+    setBgRemovalEnabled(false)
+    setActiveTab('upload')
   }
 
-  const maskInfo = maskPresets[style.mask.type]
-  
-  const baseEnergyMultiplier = style.motion.energy === 'soft' ? 0.7 : style.motion.energy === 'strong' ? 1.4 : 1
-  const extraMultiplier = extraMagic ? (energy === 'clean' ? 0.85 : energy === 'intense' ? 1.3 : 1.1) : 1
-  const energyMultiplier = baseEnergyMultiplier * extraMultiplier
-  
-  const baseSpeedMultiplier = style.motion.speed === 'slow' ? 1.5 : style.motion.speed === 'fast' ? 0.65 : 1
-  const adjustedSpeedMultiplier = extraMagic ? (speed === 'slow' ? 1.3 : speed === 'fast' ? 0.75 : 1) : 1
-  const speedMultiplier = baseSpeedMultiplier * adjustedSpeedMultiplier
+  const handleClearImage = () => {
+    setUploadedImage(undefined)
+    setProcessedImage(undefined)
+    setBgRemovalEnabled(false)
+    setActiveTab('preview')
+  }
+
+  const handleBgRemovalToggle = async (enabled: boolean) => {
+    if (!uploadedImage) return
+
+    if (enabled) {
+      setIsProcessing(true)
+      toast.loading('Refining edge ◌', { id: 'bg-removal' })
+      
+      try {
+        const result = await removeBackground(uploadedImage)
+        
+        if (result.success && result.processedImageUrl) {
+          setProcessedImage(result.processedImageUrl)
+          setBgRemovalEnabled(true)
+          toast.success('Edge refined △', {
+            id: 'bg-removal',
+            description: 'Your sticker is ready for magic ✦'
+          })
+        } else {
+          setBgRemovalEnabled(false)
+          toast.error('Could not refine edge', {
+            id: 'bg-removal',
+            description: result.error || 'Please try a different image'
+          })
+        }
+      } catch (error) {
+        setBgRemovalEnabled(false)
+        toast.error('Processing failed', {
+          id: 'bg-removal',
+          description: 'Please try again'
+        })
+      } finally {
+        setIsProcessing(false)
+      }
+    } else {
+      setBgRemovalEnabled(false)
+      toast.info('Using original image', {
+        description: 'Edge refinement disabled'
+      })
+    }
+  }
+
+  const handleDownload = () => {
+    if (!uploadedImage) {
+      toast.error('Upload an image first', {
+        description: 'Add your image to apply this style'
+      })
+      return
+    }
+
+    toast.success('Your sticker is forming ◌', {
+      description: 'Motion infused ✧ Magic applied ✦'
+    })
+    
+    setTimeout(() => {
+      toast.success('Sticker ready ✦', {
+        description: `${style.name} with your image`
+      })
+    }, 2000)
+  }
+
+  const animation = getEnhancedAnimation(style, magicEnabled ? multipliers : { scale: 1, duration: 1, intensity: 1 })
+  const transition = getEnhancedTransition(style, magicEnabled ? multipliers : { scale: 1, duration: 1, intensity: 1 })
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-xl overflow-y-auto">
+      <SheetContent className="w-full sm:max-w-2xl overflow-y-auto">
         <SheetHeader>
           <div className="flex items-start gap-4 pb-4">
-            <div className="text-6xl">{style.previewEmoji}</div>
+            <motion.div 
+              className="text-6xl"
+              animate={animation}
+              transition={{ ...transition, duration: transition.duration * 0.7 }}
+            >
+              {style.previewEmoji}
+            </motion.div>
             <div className="flex-1">
-              <SheetTitle className="text-2xl mb-2">{style.name}</SheetTitle>
-              <SheetDescription className="text-base">
+              <SheetTitle className="text-3xl mb-2">{style.name}</SheetTitle>
+              <SheetDescription className="text-base mb-3">
                 {style.description}
               </SheetDescription>
+              <div className="flex items-center gap-2 text-sm text-accent font-medium">
+                <Sparkle size={16} weight="fill" />
+                <span>{style.movementPersonality}</span>
+              </div>
             </div>
           </div>
         </SheetHeader>
 
-        <div className="space-y-6 py-6">
-          <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/50 rounded-lg flex items-center justify-center overflow-hidden relative border border-border/30">
-            <motion.div
-              className="text-[12rem]"
-              animate={getDetailMotionAnimation(style.motion.id)}
-              transition={getDetailMotionTransition(style.motion.id, speedMultiplier)}
-              style={{
-                filter: extraMagic && energy !== 'clean' 
-                  ? `drop-shadow(0 0 ${12 * energyMultiplier}px rgba(var(--primary), ${0.5 * energyMultiplier}))` 
-                  : 'none'
-              }}
-            >
-              {style.previewEmoji}
-            </motion.div>
-            
-            <div className="absolute top-3 right-3">
-              <Badge 
-                variant="secondary" 
-                className="text-sm font-mono bg-background/90 backdrop-blur-sm"
-              >
-                {style.intensity}
-              </Badge>
-            </div>
-          </div>
+        <div className="space-y-8 py-6">
+          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'preview' | 'upload')} className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="preview" className="gap-2">
+                <Sparkle size={16} weight="duotone" />
+                Preview in motion ✧
+              </TabsTrigger>
+              <TabsTrigger value="upload" className="gap-2">
+                <ImageSquare size={16} weight="duotone" />
+                Your Image
+              </TabsTrigger>
+            </TabsList>
 
-          <div 
-            className="p-4 rounded-lg text-center space-y-3"
-            style={{ 
-              backgroundColor: vibeInfo[style.vibe].color + '15',
-              color: vibeInfo[style.vibe].color,
-              border: `2px solid ${vibeInfo[style.vibe].color}40`
-            }}
-          >
-            <p className="font-semibold text-lg">
-              ✧ {style.conversionPitch}
-            </p>
-            <p className="text-sm opacity-80">
-              {style.movementPersonality}
-            </p>
-          </div>
+            <TabsContent value="preview" className="mt-0">
+              <div className="aspect-square bg-gradient-to-br from-muted/20 via-background to-muted/30 rounded-2xl flex items-center justify-center overflow-hidden relative border-2 border-border/30">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,oklch(0.65_0.20_160/0.12),transparent_70%)]" />
+                
+                <motion.div
+                  key={`${enhancement.energy}-${enhancement.speed}-${magicEnabled}`}
+                  className="text-[14rem] relative z-10"
+                  animate={animation}
+                  transition={transition}
+                  style={{
+                    filter: getStyleFilter(style, magicEnabled ? multipliers.intensity : 1)
+                  }}
+                >
+                  {style.previewEmoji}
+                </motion.div>
+                
+                {magicEnabled && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="absolute top-4 right-4"
+                  >
+                    <Badge className="bg-accent/90 text-accent-foreground border-0 gap-2 px-3 py-1">
+                      <Sparkle weight="fill" size={14} />
+                      Extra magic ✧
+                    </Badge>
+                  </motion.div>
+                )}
+                
+                <div className="absolute bottom-4 left-4 space-y-2">
+                  <Badge 
+                    variant="secondary" 
+                    className="text-sm font-mono bg-background/90 backdrop-blur-sm block"
+                  >
+                    {style.intensity} • {style.motion.energy}
+                  </Badge>
+                  <Badge 
+                    variant="outline" 
+                    className="text-sm bg-background/90 backdrop-blur-sm block"
+                  >
+                    {style.motion.speed} speed
+                  </Badge>
+                </div>
+              </div>
 
-          <Button 
-            className="w-full gap-2 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-lg py-6"
-            size="lg"
-            onClick={handleApply}
-          >
-            <Sparkle weight="fill" size={24} />
-            Apply to my image ✦
-          </Button>
+              <div className="mt-6 p-4 rounded-lg bg-muted/20 border border-border/30">
+                <div className="flex items-start gap-3">
+                  <Info size={20} weight="duotone" className="text-primary mt-0.5 shrink-0" />
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium">{style.mask.name} + {style.motion.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {style.mask.description} • {style.motion.behavior}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
 
-          <Separator />
+            <TabsContent value="upload" className="mt-0">
+              <div className="relative">
+                <ImageUpload
+                  onImageSelect={handleImageSelect}
+                  currentImage={displayImage}
+                  onClear={handleClearImage}
+                />
+                
+                {uploadedImage && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="absolute inset-0 pointer-events-none flex items-center justify-center"
+                  >
+                    <motion.div
+                      key={`${enhancement.energy}-${enhancement.speed}-${magicEnabled}`}
+                      className="text-8xl opacity-40 blur-[2px]"
+                      animate={animation}
+                      transition={transition}
+                    >
+                      {style.previewEmoji}
+                    </motion.div>
+                  </motion.div>
+                )}
+              </div>
+              
+              {uploadedImage && (
+                <>
+                  <div className="mt-4 p-4 rounded-lg bg-muted/30 border border-border/50">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Scissors size={24} weight="duotone" className="text-primary" />
+                        <div>
+                          <Label htmlFor="bg-removal-toggle" className="text-base font-semibold cursor-pointer">
+                            Remove background ✂
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            AI-powered edge refinement
+                          </p>
+                        </div>
+                      </div>
+                      <Switch
+                        id="bg-removal-toggle"
+                        checked={bgRemovalEnabled}
+                        onCheckedChange={handleBgRemovalToggle}
+                        disabled={isProcessing}
+                        className="data-[state=checked]:bg-primary"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 p-4 rounded-lg bg-accent/10 border border-accent/30">
+                    <div className="flex items-center gap-2 text-sm text-accent-foreground">
+                      <Sparkle size={16} weight="fill" className="text-accent" />
+                      <span>
+                        {bgRemovalEnabled && processedImage 
+                          ? `Clean cutout ready! ${style.name} motion will be applied ✧` 
+                          : `${style.name} will be applied with ${style.motion.energy} ${style.motion.speed} motion`}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
+            </TabsContent>
+          </Tabs>
 
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="extra-magic" className="text-base font-semibold flex items-center gap-2">
-                <Sparkle size={18} weight="duotone" className="text-accent" />
-                Add extra magic ✧
-              </Label>
+          <div className="space-y-5">
+            <div className="flex items-center justify-between p-4 rounded-lg bg-muted/30 border border-border/50">
+              <div className="flex items-center gap-3">
+                <Sliders size={24} weight="duotone" className="text-accent" />
+                <div>
+                  <Label htmlFor="magic-toggle" className="text-base font-semibold cursor-pointer">
+                    Add extra magic ✧
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Boost energy and speed
+                  </p>
+                </div>
+              </div>
               <Switch
-                id="extra-magic"
-                checked={extraMagic}
-                onCheckedChange={setExtraMagic}
+                id="magic-toggle"
+                checked={magicEnabled}
+                onCheckedChange={setMagicEnabled}
+                className="data-[state=checked]:bg-accent"
               />
             </div>
 
-            {extraMagic && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="space-y-4 pt-2"
-              >
-                <div className="p-4 rounded-lg bg-accent/10 border border-accent/20 space-y-4">
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold">Energy</Label>
-                    <div className="grid grid-cols-3 gap-2">
-                      <Button
-                        variant={energy === 'clean' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setEnergy('clean')}
-                        className="text-xs"
-                      >
-                        Soft
-                      </Button>
-                      <Button
-                        variant={energy === 'enhanced' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setEnergy('enhanced')}
-                        className="text-xs"
-                      >
-                        Medium
-                      </Button>
-                      <Button
-                        variant={energy === 'intense' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setEnergy('intense')}
-                        className="text-xs"
-                      >
-                        Strong
-                      </Button>
+            <AnimatePresence>
+              {magicEnabled && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-5 overflow-hidden"
+                >
+                  <div className="p-5 rounded-lg bg-gradient-to-br from-accent/5 to-primary/5 border border-accent/20 space-y-4">
+                    <div className="space-y-3">
+                      <Label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                        Energy ✧
+                      </Label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(['clean', 'enhanced', 'intense'] as MagicLevel[]).map((level) => (
+                          <Button
+                            key={level}
+                            variant={enhancement.energy === level ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setEnhancement({ ...enhancement, energy: level })}
+                            className={enhancement.energy === level ? 'bg-accent hover:bg-accent/90' : ''}
+                          >
+                            {getEnergyLabel(level).split(' ')[0]}
+                          </Button>
+                        ))}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {getEnergyLabel(enhancement.energy)}
+                      </p>
+                    </div>
+
+                    <Separator />
+
+                    <div className="space-y-3">
+                      <Label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                        Speed △
+                      </Label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(['slow', 'normal', 'fast'] as SpeedLevel[]).map((level) => (
+                          <Button
+                            key={level}
+                            variant={enhancement.speed === level ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setEnhancement({ ...enhancement, speed: level })}
+                            className={enhancement.speed === level ? 'bg-accent hover:bg-accent/90' : ''}
+                          >
+                            {getSpeedLabel(level).split(' ')[0]}
+                          </Button>
+                        ))}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {getSpeedLabel(enhancement.speed)}
+                      </p>
                     </div>
                   </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold">Speed</Label>
-                    <div className="grid grid-cols-3 gap-2">
-                      <Button
-                        variant={speed === 'slow' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setSpeed('slow')}
-                        className="text-xs"
-                      >
-                        Slow
-                      </Button>
-                      <Button
-                        variant={speed === 'normal' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setSpeed('normal')}
-                        className="text-xs"
-                      >
-                        Normal
-                      </Button>
-                      <Button
-                        variant={speed === 'fast' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setSpeed('fast')}
-                        className="text-xs"
-                      >
-                        Fast
-                      </Button>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-muted-foreground text-center pt-2">
-                    {extraMagic && energy !== 'enhanced' ? 'Magic enhanced ✦' : 'Adjusting motion and effects...'}
-                  </p>
-                </div>
-              </motion.div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <Separator />
 
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold uppercase tracking-wider">
-              <Info weight="fill" />
-              What's in this style
-            </div>
+          <div className="space-y-3">
+            {!uploadedImage && (
+              <Button 
+                className="w-full gap-3 h-14 text-lg bg-gradient-to-r from-primary via-accent to-primary hover:opacity-90 bg-[length:200%_100%] hover:bg-right transition-all duration-500"
+                size="lg"
+                onClick={() => setActiveTab('upload')}
+              >
+                <ImageSquare weight="duotone" size={24} />
+                Apply to my image ✦
+              </Button>
+            )}
 
-            <div className="space-y-3">
-              <div className="p-4 rounded-lg bg-card border border-border/50">
-                <div className="flex items-start gap-3">
-                  <Lightning weight="duotone" className="text-accent mt-0.5" size={20} />
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-1 text-sm">Motion</h4>
-                    <p className="text-xs text-muted-foreground">
-                      {style.motion.behavior}
-                    </p>
-                  </div>
-                </div>
-              </div>
+            {uploadedImage && (
+              <Button 
+                className="w-full gap-3 h-14 text-lg bg-gradient-to-r from-primary via-accent to-primary hover:opacity-90 bg-[length:200%_100%] hover:bg-right transition-all duration-500"
+                size="lg"
+                onClick={handleDownload}
+              >
+                <Download weight="duotone" size={24} />
+                Create sticker ✦
+              </Button>
+            )}
+          </div>
 
-              <div className="p-4 rounded-lg bg-card border border-border/50">
-                <div className="flex items-start gap-3">
-                  <Sparkle weight="duotone" className="text-accent mt-0.5" size={20} />
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-1 text-sm">Finish</h4>
-                    <p className="text-xs text-muted-foreground">
-                      {maskInfo.description}
-                    </p>
-                  </div>
-                </div>
+          <div className="grid grid-cols-2 gap-3 pt-2">
+            {style.bestFor.slice(0, 4).map((useCase, index) => (
+              <div 
+                key={index}
+                className="flex items-center gap-2 p-3 rounded-md bg-muted/30 text-sm border border-border/30"
+              >
+                <Sparkle size={14} weight="fill" className="text-accent shrink-0" />
+                <span className="line-clamp-1">{useCase}</span>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </SheetContent>
@@ -251,98 +412,108 @@ export function StyleDetailPanel({
   )
 }
 
-function getDetailMotionAnimation(motionId: string) {
-  switch (motionId) {
-    case 'breathing-glow':
-      return { scale: [1, 1.15, 1], opacity: [0.8, 1, 0.8] }
-    case 'pulse-ring':
-      return { scale: [1, 1.2, 1] }
-    case 'shimmer':
-      return { rotate: [0, 5, -5, 0] }
-    case 'data-corrupt':
-      return { x: [0, 4, -4, 0], skewX: [0, 3, -3, 0] }
-    case 'rgb-glitch':
-      return { x: [0, 5, -5, 0] }
-    case 'bounce':
-      return { y: [0, -25, 0], scaleY: [1, 0.9, 1] }
-    case 'heartbeat':
-      return { scale: [1, 1.15, 1, 1.1, 1] }
-    case 'wobble':
-      return { rotate: [-12, 12, -12] }
-    case 'sparkle-burst':
-      return { scale: [1, 1.15, 1], rotate: [0, 15, 0] }
-    case 'confetti-rain':
-      return { y: [0, 15, 0], rotate: [0, 360] }
-    case 'cloud-drift':
-      return { x: [-15, 15, -15] }
-    case 'lightning-flash':
-      return { opacity: [1, 0.4, 1, 0.4, 1] }
-    case 'spin':
-      return { rotate: 360 }
-    case 'orbit':
-      return { rotate: 360 }
-    case 'spiral':
-      return { rotate: 360, scale: [1, 1.08, 1] }
-    case 'elastic-pop':
-      return { scale: [1, 1.3, 0.9, 1] }
-    case 'flicker':
-      return { opacity: [1, 0.6, 1, 0.7, 1] }
-    case 'sway':
-      return { x: [-8, 8, -8], rotate: [-5, 5, -5] }
-    case 'pixel-trail':
-      return { x: [0, 8, 0] }
-    case 'static-noise':
-      return { opacity: [1, 0.7, 1, 0.85, 1] }
+function getStyleFilter(style: StickerStyle, intensityMultiplier: number): string {
+  const totalIntensity = intensityMultiplier
+  
+  switch (style.mask.type) {
+    case 'glow':
+      return `drop-shadow(0 0 ${12 * totalIntensity}px rgba(100, 200, 150, 0.6)) drop-shadow(0 0 ${24 * totalIntensity}px rgba(100, 200, 150, 0.3))`
+    case 'aura':
+      return `drop-shadow(0 0 ${16 * totalIntensity}px rgba(150, 100, 200, 0.5)) drop-shadow(0 0 ${32 * totalIntensity}px rgba(150, 100, 200, 0.25))`
+    case 'soft':
+      return `drop-shadow(0 4px ${8 * totalIntensity}px rgba(0, 0, 0, 0.15))`
     default:
-      return { scale: [1, 1.08, 1] }
+      return `drop-shadow(0 2px ${4 * totalIntensity}px rgba(0, 0, 0, 0.1))`
   }
 }
 
-function getDetailMotionTransition(motionId: string, speedMultiplier: number = 1) {
-  const baseDuration = (duration: number) => duration * speedMultiplier
+function getEnhancedAnimation(style: StickerStyle, multipliers: { scale: number; intensity: number }) {
+  const intensityMultiplier = style.intensity === 'subtle' ? 0.7 : style.intensity === 'intense' ? 1.3 : 1.0
+  const energyMultiplier = style.motion.energy === 'soft' ? 0.7 : style.motion.energy === 'strong' ? 1.3 : 1.0
+  const baseTotal = intensityMultiplier * energyMultiplier
+  const total = baseTotal * multipliers.scale * multipliers.intensity
 
-  switch (motionId) {
+  switch (style.motion.id) {
     case 'breathing-glow':
-      return { duration: baseDuration(3), repeat: Infinity, ease: 'easeInOut' as const }
+      return { scale: [1, 1.15 * total, 1], opacity: [0.8, 1, 0.8] }
     case 'pulse-ring':
-      return { duration: baseDuration(1.5), repeat: Infinity, ease: 'easeOut' as const, repeatDelay: 0.5 }
-    case 'shimmer':
-      return { duration: baseDuration(2), repeat: Infinity, ease: 'easeInOut' as const, repeatDelay: 1 }
-    case 'data-corrupt':
-      return { duration: baseDuration(0.3), repeat: Infinity, repeatDelay: 1.5 }
-    case 'rgb-glitch':
-      return { duration: baseDuration(0.15), repeat: Infinity, repeatDelay: 2 }
+      return { scale: [1, 1.2 * total, 1] }
     case 'bounce':
-      return { duration: baseDuration(1), repeat: Infinity, ease: 'easeOut' as const }
-    case 'heartbeat':
-      return { duration: baseDuration(1.2), repeat: Infinity, times: [0, 0.2, 0.35, 0.5, 1], repeatDelay: 0.5 }
+      return { y: [0, -30 * total, 0], scaleY: [1, 0.9, 1] }
     case 'wobble':
-      return { duration: baseDuration(2.5), repeat: Infinity, ease: 'easeInOut' as const }
+      return { rotate: [-12 * total, 12 * total, -12 * total] }
     case 'sparkle-burst':
-      return { duration: baseDuration(1), repeat: Infinity, repeatDelay: 1 }
-    case 'confetti-rain':
-      return { duration: baseDuration(3), repeat: Infinity, ease: 'linear' as const }
-    case 'cloud-drift':
-      return { duration: baseDuration(8), repeat: Infinity, ease: 'easeInOut' as const }
-    case 'lightning-flash':
-      return { duration: baseDuration(0.8), repeat: Infinity, repeatDelay: 2, times: [0, 0.1, 0.2, 0.3, 1] }
+      return { scale: [1, 1.15 * total, 1], rotate: [0, 15, 0] }
+    case 'heartbeat':
+      return { scale: [1, 1.15 * total, 1, 1.1 * total, 1] }
     case 'spin':
-      return { duration: baseDuration(4), repeat: Infinity, ease: 'linear' as const }
-    case 'orbit':
-      return { duration: baseDuration(3), repeat: Infinity, ease: 'linear' as const }
-    case 'spiral':
-      return { duration: baseDuration(5), repeat: Infinity, ease: 'linear' as const }
-    case 'elastic-pop':
-      return { duration: baseDuration(0.6), repeat: Infinity, repeatDelay: 1.5, ease: 'easeOut' as const }
-    case 'flicker':
-      return { duration: baseDuration(0.5), repeat: Infinity, times: [0, 0.2, 0.4, 0.7, 1] }
+      return { rotate: 360 }
+    case 'shimmer':
+      return { rotate: [0, 6 * total, -6 * total, 0] }
+    case 'rgb-glitch':
+    case 'data-corrupt':
+      return { x: [0, 5 * total, -5 * total, 0], skewX: [0, 2, -2, 0] }
     case 'sway':
-      return { duration: baseDuration(3.5), repeat: Infinity, ease: 'easeInOut' as const }
-    case 'pixel-trail':
-      return { duration: baseDuration(0.4), repeat: Infinity, ease: 'easeOut' as const, repeatDelay: 0.3 }
-    case 'static-noise':
-      return { duration: baseDuration(0.2), repeat: Infinity, times: [0, 0.3, 0.5, 0.8, 1] }
+    case 'cloud-drift':
+      return { x: [-10 * total, 10 * total, -10 * total], rotate: [-4, 4, -4] }
+    case 'orbit':
+      return { rotate: 360, scale: [1, 1.08 * total, 1] }
+    case 'lightning-flash':
+      return { opacity: [1, 0.3, 1, 0.5, 1], scale: [1, 1.15 * total, 1] }
     default:
-      return { duration: baseDuration(2), repeat: Infinity, ease: 'easeInOut' as const }
+      return { scale: [1, 1.08 * total, 1] }
+  }
+}
+
+function getEnhancedTransition(style: StickerStyle, multipliers: { duration: number }) {
+  const speedMultiplier = style.motion.speed === 'slow' ? 1.5 : style.motion.speed === 'fast' ? 0.6 : 1.0
+  
+  const baseDuration = {
+    'breathing-glow': 3,
+    'pulse-ring': 1.5,
+    'bounce': 1,
+    'wobble': 2.5,
+    'sparkle-burst': 1,
+    'heartbeat': 1.2,
+    'spin': 4,
+    'shimmer': 2,
+    'rgb-glitch': 0.3,
+    'data-corrupt': 0.3,
+    'sway': 3.5,
+    'cloud-drift': 4,
+    'orbit': 5,
+    'lightning-flash': 0.8,
+  }[style.motion.id] || 2
+
+  const duration = baseDuration * speedMultiplier * multipliers.duration
+
+  switch (style.motion.id) {
+    case 'breathing-glow':
+      return { duration, repeat: Infinity, ease: 'easeInOut' as const }
+    case 'pulse-ring':
+      return { duration, repeat: Infinity, ease: 'easeOut' as const, repeatDelay: 0.5 }
+    case 'bounce':
+      return { duration, repeat: Infinity, ease: 'easeOut' as const }
+    case 'wobble':
+      return { duration, repeat: Infinity, ease: 'easeInOut' as const }
+    case 'sparkle-burst':
+      return { duration, repeat: Infinity, repeatDelay: 1 }
+    case 'heartbeat':
+      return { duration, repeat: Infinity, times: [0, 0.2, 0.35, 0.5, 1], repeatDelay: 0.5 }
+    case 'spin':
+    case 'orbit':
+      return { duration, repeat: Infinity, ease: 'linear' as const }
+    case 'shimmer':
+      return { duration, repeat: Infinity, ease: 'easeInOut' as const, repeatDelay: 1 }
+    case 'rgb-glitch':
+    case 'data-corrupt':
+      return { duration, repeat: Infinity, repeatDelay: 1.5 }
+    case 'sway':
+    case 'cloud-drift':
+      return { duration, repeat: Infinity, ease: 'easeInOut' as const }
+    case 'lightning-flash':
+      return { duration, repeat: Infinity, repeatDelay: 2 }
+    default:
+      return { duration, repeat: Infinity, ease: 'easeInOut' as const }
   }
 }
