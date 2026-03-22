@@ -52,8 +52,8 @@ export function StickerStyleCard({ style, onClick }: StickerStyleCardProps) {
               }}
               className="text-7xl drop-shadow-lg"
               style={{
-                filter: style.mask.type === 'soft-edge-glow' 
-                  ? 'drop-shadow(0 0 12px rgba(var(--primary), 0.5))'
+                filter: (style.mask.type === 'glow' || style.mask.type === 'aura')
+                  ? 'drop-shadow(0 0 12px rgba(100, 200, 150, 0.5))'
                   : 'none'
               }}
             >

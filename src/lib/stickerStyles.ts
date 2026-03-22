@@ -1,14 +1,8 @@
 export type MaskType = 
-  | 'soft-edge-glow'
-  | 'hard-cutout'
-  | 'gradient-fade'
-  | 'inner-shadow'
-  | 'outline-stroke'
-  | 'chromatic-edge'
-  | 'pixelated-border'
-  | 'torn-edge'
-  | 'starburst-rays'
-  | 'cloud-soft'
+  | 'clean'
+  | 'soft'
+  | 'glow'
+  | 'aura'
 
 export type VibeCategory = 
   | 'magic-effects'
@@ -83,9 +77,9 @@ export const stickerStyles: StickerStyle[] = [
     vibe: 'magic-effects',
     tags: ['Neon', 'Ethereal', 'Soft'],
     mask: {
-      type: 'soft-edge-glow',
-      name: 'Soft Edge Glow',
-      description: 'Diffused outer glow with feathered edges'
+      type: 'glow',
+      name: 'Glow Edge',
+      description: 'Luminous edges with outer glow'
     },
     motion: {
       id: 'breathing-glow',
@@ -519,64 +513,28 @@ export const stickerStyles: StickerStyle[] = [
 ]
 
 export const maskPresets: Record<MaskType, MaskPreset> = {
-  'soft-edge-glow': {
-    id: 'soft-edge-glow',
-    name: 'Soft Edge Glow',
-    description: 'Diffused outer glow with feathered edges for ethereal feel',
-    technicalSpec: 'filter: blur(8px) brightness(1.2); box-shadow: 0 0 20px'
+  clean: {
+    id: 'clean',
+    name: 'Clean Cut',
+    description: 'Sharp sticker cut with crisp edges',
+    technicalSpec: 'contrast(1.05) brightness(1.02)'
   },
-  'hard-cutout': {
-    id: 'hard-cutout',
-    name: 'Hard Cutout',
-    description: 'Clean sharp edges with no blur or glow',
-    technicalSpec: 'clip-path or mask with crisp 0px feather'
+  soft: {
+    id: 'soft',
+    name: 'Soft Edge',
+    description: 'Gentle feathered edges for smooth blending',
+    technicalSpec: 'blur(0.5px) contrast(0.98)'
   },
-  'gradient-fade': {
-    id: 'gradient-fade',
-    name: 'Gradient Fade',
-    description: 'Smooth gradient transparency at edges',
-    technicalSpec: 'mask-image: radial-gradient(circle, black 60%, transparent 100%)'
+  glow: {
+    id: 'glow',
+    name: 'Glow Edge',
+    description: 'Luminous edges with outer glow',
+    technicalSpec: 'drop-shadow(0 0 8px oklch(0.65 0.20 160)) brightness(1.1)'
   },
-  'inner-shadow': {
-    id: 'inner-shadow',
-    name: 'Inner Shadow',
-    description: 'Depth effect with internal shadow',
-    technicalSpec: 'box-shadow: inset 0 2px 8px rgba(0,0,0,0.3)'
-  },
-  'outline-stroke': {
-    id: 'outline-stroke',
-    name: 'Outline Stroke',
-    description: 'Bold vector outline for high contrast',
-    technicalSpec: '-webkit-text-stroke: 2px or SVG stroke'
-  },
-  'chromatic-edge': {
-    id: 'chromatic-edge',
-    name: 'Chromatic Edge',
-    description: 'RGB color separation at boundaries',
-    technicalSpec: 'text-shadow with RGB offset: 2px 0 red, -2px 0 cyan'
-  },
-  'pixelated-border': {
-    id: 'pixelated-border',
-    name: 'Pixelated Border',
-    description: '8-bit style chunky pixel edges',
-    technicalSpec: 'image-rendering: pixelated; filter steps(8)'
-  },
-  'torn-edge': {
-    id: 'torn-edge',
-    name: 'Torn Edge',
-    description: 'Rough organic torn paper effect',
-    technicalSpec: 'clip-path with noise-generated polygon points'
-  },
-  'starburst-rays': {
-    id: 'starburst-rays',
-    name: 'Starburst Rays',
-    description: 'Radiating points creating star silhouette',
-    technicalSpec: 'clip-path: polygon() with alternating radius points'
-  },
-  'cloud-soft': {
-    id: 'cloud-soft',
-    name: 'Cloud Soft',
-    description: 'Ultra-soft diffused edges with heavy blur',
-    technicalSpec: 'filter: blur(12px); opacity gradient mask'
+  aura: {
+    id: 'aura',
+    name: 'Aura Edge',
+    description: 'Diffused atmospheric halo around subject',
+    technicalSpec: 'drop-shadow(0 0 16px oklch(0.75 0.15 280)) blur(0.3px) brightness(1.15)'
   }
 }

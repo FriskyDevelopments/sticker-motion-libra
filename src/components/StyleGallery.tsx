@@ -1,4 +1,5 @@
-import { stickerStyles, vibeInfo, type VibeCategory } from '@/lib/stickerStyles'
+import { featuredStyles } from '@/lib/featuredStyles'
+import { vibeInfo, type VibeCategory } from '@/lib/stickerStyles'
 import { StickerStyleCard } from '@/components/StickerStyleCard'
 import { StyleDetailPanel } from '@/components/StyleDetailPanel'
 import { Button } from '@/components/ui/button'
@@ -12,13 +13,13 @@ export function StyleGallery() {
   const [selectedVibe, setSelectedVibe] = useState<VibeCategory | 'all'>('all')
 
   const selectedStyle = useMemo(
-    () => stickerStyles.find(s => s.id === selectedStyleId) || null,
+    () => featuredStyles.find(s => s.id === selectedStyleId) || null,
     [selectedStyleId]
   )
 
   const filteredStyles = useMemo(() => {
-    if (selectedVibe === 'all') return stickerStyles
-    return stickerStyles.filter(s => s.vibe === selectedVibe)
+    if (selectedVibe === 'all') return featuredStyles
+    return featuredStyles.filter(s => s.vibe === selectedVibe)
   }, [selectedVibe])
 
   const vibeCategories = Object.keys(vibeInfo) as VibeCategory[]
@@ -35,12 +36,12 @@ export function StyleGallery() {
             <TabsTrigger value="all" className="py-2.5">
               All Styles
               <Badge variant="secondary" className="ml-2 text-xs">
-                {stickerStyles.length}
+                {featuredStyles.length}
               </Badge>
             </TabsTrigger>
             {vibeCategories.map((vibe) => {
               const info = vibeInfo[vibe]
-              const count = stickerStyles.filter(s => s.vibe === vibe).length
+              const count = featuredStyles.filter(s => s.vibe === vibe).length
               return (
                 <TabsTrigger key={vibe} value={vibe} className="py-2.5 text-sm">
                   {info.name}
