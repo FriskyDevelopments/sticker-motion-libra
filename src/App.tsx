@@ -4,6 +4,7 @@ import { Sparkle, Image as ImageIcon, Funnel } from '@phosphor-icons/react'
 import { StyleGallery } from '@/components/StyleGallery'
 import { ImageUpload } from '@/components/ImageUpload'
 import { ExampleTransformation } from '@/components/ExampleTransformation'
+import { ParticleField } from '@/components/ParticleField'
 import { useState } from 'react'
 import logoImage from '@/assets/images/stixmagic2.jpeg'
 import heroPoster from '@/assets/images/stix-magic-poster.png'
@@ -21,10 +22,11 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen mesh-background">
+    <div className="min-h-screen mesh-background relative">
+      <ParticleField />
       <Toaster position="top-right" richColors />
       
-      <div className="container mx-auto px-6 md:px-8 lg:px-12 py-12 md:py-16">
+      <div className="container mx-auto px-6 md:px-8 lg:px-12 py-12 md:py-16 relative z-10">
         <header className="mb-16 text-center space-y-8 relative">
           <div className="absolute inset-0 -top-20 overflow-hidden pointer-events-none">
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse" />

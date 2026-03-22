@@ -155,7 +155,27 @@
     radial-gradient(circle at 20% 20%, oklch(0.68 0.22 280 / 0.08) 0%, transparent 40%),
     radial-gradient(circle at 80% 80%, oklch(0.72 0.19 320 / 0.06) 0%, transparent 40%),
     radial-gradient(circle at 50% 50%, oklch(0.65 0.18 200 / 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 90% 10%, oklch(0.72 0.19 320 / 0.04) 0%, transparent 35%),
+    radial-gradient(circle at 10% 90%, oklch(0.68 0.22 280 / 0.04) 0%, transparent 35%),
     var(--background);
+  position: relative;
+}
+
+.mesh-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 15% 25%, oklch(0.95 0.01 260 / 0.02) 1px, transparent 1px),
+    radial-gradient(circle at 85% 15%, oklch(0.95 0.01 260 / 0.015) 1px, transparent 1px),
+    radial-gradient(circle at 45% 75%, oklch(0.95 0.01 260 / 0.018) 1px, transparent 1px),
+    radial-gradient(circle at 65% 45%, oklch(0.95 0.01 260 / 0.012) 1px, transparent 1px),
+    radial-gradient(circle at 25% 65%, oklch(0.95 0.01 260 / 0.015) 1px, transparent 1px);
+  background-size: 300px 300px, 400px 400px, 350px 350px, 450px 450px, 380px 380px;
+  background-position: 0 0, 100px 100px, 50px 50px, 150px 150px, 75px 75px;
+  animation: twinkle 8s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 @keyframes bounce-slow {
@@ -276,6 +296,28 @@
   }
 }
 
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100px) translateX(20px);
+    opacity: 0;
+  }
+}
+
 .animate-bounce-slow {
   animation: bounce-slow 3s ease-in-out infinite;
 }
@@ -314,6 +356,14 @@
 
 .animate-gradient-shift {
   animation: gradient-shift 5s ease infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.animate-float-up {
+  animation: float-up 4s ease-out infinite;
 }
 
 .shimmer-effect {
