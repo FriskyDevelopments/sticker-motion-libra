@@ -25,63 +25,71 @@ function App() {
       <Toaster position="top-right" richColors />
       
       <div className="container mx-auto px-6 md:px-8 lg:px-12 py-12 md:py-16">
-        <header className="mb-12 text-center space-y-6">
-          <div className="inline-flex items-center justify-center gap-4 mb-6">
-            <div className="logo-container">
-              <img 
-                src={logoImage} 
-                alt="STIX MAGIC" 
-                className="w-20 h-20 md:w-24 md:h-24 rounded-2xl object-cover animate-float-gentle relative z-10"
-              />
-            </div>
-            <Sparkle size={48} weight="duotone" className="text-accent animate-pulse" />
+        <header className="mb-16 text-center space-y-8 relative">
+          <div className="absolute inset-0 -top-20 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-accent/8 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold gradient-text tracking-tight mb-4">
-            STIX MAGIC
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-foreground/80 max-w-2xl mx-auto leading-relaxed">
-            Pick a style ✦ Bring it to life ✧ Create your sticker
-          </p>
-          
-          <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto">
-            Transform any image into an animated sticker with ready-made magic
-          </p>
+          <div className="relative z-10 space-y-6">
+            <div className="inline-flex items-center justify-center gap-4 mb-6">
+              <div className="logo-container">
+                <img 
+                  src={logoImage} 
+                  alt="STIX MAGIC" 
+                  className="w-24 h-24 md:w-28 md:h-28 rounded-2xl object-cover animate-float-gentle relative z-10 border-2 border-primary/20"
+                />
+              </div>
+              <Sparkle size={56} weight="duotone" className="text-accent animate-pulse drop-shadow-[0_0_20px_oklch(0.72_0.19_320/0.5)]" />
+            </div>
+            
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold gradient-text tracking-tight mb-6 drop-shadow-2xl">
+              STIX MAGIC
+            </h1>
+            
+            <p className="text-2xl md:text-3xl text-foreground/90 max-w-2xl mx-auto leading-relaxed font-medium">
+              Pick a style ✦ Bring it to life ✧ Create your sticker
+            </p>
+            
+            <p className="text-lg md:text-xl text-muted-foreground/80 max-w-xl mx-auto">
+              Transform any image into an animated sticker with ready-made magic
+            </p>
 
-          <div className="mt-8 max-w-3xl mx-auto rounded-2xl overflow-hidden video-glow">
-            <video 
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-              poster={heroPoster}
-              className="w-full h-auto"
-            >
-              <source src={heroVideo} type="video/mp4" />
-            </video>
+            <div className="mt-10 max-w-3xl mx-auto rounded-2xl overflow-hidden video-glow relative">
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10 pointer-events-none" />
+              <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                poster={heroPoster}
+                className="w-full h-auto"
+              >
+                <source src={heroVideo} type="video/mp4" />
+              </video>
+            </div>
           </div>
         </header>
 
         <ExampleTransformation className="mb-16" />
 
-        <Tabs defaultValue="styles" className="space-y-8">
-          <TabsList className="grid w-full max-w-xl mx-auto grid-cols-2 h-auto p-1">
-            <TabsTrigger value="styles" className="flex items-center gap-2 py-3">
-              <Funnel size={20} weight="duotone" />
-              Pick a Style
+        <Tabs defaultValue="styles" className="space-y-10">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 h-auto p-1.5 bg-card/50 backdrop-blur-md border border-border/50 shadow-xl">
+            <TabsTrigger value="styles" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300">
+              <Funnel size={22} weight="duotone" />
+              Pick a Style ✦
             </TabsTrigger>
-            <TabsTrigger value="upload" className="flex items-center gap-2 py-3">
-              <ImageIcon size={20} weight="duotone" />
+            <TabsTrigger value="upload" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg transition-all duration-300">
+              <ImageIcon size={22} weight="duotone" />
               Your Image
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="styles" className="space-y-8">
+          <TabsContent value="styles" className="space-y-8 mt-0">
             <StyleGallery />
           </TabsContent>
 
-          <TabsContent value="upload" className="space-y-8">
+          <TabsContent value="upload" className="space-y-8 mt-0">
             <ImageUpload 
               onImageSelect={handleImageSelect}
               currentImage={uploadedImage?.dataUrl}
@@ -90,28 +98,30 @@ function App() {
           </TabsContent>
         </Tabs>
 
-        <footer className="mt-24 pt-12 border-t border-border/50 text-center">
-          <div className="flex flex-col items-center gap-6">
-            <div className="logo-container">
+        <footer className="mt-32 pt-16 border-t border-border/30 text-center relative">
+          <div className="absolute inset-0 bg-gradient-to-t from-card/20 via-transparent to-transparent pointer-events-none" />
+          
+          <div className="relative z-10 flex flex-col items-center gap-8">
+            <div className="logo-container group cursor-pointer">
               <img 
                 src={logoImage} 
                 alt="STIX MAGIC Logo" 
-                className="w-16 h-16 rounded-xl object-cover opacity-80 hover:opacity-100 transition-opacity"
+                className="w-20 h-20 rounded-xl object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 border border-border/30 group-hover:border-primary/40"
               />
             </div>
             
-            <div className="space-y-2">
-              <p className="text-sm font-medium gradient-text">
+            <div className="space-y-3">
+              <p className="text-lg font-bold gradient-text">
                 STIX MAGIC
               </p>
-              <p className="text-xs text-muted-foreground max-w-md">
+              <p className="text-sm text-muted-foreground/70 max-w-md leading-relaxed">
                 Transform images into animated stickers with ready-made magic ✦
               </p>
             </div>
 
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-3 text-sm text-muted-foreground/60">
               <span>Powered by</span>
-              <span className="font-mono">◌</span>
+              <span className="font-mono text-primary">◌</span>
               <span>cloud magic</span>
             </div>
           </div>

@@ -73,13 +73,13 @@ export function StyleGallery() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.4 }}
           >
-            <TabsList className="w-full grid grid-cols-2 md:grid-cols-5 h-auto p-1 bg-muted/50 backdrop-blur-sm border border-border/50">
+            <TabsList className="w-full grid grid-cols-2 md:grid-cols-5 h-auto p-1.5 bg-card/60 backdrop-blur-md border border-border/40 shadow-xl">
               <TabsTrigger 
                 value="all" 
-                className="py-2.5 data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all duration-300"
+                className="py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300"
               >
                 All Styles
-                <Badge variant="secondary" className="ml-2 text-xs">
+                <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
                   {featuredStyles.length}
                 </Badge>
               </TabsTrigger>
@@ -90,10 +90,10 @@ export function StyleGallery() {
                   <TabsTrigger 
                     key={vibe} 
                     value={vibe} 
-                    className="py-2.5 text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all duration-300"
+                    className="py-3 text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300"
                   >
                     {info.name}
-                    <Badge variant="secondary" className="ml-2 text-xs">
+                    <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
                       {count}
                     </Badge>
                   </TabsTrigger>

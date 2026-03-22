@@ -25,13 +25,13 @@ export function StickerStyleCard({ style, onClick }: StickerStyleCardProps) {
       }}
     >
       <Card
-        className="group relative overflow-hidden cursor-pointer border-2 border-border/50 hover:border-accent/60 shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500"
+        className="group relative overflow-hidden cursor-pointer border-2 border-border/40 bg-card/80 backdrop-blur-sm hover:border-primary/50 shadow-xl hover:shadow-2xl hover:shadow-primary/30 transition-all duration-500"
         onClick={onClick}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-accent/6 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         
         <motion.div 
-          className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 blur-xl"
+          className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-accent/30 to-primary/30 opacity-0 group-hover:opacity-100 blur-2xl"
           animate={{ 
             backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] 
           }}
@@ -45,8 +45,8 @@ export function StickerStyleCard({ style, onClick }: StickerStyleCardProps) {
           }}
         />
 
-        <div className="aspect-square bg-gradient-to-br from-muted/30 via-background to-muted/20 flex items-center justify-center overflow-hidden relative">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,oklch(0.65_0.20_160/0.12),transparent_60%)] group-hover:opacity-100 opacity-0 transition-opacity duration-700" />
+        <div className="aspect-square bg-gradient-to-br from-background/40 via-card to-background/30 flex items-center justify-center overflow-hidden relative">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,oklch(0.68_0.22_280/0.15),transparent_65%)] group-hover:opacity-100 opacity-60 transition-opacity duration-700" />
           
           <motion.div
             className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
