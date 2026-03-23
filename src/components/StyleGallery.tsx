@@ -1,5 +1,5 @@
 import { featuredStyles } from '@/lib/featuredStyles'
-import { vibeInfo, type VibeCategory } from '@/lib/stickerStyles'
+import { vibeInfo, type VibeCategory, type StickerStyle } from '@/lib/stickerStyles'
 import { StickerStyleCard } from '@/components/StickerStyleCard'
 import { StyleDetailPanel } from '@/components/StyleDetailPanel'
 import { Button } from '@/components/ui/button'
@@ -9,9 +9,19 @@ import { X, Sparkle } from '@phosphor-icons/react'
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export function StyleGallery() {
+interface StyleGalleryProps {
+  onStyleSelect?: (style: StickerStyle) => void
+}
+
+export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
   const [selectedStyleId, setSelectedStyleId] = useState<string | null>(null)
   const [selectedVibe, setSelectedVibe] = useState<VibeCategory | 'all'>('all')
+  
+  const handleStyleSelect = (style: StickerStyle) => {
+    if (onStyleSelect) {
+      onStyleSelect(style)
+    }
+  }
 
   const selectedStyle = useMemo(
     () => featuredStyles.find(s => s.id === selectedStyleId) || null,
@@ -162,6 +172,7 @@ export function StyleGallery() {
           onOpenChange={(open) => {
             if (!open) setSelectedStyleId(null)
           }}
+          onApply={handleStyleSelect}
         />
       )}
     </div>

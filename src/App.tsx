@@ -5,21 +5,33 @@ import { StyleGallery } from '@/components/StyleGallery'
 import { ImageUpload } from '@/components/ImageUpload'
 import { ExampleTransformation } from '@/components/ExampleTransformation'
 import { ParticleField } from '@/components/ParticleField'
-import { useState } from 'react'
+import { TransformationControls } from '@/components/TransformationControls'
+import { useTransformation } from '@/hooks/use-transformation'
+import { useState, useEffect } from 'react'
 import logoImage from '@/assets/images/stixmagic2.jpeg'
 import heroPoster from '@/assets/images/stix-magic-poster.png'
 import heroVideo from '@/assets/video/stix-magic.mp4'
 
 function App() {
   const [uploadedImage, setUploadedImage] = useState<{file: File, dataUrl: string} | null>(null)
+  const [selectedTab, setSelectedTab] = useState('styles')
+  const transformation = useTransformation()
 
   const handleImageSelect = (file: File, dataUrl: string) => {
     setUploadedImage({ file, dataUrl })
+    transformation.loadImage(dataUrl)
   }
 
   const handleClear = () => {
     setUploadedImage(null)
+    transformation.reset()
   }
+
+  useEffect(() => {
+    if (transformation.hasImage() && !uploadedImage) {
+      setSelectedTab('upload')
+    }
+  }, [transformation, uploadedImage])
 
   return (
     <div className="min-h-screen mesh-background relative">
@@ -75,7 +87,7 @@ function App() {
 
         <ExampleTransformation className="mb-16" />
 
-        <Tabs defaultValue="styles" className="space-y-10">
+        <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-10">
           <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 h-auto p-1.5 bg-card/50 backdrop-blur-md border border-border/50 shadow-xl">
             <TabsTrigger value="styles" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300">
               <Funnel size={22} weight="duotone" />
@@ -88,15 +100,45 @@ function App() {
           </TabsList>
 
           <TabsContent value="styles" className="space-y-8 mt-0">
-            <StyleGallery />
+            <StyleGallery onStyleSelect={(style) => {
+              if (transformation.hasImage()) {
+                transformation.applyStyle(style)
+              }
+            }} />
           </TabsContent>
 
           <TabsContent value="upload" className="space-y-8 mt-0">
             <ImageUpload 
               onImageSelect={handleImageSelect}
-              currentImage={uploadedImage?.dataUrl}
+              currentImage={transformation.hasImage() ? transformation.getCurrentImage() : uploadedImage?.dataUrl}
               onClear={handleClear}
             />
+
+            {transformation.hasImage() && (
+              <div className="space-y-6">
+                <TransformationControls
+                  appliedStyle={transformation.state.appliedStyle}
+                  canUndo={transformation.state.canUndo}
+                  canRedo={transformation.state.canRedo}
+                  hasTransformation={transformation.hasTransformation()}
+                  onUndo={transformation.undo}
+                  onRedo={transformation.redo}
+                  onRevert={transformation.revertToOriginal}
+                />
+                
+                {!transformation.hasTransformation() && (
+                  <div className="text-center p-8 rounded-xl bg-muted/30 border-2 border-dashed border-border">
+                    <Sparkle size={48} weight="duotone" className="mx-auto mb-4 text-muted-foreground" />
+                    <p className="text-lg font-semibold text-foreground mb-2">
+                      Ready for magic ✦
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Switch to the "Pick a Style" tab to transform your image
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
 
