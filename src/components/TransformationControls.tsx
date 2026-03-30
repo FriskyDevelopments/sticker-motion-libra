@@ -134,6 +134,7 @@ export function TransformationControls({
                 )}
 
                 <Button
+                  data-tour="export-button"
                   size="sm"
                   onClick={() => setExportDialogOpen(true)}
                   disabled={!hasTransformation}

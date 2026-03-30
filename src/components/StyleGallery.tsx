@@ -195,6 +195,7 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                   {filteredStyles.map((style, index) => (
                     <motion.div
                       key={style.id}
+                      data-tour={index === 0 ? "style-card" : undefined}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}

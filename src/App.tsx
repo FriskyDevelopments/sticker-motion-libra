@@ -6,6 +6,7 @@ import { ImageUpload } from '@/components/ImageUpload'
 import { ExampleTransformation } from '@/components/ExampleTransformation'
 import { ParticleField } from '@/components/ParticleField'
 import { TransformationControls } from '@/components/TransformationControls'
+import { OnboardingTour } from '@/components/OnboardingTour'
 import { useTransformation } from '@/hooks/use-transformation'
 import { useState, useEffect } from 'react'
 import logoImage from '@/assets/images/stixmagic2.jpeg'
@@ -37,6 +38,7 @@ function App() {
     <div className="min-h-screen mesh-background relative">
       <ParticleField />
       <Toaster position="top-right" richColors />
+      <OnboardingTour />
       
       <div className="container mx-auto px-6 md:px-8 lg:px-12 py-12 md:py-16 relative z-10">
         <header className="mb-16 text-center space-y-8 relative">
@@ -93,18 +95,20 @@ function App() {
               <Funnel size={22} weight="duotone" />
               Pick a Style ✦
             </TabsTrigger>
-            <TabsTrigger value="upload" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg transition-all duration-300">
+            <TabsTrigger data-tour="upload-tab" value="upload" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg transition-all duration-300">
               <ImageIcon size={22} weight="duotone" />
               Your Image
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="styles" className="space-y-8 mt-0">
-            <StyleGallery onStyleSelect={(style) => {
-              if (transformation.hasImage()) {
-                transformation.applyStyle(style)
-              }
-            }} />
+            <div data-tour="style-gallery">
+              <StyleGallery onStyleSelect={(style) => {
+                if (transformation.hasImage()) {
+                  transformation.applyStyle(style)
+                }
+              }} />
+            </div>
           </TabsContent>
 
           <TabsContent value="upload" className="space-y-8 mt-0">
