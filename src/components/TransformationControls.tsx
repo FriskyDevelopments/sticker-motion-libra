@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowCounterClockwise, ArrowClockwise, ArrowUUpLeft, Sparkle, DownloadSimple } from '@phosphor-icons/react'
+import { ArrowCounterClockwise, ArrowClockwise, ArrowUUpLeft, Sparkle, DownloadSimple, Package } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ExportDialog } from '@/components/ExportDialog'
+import { BatchExportDialog } from '@/components/BatchExportDialog'
 import { cn } from '@/lib/utils'
 import type { StickerStyle } from '@/lib/stickerStyles'
+import type { TransformationStep } from '@/lib/transformationEngine'
 
 interface TransformationControlsProps {
   appliedStyle: StickerStyle | null
@@ -15,6 +17,8 @@ interface TransformationControlsProps {
   canRedo: boolean
   hasTransformation: boolean
   currentImage: string
+  transformationHistory?: TransformationStep[]
+  originalImage?: string
   onUndo: () => void
   onRedo: () => void
   onRevert: () => void
@@ -27,12 +31,17 @@ export function TransformationControls({
   canRedo,
   hasTransformation,
   currentImage,
+  transformationHistory = [],
+  originalImage = '',
   onUndo,
   onRedo,
   onRevert,
   className
 }: TransformationControlsProps) {
   const [exportDialogOpen, setExportDialogOpen] = useState(false)
+  const [batchExportDialogOpen, setBatchExportDialogOpen] = useState(false)
+  
+  const hasBatchExport = transformationHistory.length > 1
   
   if (!hasTransformation && !appliedStyle) {
     return null
@@ -108,6 +117,22 @@ export function TransformationControls({
 
                 <Separator orientation="vertical" className="h-6" />
 
+                {hasBatchExport && (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setBatchExportDialogOpen(true)}
+                      className="gap-2"
+                    >
+                      <Package size={16} weight="bold" />
+                      <span className="hidden sm:inline">Batch Export ✦</span>
+                      <span className="sm:hidden">Batch</span>
+                    </Button>
+                    <Separator orientation="vertical" className="h-6" />
+                  </>
+                )}
+
                 <Button
                   size="sm"
                   onClick={() => setExportDialogOpen(true)}
@@ -129,6 +154,13 @@ export function TransformationControls({
         onOpenChange={setExportDialogOpen}
         imageDataUrl={currentImage}
         appliedStyle={appliedStyle}
+      />
+
+      <BatchExportDialog
+        open={batchExportDialogOpen}
+        onOpenChange={setBatchExportDialogOpen}
+        transformationHistory={transformationHistory}
+        originalImage={originalImage}
       />
     </>
   )
