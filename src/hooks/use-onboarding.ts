@@ -14,7 +14,7 @@ const ONBOARDING_STEPS: OnboardingStep[] = [
   {
     id: 'welcome',
     title: 'Welcome to STIX MAGIC ✦',
-    description: 'Transform any image into animated magic in three simple steps',
+    description: 'Transform any image into animated magic with ready-made styles. Let\'s explore the three simple steps to create your sticker.',
     targetSelector: 'body',
     position: 'center',
   },
@@ -28,23 +28,23 @@ const ONBOARDING_STEPS: OnboardingStep[] = [
   {
     id: 'preview-style',
     title: 'See it come to life',
-    description: 'Click any style to preview it in detail and see how it moves',
+    description: 'Click any style card to preview it in detail and see how the motion and finish work together.',
     targetSelector: '[data-tour="style-card"]',
     position: 'bottom',
   },
   {
     id: 'upload-image',
     title: 'Apply to your image ✦',
-    description: 'Switch to the "Your Image" tab to upload and transform your own image',
+    description: 'Ready to create? Switch to the "Your Image" tab to upload your photo and apply any style with one click.',
     targetSelector: '[data-tour="upload-tab"]',
     position: 'bottom',
   },
   {
-    id: 'export',
-    title: 'Export your sticker ✦',
-    description: 'Once transformed, export your animated sticker as a GIF or batch export multiple variations',
-    targetSelector: '[data-tour="export-button"]',
-    position: 'left',
+    id: 'complete',
+    title: 'You\'re ready to go ✦',
+    description: 'That\'s it! Pick a style, upload your image, and watch the magic happen. Your transformed sticker will be ready to download as an animated GIF.',
+    targetSelector: 'body',
+    position: 'center',
   },
 ]
 

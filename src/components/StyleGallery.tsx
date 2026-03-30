@@ -59,7 +59,7 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
   const vibeCategories = Object.keys(vibeInfo) as VibeCategory[]
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8" data-tour="style-gallery">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
