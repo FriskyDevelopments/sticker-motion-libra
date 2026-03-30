@@ -7,7 +7,7 @@ export interface BackgroundRemovalResult {
 export async function removeBackground(imageDataUrl: string): Promise<BackgroundRemovalResult> {
   try {
     const prompt = window.spark.llmPrompt`You are an AI that processes images to remove backgrounds. 
-    
+
 Given an image, identify the main subject and provide instructions for background removal that would isolate the subject with a transparent background.
 
 Analyze this image and return a JSON object describing:
@@ -18,13 +18,13 @@ Analyze this image and return a JSON object describing:
 
 Return the result as a valid JSON object with a single property called "analysis" that contains an object with these fields:
 {
-  "analysis": {
-    "subject": "description of main subject",
-    "confidence": 85,
-    "edgeHandling": "soft",
-    "suitable": true,
-    "reason": "explanation"
-  }
+"analysis": {
+"subject": "description of main subject",
+"confidence": 85,
+"edgeHandling": "soft",
+"suitable": true,
+"reason": "explanation"
+}
 }`
 
     const response = await window.spark.llm(prompt, 'gpt-4o-mini', true)

@@ -7,6 +7,7 @@ import { ExampleTransformation } from '@/components/ExampleTransformation'
 import { ParticleField } from '@/components/ParticleField'
 import { TransformationControls } from '@/components/TransformationControls'
 import { OnboardingTour } from '@/components/OnboardingTour'
+import { SettingsMenu } from '@/components/SettingsMenu'
 import { useTransformation } from '@/hooks/use-transformation'
 import { useState, useEffect } from 'react'
 import logoImage from '@/assets/images/stixmagic2.jpeg'
@@ -39,6 +40,7 @@ function App() {
       <ParticleField />
       <Toaster position="top-right" richColors />
       <OnboardingTour />
+      <SettingsMenu />
       
       <div className="container mx-auto px-6 md:px-8 lg:px-12 py-12 md:py-16 relative z-10">
         <header className="mb-16 text-center space-y-8 relative">
