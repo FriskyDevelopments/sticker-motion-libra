@@ -226,7 +226,6 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
           onOpenChange={(open) => {
             if (!open) setSelectedStyleId(null)
           }}
-          onApply={handleStyleSelect}
         />
       )}
     </div>

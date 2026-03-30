@@ -62,11 +62,11 @@ function App() {
             </h1>
             
             <p className="text-2xl md:text-3xl text-foreground/90 max-w-2xl mx-auto leading-relaxed font-medium">
-              Pick a style ✦ Bring it to life ✧ Create your sticker
+              Pick a style ✦ Bring it to life ✦ Create your sticker
             </p>
             
             <p className="text-lg md:text-xl text-muted-foreground/80 max-w-xl mx-auto">
-              Transform any image into an animated sticker with ready-made magic
+              Transform any image into animated magic with ready-made styles
             </p>
 
             <div className="mt-10 max-w-3xl mx-auto rounded-2xl overflow-hidden video-glow relative">
@@ -167,9 +167,7 @@ function App() {
             </div>
 
             <div className="flex items-center gap-3 text-sm text-muted-foreground/60">
-              <span>Powered by</span>
-              <span className="font-mono text-primary">◌</span>
-              <span>cloud magic</span>
+              <span>🐾 Forged with a frisky paw and a daring heart</span>
             </div>
           </div>
         </footer>
