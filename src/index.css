@@ -152,11 +152,13 @@
 
 .mesh-background {
   background: 
-    radial-gradient(circle at 20% 20%, oklch(0.68 0.22 280 / 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, oklch(0.72 0.19 320 / 0.06) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, oklch(0.65 0.18 200 / 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 90% 10%, oklch(0.72 0.19 320 / 0.04) 0%, transparent 35%),
-    radial-gradient(circle at 10% 90%, oklch(0.68 0.22 280 / 0.04) 0%, transparent 35%),
+    radial-gradient(circle at 20% 20%, oklch(0.68 0.22 280 / 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, oklch(0.72 0.19 320 / 0.10) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, oklch(0.65 0.18 200 / 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 90% 10%, oklch(0.72 0.19 320 / 0.07) 0%, transparent 35%),
+    radial-gradient(circle at 10% 90%, oklch(0.68 0.22 280 / 0.07) 0%, transparent 35%),
+    radial-gradient(circle at 60% 30%, oklch(0.70 0.20 200 / 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 30% 70%, oklch(0.75 0.18 310 / 0.05) 0%, transparent 38%),
     var(--background);
   position: relative;
 }
@@ -166,16 +168,18 @@
   position: absolute;
   inset: 0;
   background-image: 
-    radial-gradient(circle at 15% 25%, oklch(0.95 0.01 260 / 0.02) 1px, transparent 1px),
-    radial-gradient(circle at 85% 15%, oklch(0.95 0.01 260 / 0.015) 1px, transparent 1px),
-    radial-gradient(circle at 45% 75%, oklch(0.95 0.01 260 / 0.018) 1px, transparent 1px),
-    radial-gradient(circle at 65% 45%, oklch(0.95 0.01 260 / 0.012) 1px, transparent 1px),
-    radial-gradient(circle at 25% 65%, oklch(0.95 0.01 260 / 0.015) 1px, transparent 1px);
-  background-size: 300px 300px, 400px 400px, 350px 350px, 450px 450px, 380px 380px;
-  background-position: 0 0, 100px 100px, 50px 50px, 150px 150px, 75px 75px;
-  animation: twinkle 8s ease-in-out infinite;
+    radial-gradient(circle at 15% 25%, oklch(0.95 0.01 260 / 0.03) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 85% 15%, oklch(0.95 0.01 260 / 0.025) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 45% 75%, oklch(0.95 0.01 260 / 0.028) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 65% 45%, oklch(0.95 0.01 260 / 0.022) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 25% 65%, oklch(0.95 0.01 260 / 0.025) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 50% 35%, oklch(0.75 0.20 280 / 0.015) 2px, transparent 2px),
+    radial-gradient(circle at 75% 55%, oklch(0.75 0.20 320 / 0.012) 1.8px, transparent 1.8px);
+  background-size: 300px 300px, 400px 400px, 350px 350px, 450px 450px, 380px 380px, 500px 500px, 420px 420px;
+  background-position: 0 0, 100px 100px, 50px 50px, 150px 150px, 75px 75px, 200px 50px, 50px 200px;
+  animation: twinkle 10s ease-in-out infinite;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.8;
 }
 
 @keyframes bounce-slow {
