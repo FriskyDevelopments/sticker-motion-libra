@@ -1,15 +1,23 @@
 import { motion } from 'framer-motion'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Sparkle } from '@phosphor-icons/react'
+import { Button } from '@/components/ui/button'
+import { Sparkle, Heart } from '@phosphor-icons/react'
 import type { StickerStyle } from '@/lib/stickerStyles'
 
 interface StickerStyleCardProps {
   style: StickerStyle
   onClick: () => void
+  isFavorite?: boolean
+  onToggleFavorite?: (styleId: string) => void
 }
 
-export function StickerStyleCard({ style, onClick }: StickerStyleCardProps) {
+export function StickerStyleCard({ style, onClick, isFavorite = false, onToggleFavorite }: StickerStyleCardProps) {
+  
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onToggleFavorite?.(style.id)
+  }
   const animation = getStyleAnimation(style)
   const transition = getStyleTransition(style)
 
@@ -53,6 +61,21 @@ export function StickerStyleCard({ style, onClick }: StickerStyleCardProps) {
           >
             <Sparkle size={24} weight="duotone" className="text-accent" />
           </motion.div>
+
+          {onToggleFavorite && (
+            <Button
+              size="icon"
+              variant="ghost"
+              className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background/95 transition-all duration-300"
+              onClick={handleFavoriteClick}
+            >
+              <Heart 
+                size={20} 
+                weight={isFavorite ? 'fill' : 'regular'}
+                className={isFavorite ? 'text-accent' : 'text-muted-foreground'}
+              />
+            </Button>
+          )}
 
           <motion.div
             className="text-9xl relative z-10 filter drop-shadow-lg"

@@ -5,9 +5,11 @@ import { StyleDetailPanel } from '@/components/StyleDetailPanel'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { X, Sparkle } from '@phosphor-icons/react'
+import { X, Sparkle, Heart } from '@phosphor-icons/react'
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useFavorites } from '@/hooks/use-favorites'
+import { toast } from 'sonner'
 
 interface StyleGalleryProps {
   onStyleSelect?: (style: StickerStyle) => void
@@ -15,11 +17,29 @@ interface StyleGalleryProps {
 
 export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
   const [selectedStyleId, setSelectedStyleId] = useState<string | null>(null)
-  const [selectedVibe, setSelectedVibe] = useState<VibeCategory | 'all'>('all')
+  const [selectedVibe, setSelectedVibe] = useState<VibeCategory | 'all' | 'favorites'>('all')
+  const { isFavorite, toggleFavorite, getFavoriteStyles, hasFavorites, favoriteCount } = useFavorites()
   
   const handleStyleSelect = (style: StickerStyle) => {
     if (onStyleSelect) {
       onStyleSelect(style)
+    }
+  }
+
+  const handleToggleFavorite = (styleId: string) => {
+    const style = featuredStyles.find(s => s.id === styleId)
+    const willBeFavorite = !isFavorite(styleId)
+    
+    toggleFavorite(styleId)
+    
+    if (willBeFavorite) {
+      toast.success(`${style?.name || 'Style'} saved ✦`, {
+        description: 'Added to your favorites'
+      })
+    } else {
+      toast(`${style?.name || 'Style'} removed`, {
+        description: 'Removed from favorites'
+      })
     }
   }
 
@@ -29,9 +49,12 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
   )
 
   const filteredStyles = useMemo(() => {
+    if (selectedVibe === 'favorites') {
+      return getFavoriteStyles(featuredStyles)
+    }
     if (selectedVibe === 'all') return featuredStyles
     return featuredStyles.filter(s => s.vibe === selectedVibe)
-  }, [selectedVibe])
+  }, [selectedVibe, getFavoriteStyles])
 
   const vibeCategories = Object.keys(vibeInfo) as VibeCategory[]
 
@@ -77,13 +100,13 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
           </motion.div>
         </div>
         
-        <Tabs value={selectedVibe} onValueChange={(v) => setSelectedVibe(v as VibeCategory | 'all')} className="space-y-6">
+        <Tabs value={selectedVibe} onValueChange={(v) => setSelectedVibe(v as VibeCategory | 'all' | 'favorites')} className="space-y-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.4 }}
           >
-            <TabsList className="w-full grid grid-cols-2 md:grid-cols-5 h-auto p-1.5 bg-card/60 backdrop-blur-md border border-border/40 shadow-xl">
+            <TabsList className="w-full grid grid-cols-2 md:grid-cols-6 h-auto p-1.5 bg-card/60 backdrop-blur-md border border-border/40 shadow-xl">
               <TabsTrigger 
                 value="all" 
                 className="py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300"
@@ -92,6 +115,18 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                 <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
                   {featuredStyles.length}
                 </Badge>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="favorites"
+                className="py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-accent/30 transition-all duration-300"
+              >
+                <Heart size={16} weight={hasFavorites ? 'fill' : 'regular'} className="mr-1.5" />
+                Favorites
+                {hasFavorites && (
+                  <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
+                    {favoriteCount}
+                  </Badge>
+                )}
               </TabsTrigger>
               {vibeCategories.map((vibe, index) => {
                 const info = vibeInfo[vibe]
@@ -122,15 +157,32 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <p className="text-muted-foreground mb-4">No styles found</p>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setSelectedVibe('all')}
-                    className="group"
-                  >
-                    <X size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
-                    Clear filter
-                  </Button>
+                  {selectedVibe === 'favorites' ? (
+                    <>
+                      <Heart size={48} weight="duotone" className="mx-auto mb-4 text-muted-foreground" />
+                      <p className="text-lg font-semibold text-foreground mb-2">No favorites yet</p>
+                      <p className="text-muted-foreground mb-6">Click the heart ♥ on styles to save them here</p>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setSelectedVibe('all')}
+                        className="group"
+                      >
+                        Browse styles ✦
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-muted-foreground mb-4">No styles found</p>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setSelectedVibe('all')}
+                        className="group"
+                      >
+                        <X size={16} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
+                        Clear filter
+                      </Button>
+                    </>
+                  )}
                 </motion.div>
               ) : (
                 <motion.div 
@@ -155,6 +207,8 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                       <StickerStyleCard
                         style={style}
                         onClick={() => setSelectedStyleId(style.id)}
+                        isFavorite={isFavorite(style.id)}
+                        onToggleFavorite={handleToggleFavorite}
                       />
                     </motion.div>
                   ))}

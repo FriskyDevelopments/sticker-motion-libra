@@ -6,11 +6,11 @@ export function useFavorites() {
   const [favoriteIds, setFavoriteIds] = useKV<string[]>('stix-magic-favorites', [])
 
   const isFavorite = useCallback((styleId: string) => {
-    return favoriteIds.includes(styleId)
+    return (favoriteIds || []).includes(styleId)
   }, [favoriteIds])
 
   const toggleFavorite = useCallback((styleId: string) => {
-    setFavoriteIds((current) => {
+    setFavoriteIds((current = []) => {
       if (current.includes(styleId)) {
         return current.filter(id => id !== styleId)
       } else {
@@ -20,14 +20,14 @@ export function useFavorites() {
   }, [setFavoriteIds])
 
   const addFavorite = useCallback((styleId: string) => {
-    setFavoriteIds((current) => {
+    setFavoriteIds((current = []) => {
       if (current.includes(styleId)) return current
       return [...current, styleId]
     })
   }, [setFavoriteIds])
 
   const removeFavorite = useCallback((styleId: string) => {
-    setFavoriteIds((current) => current.filter(id => id !== styleId))
+    setFavoriteIds((current = []) => current.filter(id => id !== styleId))
   }, [setFavoriteIds])
 
   const clearFavorites = useCallback(() => {
@@ -35,18 +35,18 @@ export function useFavorites() {
   }, [setFavoriteIds])
 
   const getFavoriteStyles = useCallback((allStyles: StickerStyle[]) => {
-    return allStyles.filter(style => favoriteIds.includes(style.id))
+    return allStyles.filter(style => (favoriteIds || []).includes(style.id))
   }, [favoriteIds])
 
   return {
-    favoriteIds,
+    favoriteIds: favoriteIds || [],
     isFavorite,
     toggleFavorite,
     addFavorite,
     removeFavorite,
     clearFavorites,
     getFavoriteStyles,
-    hasFavorites: favoriteIds.length > 0,
-    favoriteCount: favoriteIds.length
+    hasFavorites: (favoriteIds || []).length > 0,
+    favoriteCount: (favoriteIds || []).length
   }
 }
