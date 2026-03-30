@@ -1,9 +1,12 @@
 import { useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Upload, X, Image as ImageIcon } from '@phosphor-icons/react'
+import { Upload, X, Image as ImageIcon, MagicWand } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
+import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { useBackgroundRemoval } from '@/hooks/use-background-removal'
 
 interface ImageUploadProps {
   onImageSelect: (file: File, dataUrl: string) => void
@@ -15,6 +18,9 @@ interface ImageUploadProps {
 export function ImageUpload({ onImageSelect, currentImage, onClear, className }: ImageUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [originalImage, setOriginalImage] = useState<string | null>(null)
+  const [bgRemovalEnabled, setBgRemovalEnabled] = useState(false)
+  const { removeBackground, isProcessing, processedImage } = useBackgroundRemoval()
 
   const handleFileSelect = (file: File) => {
     if (!file.type.startsWith('image/')) {
@@ -34,6 +40,7 @@ export function ImageUpload({ onImageSelect, currentImage, onClear, className }:
     const reader = new FileReader()
     reader.onload = (e) => {
       const dataUrl = e.target?.result as string
+      setOriginalImage(dataUrl)
       onImageSelect(file, dataUrl)
       toast.success('Image uploaded ✦', {
         description: 'Ready to apply your magic'
@@ -75,6 +82,8 @@ export function ImageUpload({ onImageSelect, currentImage, onClear, className }:
 
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation()
+    setOriginalImage(null)
+    setBgRemovalEnabled(false)
     onClear?.()
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
@@ -82,6 +91,25 @@ export function ImageUpload({ onImageSelect, currentImage, onClear, className }:
     toast.info('Image cleared', {
       description: 'Upload a new image to continue'
     })
+  }
+
+  const handleBgRemovalToggle = async (enabled: boolean) => {
+    setBgRemovalEnabled(enabled)
+    
+    if (enabled && originalImage) {
+      const result = await removeBackground(originalImage)
+      if (result.success && result.imageDataUrl) {
+        const response = await fetch(result.imageDataUrl)
+        const blob = await response.blob()
+        const file = new File([blob], 'processed-image.png', { type: 'image/png' })
+        onImageSelect(file, result.imageDataUrl)
+      }
+    } else if (!enabled && originalImage) {
+      const response = await fetch(originalImage)
+      const blob = await response.blob()
+      const file = new File([blob], 'original-image.png', { type: 'image/png' })
+      onImageSelect(file, originalImage)
+    }
   }
 
   return (
@@ -118,11 +146,22 @@ export function ImageUpload({ onImageSelect, currentImage, onClear, className }:
               exit={{ opacity: 0 }}
               className="relative aspect-square w-full"
             >
-              <img
-                src={currentImage}
-                alt="Uploaded preview"
-                className="w-full h-full object-contain"
-              />
+              <div className="relative w-full h-full">
+                {isProcessing && (
+                  <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-20">
+                    <div className="text-center space-y-3">
+                      <MagicWand size={48} weight="duotone" className="mx-auto text-primary animate-pulse" />
+                      <p className="text-sm font-medium">Removing background ◌</p>
+                    </div>
+                  </div>
+                )}
+                
+                <img
+                  src={currentImage}
+                  alt="Uploaded preview"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end justify-center p-6">
                 <Button
@@ -204,6 +243,43 @@ export function ImageUpload({ onImageSelect, currentImage, onClear, className }:
           )}
         </AnimatePresence>
       </motion.div>
+
+      {originalImage && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-4 p-4 rounded-xl bg-card border border-border space-y-3"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <MagicWand size={20} weight="duotone" className="text-primary" />
+              <div>
+                <Label htmlFor="bg-removal" className="text-sm font-semibold cursor-pointer">
+                  Remove Background
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  AI-powered subject isolation
+                </p>
+              </div>
+            </div>
+            <Switch
+              id="bg-removal"
+              checked={bgRemovalEnabled}
+              onCheckedChange={handleBgRemovalToggle}
+              disabled={isProcessing}
+            />
+          </div>
+
+          {bgRemovalEnabled && processedImage && (
+            <div className="pt-2 border-t border-border">
+              <p className="text-xs text-muted-foreground flex items-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse" />
+                Background removed ✦ Subject isolated
+              </p>
+            </div>
+          )}
+        </motion.div>
+      )}
     </div>
   )
 }

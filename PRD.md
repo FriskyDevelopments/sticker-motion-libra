@@ -87,12 +87,12 @@ The system produces 200+ style outcomes through modular combination:
 - **Progression**: Click upload → Select image file or drag & drop → Preview uploaded image → Style animation overlays on image → Adjust extra magic if desired → Download styled sticker
 - **Success criteria**: Smooth drag-and-drop upload, image validation (max 10MB, image formats only), live preview with selected style animation overlay, clear visual feedback
 
-### AI-Powered Background Removal
+### AI-Powered Background Removal ✦
 - **Functionality**: Automatically remove backgrounds from uploaded images using AI before applying sticker styles
 - **Purpose**: Create clean, professional stickers by isolating subjects from their backgrounds
-- **Trigger**: Toggle "Remove background" option after image upload
-- **Progression**: Upload image → Toggle background removal → AI processes image → Preview cleaned image → Apply style to transparent background image → Download sticker with clean cutout
-- **Success criteria**: Fast AI processing (< 3 seconds), accurate subject detection, toggle on/off to compare original vs removed, smooth integration with style preview, loading state during processing
+- **Trigger**: Toggle "Remove background" switch after image upload
+- **Progression**: Upload image → Toggle background removal → AI analyzes subject → Edge detection algorithm isolates subject → Preview cleaned image with transparent background → Apply style → Download sticker with clean cutout
+- **Success criteria**: AI processing completes within 5 seconds, accurate subject isolation using edge detection, smooth toggle on/off to compare original vs removed background, branded loading state with magic wand icon, automatic reprocessing when toggle changes, seamless integration with existing transformation workflow
 
 ### Animation Playground (Retained)
 - **Functionality**: Experimental space for tweaking motion parameters in real-time
