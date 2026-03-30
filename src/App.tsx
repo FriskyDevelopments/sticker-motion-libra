@@ -121,6 +121,7 @@ function App() {
                   canUndo={transformation.state.canUndo}
                   canRedo={transformation.state.canRedo}
                   hasTransformation={transformation.hasTransformation()}
+                  currentImage={transformation.getCurrentImage()}
                   onUndo={transformation.undo}
                   onRedo={transformation.redo}
                   onRevert={transformation.revertToOriginal}

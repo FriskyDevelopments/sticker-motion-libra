@@ -1,6 +1,8 @@
 import { MotionPreset } from './motionPresets'
+import type { StickerStyle } from './stickerStyles'
 
 export type ExportFormat = 'json' | 'typescript' | 'css' | 'framer-motion'
+export type StickerExportFormat = 'png' | 'webp' | 'gif' | 'apng'
 
 export function downloadFile(content: string, filename: string, mimeType: string) {
   const blob = new Blob([content], { type: mimeType })
@@ -12,6 +14,15 @@ export function downloadFile(content: string, filename: string, mimeType: string
   link.click()
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
+}
+
+export function downloadImageFromDataUrl(dataUrl: string, filename: string) {
+  const link = document.createElement('a')
+  link.href = dataUrl
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
 }
 
 export function exportPresetAsJSON(preset: MotionPreset): string {
@@ -384,4 +395,67 @@ function toPascalCase(str: string): string {
 
 function componentName(str: string): string {
   return toPascalCase(str)
+}
+
+export interface StickerExportOptions {
+  format: StickerExportFormat
+  quality?: number
+  includeMetadata?: boolean
+  style?: StickerStyle
+}
+
+export async function exportSticker(
+  imageDataUrl: string,
+  options: StickerExportOptions
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)
+    const styleName = options.style ? toKebabCase(options.style.name) : 'sticker'
+    const filename = `stix-magic-${styleName}-${timestamp}.${options.format}`
+    
+    if (options.format === 'png' || options.format === 'webp') {
+      downloadImageFromDataUrl(imageDataUrl, filename)
+      return { success: true }
+    }
+    
+    if (options.format === 'gif' || options.format === 'apng') {
+      return {
+        success: false,
+        error: `${options.format.toUpperCase()} export coming soon ✦`
+      }
+    }
+    
+    return { success: false, error: 'Unsupported format' }
+  } catch (error) {
+    console.error('Export error:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Export failed'
+    }
+  }
+}
+
+export async function exportStickerPack(
+  images: string[],
+  packName: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    if (images.length === 0) {
+      return { success: false, error: 'No images to export' }
+    }
+    
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)
+    const zipName = `${toKebabCase(packName)}-pack-${timestamp}.zip`
+    
+    return {
+      success: false,
+      error: 'Pack export coming soon ✦'
+    }
+  } catch (error) {
+    console.error('Pack export error:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Pack export failed'
+    }
+  }
 }
