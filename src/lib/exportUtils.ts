@@ -1,5 +1,6 @@
 import { MotionPreset } from './motionPresets'
 import type { StickerStyle } from './stickerStyles'
+import { createAnimatedGif } from './gifEncoder'
 
 export type ExportFormat = 'json' | 'typescript' | 'css' | 'framer-motion'
 export type StickerExportFormat = 'png' | 'webp' | 'gif' | 'apng'
@@ -418,10 +419,16 @@ export async function exportSticker(
       return { success: true }
     }
     
-    if (options.format === 'gif' || options.format === 'apng') {
+    if (options.format === 'gif') {
+      const gifBlob = await exportAsAnimatedGif(imageDataUrl, options.style)
+      downloadBlob(gifBlob, filename)
+      return { success: true }
+    }
+    
+    if (options.format === 'apng') {
       return {
         success: false,
-        error: `${options.format.toUpperCase()} export coming soon ✦`
+        error: 'APNG export coming soon ✦'
       }
     }
     
@@ -433,6 +440,126 @@ export async function exportSticker(
       error: error instanceof Error ? error.message : 'Export failed'
     }
   }
+}
+
+async function exportAsAnimatedGif(
+  imageDataUrl: string,
+  style: StickerStyle | undefined
+): Promise<Blob> {
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  
+  if (!ctx) {
+    throw new Error('Could not create canvas context')
+  }
+
+  const img = new Image()
+  await new Promise((resolve, reject) => {
+    img.onload = resolve
+    img.onerror = reject
+    img.src = imageDataUrl
+  })
+
+  const targetSize = 512
+  canvas.width = targetSize
+  canvas.height = targetSize
+
+  const totalFrames = 24
+  const fps = 12
+
+  const applyAnimationFrame = (frameIndex: number, totalFrames: number) => {
+    const progress = frameIndex / totalFrames
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.save()
+
+    const centerX = canvas.width / 2
+    const centerY = canvas.height / 2
+
+    ctx.translate(centerX, centerY)
+
+    if (style?.motion) {
+      applyMotionToContext(ctx, style.motion, progress)
+    }
+
+    const imgSize = targetSize * 0.9
+    ctx.drawImage(
+      img,
+      -imgSize / 2,
+      -imgSize / 2,
+      imgSize,
+      imgSize
+    )
+
+    ctx.restore()
+  }
+
+  return await createAnimatedGif(canvas, totalFrames, fps, applyAnimationFrame)
+}
+
+function applyMotionToContext(
+  ctx: CanvasRenderingContext2D,
+  motion: { id: string; name: string; behavior: string },
+  progress: number
+) {
+  const t = progress * Math.PI * 2
+
+  switch (motion.id) {
+    case 'breathing-glow':
+      const glowScale = 1 + Math.sin(t) * 0.08
+      ctx.scale(glowScale, glowScale)
+      ctx.globalAlpha = 0.7 + Math.sin(t) * 0.3
+      break
+
+    case 'spin':
+      ctx.rotate(t)
+      break
+
+    case 'wobble':
+      const wobbleAngle = Math.sin(t * 2) * 0.15
+      ctx.rotate(wobbleAngle)
+      break
+
+    case 'bounce':
+      const bounceY = Math.abs(Math.sin(t)) * -20
+      ctx.translate(0, bounceY)
+      break
+
+    case 'heartbeat':
+      const beatScale = 1 + Math.sin(t * 4) * 0.1
+      ctx.scale(beatScale, beatScale)
+      break
+
+    case 'sway':
+      const swayX = Math.sin(t) * 10
+      const swayRotate = Math.sin(t) * 0.05
+      ctx.translate(swayX, 0)
+      ctx.rotate(swayRotate)
+      break
+
+    case 'pulse-ring':
+      const pulseScale = 1 + Math.sin(t * 3) * 0.12
+      ctx.scale(pulseScale, pulseScale)
+      break
+
+    case 'flicker':
+      ctx.globalAlpha = Math.random() > 0.3 ? 1 : 0.7
+      break
+
+    default:
+      break
+  }
+}
+
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
 }
 
 export async function exportStickerPack(

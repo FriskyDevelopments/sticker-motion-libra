@@ -46,8 +46,8 @@ const formatOptions: FormatOption[] = [
     name: 'Animated GIF',
     description: 'Universal animated format',
     icon: Sparkle,
-    available: false,
-    badge: 'Coming Soon'
+    available: true,
+    badge: 'Motion ✦'
   },
   {
     format: 'apng',
