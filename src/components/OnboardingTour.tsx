@@ -1,8 +1,8 @@
 import { useOnboarding } from '@/hooks/use-onboarding'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { X, ArrowLeft, ArrowRight, Sparkle, Image as ImageIcon, Funnel, MagicWand, Rocket, Hand } from '@phosphor-icons/react'
-import { useEffect, useState } from 'react'
+import { X, ArrowLeft, ArrowRight, Sparkle, Image as ImageIcon, Funnel, MagicWand, Rocket, Hand, Play } from '@phosphor-icons/react'
+import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const stepIcons = {
@@ -35,6 +35,8 @@ export function OnboardingTour() {
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null)
   const [highlightPosition, setHighlightPosition] = useState({ top: 0, left: 0, width: 0, height: 0 })
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 })
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     if (!isActive || !currentStep) {
@@ -267,6 +269,63 @@ export function OnboardingTour() {
                 <p className="text-base text-muted-foreground leading-relaxed">
                   {currentStep.description}
                 </p>
+                
+                {currentStep.videoUrl && (
+                  <motion.div
+                    className="relative mt-6"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <div className="relative rounded-xl overflow-hidden border-2 border-border/50 video-glow">
+                      <video
+                        ref={videoRef}
+                        className="w-full h-auto"
+                        poster={currentStep.videoPoster}
+                        loop
+                        muted
+                        playsInline
+                        onPlay={() => setIsVideoPlaying(true)}
+                        onPause={() => setIsVideoPlaying(false)}
+                        onEnded={() => setIsVideoPlaying(false)}
+                        autoPlay
+                      >
+                        <source src={currentStep.videoUrl} type="video/mp4" />
+                      </video>
+                      
+                      {!isVideoPlaying && (
+                        <motion.button
+                          className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm cursor-pointer group"
+                          onClick={() => videoRef.current?.play()}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          whileHover={{ backgroundColor: 'oklch(0.12 0.015 260 / 0.7)' }}
+                        >
+                          <motion.div
+                            className="w-20 h-20 rounded-full bg-primary/90 backdrop-blur flex items-center justify-center"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            style={{
+                              boxShadow: `0 10px 40px ${stepColor}60`,
+                            }}
+                          >
+                            <Play size={36} weight="fill" className="text-primary-foreground ml-1" />
+                          </motion.div>
+                        </motion.button>
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center justify-center gap-2 mt-3">
+                      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/30">
+                        <Sparkle size={14} weight="fill" style={{ color: stepColor }} />
+                        <span className="text-xs font-medium text-muted-foreground">
+                          {isVideoPlaying ? 'Playing tutorial' : 'Tap to watch tutorial'}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
               </div>
 
               <Button
@@ -279,7 +338,7 @@ export function OnboardingTour() {
               </Button>
             </div>
 
-            {currentStep.position === 'center' && (
+            {currentStep.position === 'center' && !currentStep.videoUrl && (
               <motion.div
                 className="flex items-center justify-center py-6"
                 initial={{ opacity: 0, y: 20 }}

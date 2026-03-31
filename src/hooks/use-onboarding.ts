@@ -1,5 +1,7 @@
 import { useKV } from '@github/spark/hooks'
 import { useEffect, useState } from 'react'
+import welcomeVideo from '@/assets/video/stix-magic.mp4'
+import welcomePoster from '@/assets/images/stix-magic-poster.png'
 
 export type OnboardingStep = {
   id: string
@@ -8,43 +10,55 @@ export type OnboardingStep = {
   targetSelector: string
   position: 'top' | 'bottom' | 'left' | 'right' | 'center'
   action?: string
+  videoUrl?: string
+  videoPoster?: string
 }
 
 const ONBOARDING_STEPS: OnboardingStep[] = [
   {
     id: 'welcome',
     title: 'Welcome to STIX MAGIC ✦',
-    description: 'Transform any image into animated magic with ready-made styles. Let\'s explore the three simple steps to create your sticker.',
+    description: 'Transform any image into animated magic with ready-made styles. Watch this quick intro to see how it works.',
     targetSelector: 'body',
     position: 'center',
+    videoUrl: welcomeVideo,
+    videoPoster: welcomePoster,
   },
   {
     id: 'pick-style',
     title: 'Pick a style ✦',
-    description: 'Browse our curated collection of animated styles. Each one combines edge finish and motion into a ready-made result.',
+    description: 'Browse our curated collection of animated styles. Each one combines edge finish and motion into a ready-made result. Click any card to see the magic in action.',
     targetSelector: '[data-tour="style-gallery"]',
     position: 'top',
+    videoUrl: welcomeVideo,
+    videoPoster: welcomePoster,
   },
   {
     id: 'preview-style',
     title: 'See it come to life',
-    description: 'Click any style card to preview it in detail and see how the motion and finish work together.',
+    description: 'Click any style card to preview it in detail and see how the motion and finish work together. Every style is fully animated and ready to apply.',
     targetSelector: '[data-tour="style-card"]',
     position: 'bottom',
+    videoUrl: welcomeVideo,
+    videoPoster: welcomePoster,
   },
   {
     id: 'upload-image',
     title: 'Apply to your image ✦',
-    description: 'Ready to create? Switch to the "Your Image" tab to upload your photo and apply any style with one click.',
+    description: 'Switch to the "Your Image" tab to upload your photo. Once uploaded, apply any style with one click and watch your image transform into an animated sticker.',
     targetSelector: '[data-tour="upload-tab"]',
     position: 'bottom',
+    videoUrl: welcomeVideo,
+    videoPoster: welcomePoster,
   },
   {
     id: 'complete',
     title: 'You\'re ready to go ✦',
-    description: 'That\'s it! Pick a style, upload your image, and watch the magic happen. Your transformed sticker will be ready to download as an animated GIF.',
+    description: 'That\'s it! Pick a style, upload your image, and watch the magic happen. Your transformed sticker will be ready to download as an animated GIF or share online.',
     targetSelector: 'body',
     position: 'center',
+    videoUrl: welcomeVideo,
+    videoPoster: welcomePoster,
   },
 ]
 
