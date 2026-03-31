@@ -81,7 +81,7 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
             <Sparkle size={32} weight="duotone" className="text-accent" />
           </motion.div>
           
-          <h2 className="text-3xl md:text-4xl font-bold text-center gradient-text">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center gradient-text px-4">
             Pick a style
           </h2>
           
@@ -97,23 +97,23 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
               delay: 0.5
             }}
           >
-            <Sparkle size={32} weight="duotone" className="text-primary" />
+            <Sparkle size={28} weight="duotone" className="sm:w-8 sm:h-8 text-primary" />
           </motion.div>
         </div>
         
-        <Tabs value={selectedVibe} onValueChange={(v) => setSelectedVibe(v as VibeCategory | 'all' | 'favorites')} className="space-y-6">
+        <Tabs value={selectedVibe} onValueChange={(v) => setSelectedVibe(v as VibeCategory | 'all' | 'favorites')} className="space-y-4 sm:space-y-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.4 }}
           >
-            <TabsList className="w-full grid grid-cols-2 md:grid-cols-6 h-auto p-1.5 bg-card/60 backdrop-blur-md border border-border/40 shadow-xl">
+            <TabsList className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 h-auto p-1 sm:p-1.5 gap-1 sm:gap-0 bg-card/60 backdrop-blur-md border border-border/40 shadow-xl">
               <TabsTrigger 
                 value="all" 
-                className="py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300"
+                className="py-2.5 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 min-h-[44px]"
               >
-                All Styles
-                <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
+                <span className="truncate">All Styles</span>
+                <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs bg-muted/80">
                   {featuredStyles.length}
                 </Badge>
               </TabsTrigger>
@@ -126,12 +126,12 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
               >
                 <TabsTrigger 
                   value="favorites"
-                  className="py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-accent/30 transition-all duration-300 w-full"
+                  className="py-2.5 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-accent/30 transition-all duration-300 w-full min-h-[44px]"
                 >
-                  <Heart size={16} weight={hasFavorites ? 'fill' : 'regular'} className="mr-1.5" />
-                  Favorites
+                  <Heart size={14} weight={hasFavorites ? 'fill' : 'regular'} className="mr-1 sm:mr-1.5 sm:w-4 sm:h-4" />
+                  <span className="truncate">Favorites</span>
                   {hasFavorites && (
-                    <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
+                    <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs bg-muted/80">
                       {favoriteCount}
                     </Badge>
                   )}
@@ -151,10 +151,10 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                   >
                     <TabsTrigger 
                       value={vibe} 
-                      className="py-3 text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 w-full"
+                      className="py-2.5 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 w-full min-h-[44px]"
                     >
-                      {info.name}
-                      <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
+                      <span className="truncate">{info.name}</span>
+                      <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs bg-muted/80">
                         {count}
                       </Badge>
                     </TabsTrigger>
@@ -163,10 +163,10 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                   <TabsTrigger 
                     key={vibe} 
                     value={vibe} 
-                    className="py-3 text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300"
+                    className="py-2.5 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 min-h-[44px]"
                   >
-                    {info.name}
-                    <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
+                    <span className="truncate">{info.name}</span>
+                    <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs bg-muted/80">
                       {count}
                     </Badge>
                   </TabsTrigger>
@@ -176,7 +176,7 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
           </motion.div>
 
           <AnimatePresence mode="wait">
-            <TabsContent value={selectedVibe} className="mt-6">
+            <TabsContent value={selectedVibe} className="mt-4 sm:mt-6">
               {filteredStyles.length === 0 ? (
                 <motion.div 
                   className="text-center py-16"

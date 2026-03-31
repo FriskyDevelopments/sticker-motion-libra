@@ -39,42 +39,42 @@ function App() {
   return (
     <div className="min-h-screen mesh-background relative">
       <ParticleField />
-      <Toaster position="top-right" richColors />
+      <Toaster position="top-center" richColors className="sm:!top-4" />
       <OnboardingTour />
       <SettingsMenu />
       
-      <div className="container mx-auto px-6 md:px-8 lg:px-12 py-12 md:py-16 relative z-10">
-        <header className="mb-16 text-center space-y-8 relative">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16 relative z-10">
+        <header className="mb-12 sm:mb-16 text-center space-y-6 sm:space-y-8 relative">
           <div className="absolute inset-0 -top-20 overflow-hidden pointer-events-none">
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse" />
             <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-accent/8 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
           </div>
           
-          <div className="relative z-10 space-y-6">
-            <div className="inline-flex items-center justify-center gap-4 mb-6">
+          <div className="relative z-10 space-y-4 sm:space-y-6">
+            <div className="inline-flex items-center justify-center gap-3 sm:gap-4 mb-4 sm:mb-6">
               <div className="logo-container">
                 <img 
                   src={logoImage} 
                   alt="STIX MAGIC" 
-                  className="w-24 h-24 md:w-28 md:h-28 rounded-2xl object-cover animate-float-gentle relative z-10 border-2 border-primary/20"
+                  className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl object-cover animate-float-gentle relative z-10 border-2 border-primary/20"
                 />
               </div>
-              <Sparkle size={56} weight="duotone" className="text-accent animate-pulse drop-shadow-[0_0_20px_oklch(0.72_0.19_320/0.5)]" />
+              <Sparkle size={48} weight="duotone" className="sm:w-14 sm:h-14 text-accent animate-pulse drop-shadow-[0_0_20px_oklch(0.72_0.19_320/0.5)]" />
             </div>
             
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold gradient-text tracking-tight mb-6 drop-shadow-2xl">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold gradient-text tracking-tight mb-4 sm:mb-6 drop-shadow-2xl px-2">
               STIX MAGIC
             </h1>
             
-            <p className="text-2xl md:text-3xl text-foreground/90 max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="text-lg sm:text-xl md:text-3xl text-foreground/90 max-w-2xl mx-auto leading-relaxed font-medium px-4">
               Pick a style ✦ Bring it to life ✦ Create your sticker
             </p>
             
-            <p className="text-lg md:text-xl text-muted-foreground/80 max-w-xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground/80 max-w-xl mx-auto px-4">
               Transform any image into animated magic with ready-made styles
             </p>
 
-            <div className="mt-10 max-w-3xl mx-auto rounded-2xl overflow-hidden video-glow relative">
+            <div className="mt-8 sm:mt-10 max-w-3xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden video-glow relative">
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10 pointer-events-none" />
               <video 
                 autoPlay 
@@ -90,10 +90,10 @@ function App() {
           </div>
         </header>
 
-        <ExampleTransformation className="mb-16" />
+        <ExampleTransformation className="mb-12 sm:mb-16" />
 
-        <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-10">
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 h-auto p-1.5 bg-card/50 backdrop-blur-md border border-border/50 shadow-xl">
+        <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-8 sm:space-y-10">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 h-auto p-1 sm:p-1.5 gap-1 sm:gap-0 bg-card/50 backdrop-blur-md border border-border/50 shadow-xl">
             <InteractiveHotspot
               id="styles-tab"
               title="Browse Style Gallery"
@@ -102,9 +102,9 @@ function App() {
               autoShow={true}
               delay={2000}
             >
-              <TabsTrigger value="styles" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300">
-                <Funnel size={22} weight="duotone" />
-                Pick a Style ✦
+              <TabsTrigger value="styles" className="flex items-center justify-center gap-2 sm:gap-3 py-3 sm:py-4 text-sm sm:text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300 min-h-[44px]">
+                <Funnel size={20} weight="duotone" className="sm:w-[22px] sm:h-[22px]" />
+                <span className="whitespace-nowrap">Pick a Style ✦</span>
               </TabsTrigger>
             </InteractiveHotspot>
             <InteractiveHotspot
@@ -114,9 +114,9 @@ function App() {
               position="bottom"
               autoShow={false}
             >
-              <TabsTrigger data-tour="upload-tab" value="upload" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg transition-all duration-300">
-                <ImageIcon size={22} weight="duotone" />
-                Your Image
+              <TabsTrigger data-tour="upload-tab" value="upload" className="flex items-center justify-center gap-2 sm:gap-3 py-3 sm:py-4 text-sm sm:text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg transition-all duration-300 min-h-[44px]">
+                <ImageIcon size={20} weight="duotone" className="sm:w-[22px] sm:h-[22px]" />
+                <span className="whitespace-nowrap">Your Image</span>
               </TabsTrigger>
             </InteractiveHotspot>
           </TabsList>
@@ -169,28 +169,28 @@ function App() {
           </TabsContent>
         </Tabs>
 
-        <footer className="mt-32 pt-16 border-t border-border/30 text-center relative">
+        <footer className="mt-24 sm:mt-32 pt-12 sm:pt-16 border-t border-border/30 text-center relative">
           <div className="absolute inset-0 bg-gradient-to-t from-card/20 via-transparent to-transparent pointer-events-none" />
           
-          <div className="relative z-10 flex flex-col items-center gap-8">
+          <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8 px-4">
             <div className="logo-container group cursor-pointer">
               <img 
                 src={logoImage} 
                 alt="STIX MAGIC Logo" 
-                className="w-20 h-20 rounded-xl object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 border border-border/30 group-hover:border-primary/40"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 border border-border/30 group-hover:border-primary/40"
               />
             </div>
             
-            <div className="space-y-3">
-              <p className="text-lg font-bold gradient-text">
+            <div className="space-y-2 sm:space-y-3">
+              <p className="text-base sm:text-lg font-bold gradient-text">
                 STIX MAGIC
               </p>
-              <p className="text-sm text-muted-foreground/70 max-w-md leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground/70 max-w-md leading-relaxed px-4">
                 Transform images into animated stickers with ready-made magic ✦
               </p>
             </div>
 
-            <div className="flex items-center gap-3 text-sm text-muted-foreground/60">
+            <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground/60 px-4">
               <span>🐾 Forged with a frisky paw and a daring heart</span>
             </div>
           </div>

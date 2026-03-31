@@ -42,9 +42,9 @@ export function SettingsMenu() {
           <Button
             variant="ghost"
             size="icon"
-            className="fixed top-6 right-6 z-50 w-10 h-10 rounded-full bg-card/80 backdrop-blur-md border border-border/50 hover:bg-card hover:border-primary/30 transition-all duration-300"
+            className="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 w-12 h-12 sm:w-10 sm:h-10 rounded-full bg-card/80 backdrop-blur-md border border-border/50 hover:bg-card hover:border-primary/30 transition-all duration-300 touch-manipulation"
           >
-            <GearSix size={20} weight="duotone" />
+            <GearSix size={22} weight="duotone" className="sm:w-5 sm:h-5" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56 bg-card/95 backdrop-blur-md border-border/50">
