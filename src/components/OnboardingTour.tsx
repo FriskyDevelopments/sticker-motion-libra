@@ -1,9 +1,25 @@
 import { useOnboarding } from '@/hooks/use-onboarding'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { X, ArrowLeft, ArrowRight, Sparkle } from '@phosphor-icons/react'
+import { X, ArrowLeft, ArrowRight, Sparkle, Image as ImageIcon, Funnel, MagicWand, Rocket, Hand } from '@phosphor-icons/react'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+
+const stepIcons = {
+  'welcome': Rocket,
+  'pick-style': Funnel,
+  'preview-style': MagicWand,
+  'upload-image': ImageIcon,
+  'complete': Sparkle,
+}
+
+const stepColors = {
+  'welcome': 'oklch(0.68 0.22 280)',
+  'pick-style': 'oklch(0.72 0.19 320)',
+  'preview-style': 'oklch(0.65 0.18 200)',
+  'upload-image': 'oklch(0.70 0.16 170)',
+  'complete': 'oklch(0.68 0.22 280)',
+}
 
 export function OnboardingTour() {
   const {
@@ -45,26 +61,26 @@ export function OnboardingTour() {
           : currentStep.position === 'bottom'
           ? rect.bottom + window.scrollY + 20
           : currentStep.position === 'center'
-          ? window.innerHeight / 2 - 150
+          ? window.innerHeight / 2 - 180
           : rect.top + window.scrollY + rect.height / 2
 
         const tooltipLeft = currentStep.position === 'left'
-          ? rect.left + window.scrollX - 400
+          ? rect.left + window.scrollX - 450
           : currentStep.position === 'right'
           ? rect.right + window.scrollX + 20
           : currentStep.position === 'center'
-          ? window.innerWidth / 2 - 200
-          : rect.left + window.scrollX + rect.width / 2 - 200
+          ? window.innerWidth / 2 - 250
+          : rect.left + window.scrollX + rect.width / 2 - 250
 
         setTooltipPosition({
           top: tooltipTop,
-          left: Math.max(20, Math.min(tooltipLeft, window.innerWidth - 420)),
+          left: Math.max(20, Math.min(tooltipLeft, window.innerWidth - 520)),
         })
       } else {
         setTargetElement(null)
         setTooltipPosition({
-          top: window.innerHeight / 2 - 150,
-          left: window.innerWidth / 2 - 200,
+          top: window.innerHeight / 2 - 180,
+          left: window.innerWidth / 2 - 250,
         })
       }
     }
@@ -81,122 +97,290 @@ export function OnboardingTour() {
 
   if (!isActive || !currentStep) return null
 
+  const StepIcon = stepIcons[currentStep.id as keyof typeof stepIcons] || Sparkle
+  const stepColor = stepColors[currentStep.id as keyof typeof stepColors] || 'oklch(0.68 0.22 280)'
+
   return (
     <div className="fixed inset-0 z-[9999] pointer-events-none">
-      <div className="fixed inset-0 bg-background/80 backdrop-blur-sm pointer-events-auto" onClick={skipOnboarding} />
+      <div className="fixed inset-0 bg-background/85 backdrop-blur-md pointer-events-auto" onClick={skipOnboarding} />
       
       <AnimatePresence mode="wait">
         {targetElement && currentStep.position !== 'center' && (
           <motion.div
             key={`highlight-${currentStep.id}`}
             className="absolute pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
             style={{
-              top: highlightPosition.top - 8,
-              left: highlightPosition.left - 8,
-              width: highlightPosition.width + 16,
-              height: highlightPosition.height + 16,
+              top: highlightPosition.top - 12,
+              left: highlightPosition.left - 12,
+              width: highlightPosition.width + 24,
+              height: highlightPosition.height + 24,
               border: '3px solid',
-              borderColor: 'oklch(0.68 0.22 280)',
-              borderRadius: '1rem',
+              borderColor: stepColor,
+              borderRadius: '1.25rem',
               boxShadow: `
-                0 0 0 4px oklch(0.68 0.22 280 / 0.1),
-                0 0 40px oklch(0.68 0.22 280 / 0.4),
-                inset 0 0 20px oklch(0.68 0.22 280 / 0.15)
+                0 0 0 6px ${stepColor}15,
+                0 0 50px ${stepColor}40,
+                inset 0 0 30px ${stepColor}15
               `,
             }}
-          />
+          >
+            <motion.div
+              className="absolute inset-0 rounded-[1.25rem]"
+              style={{
+                border: '2px dashed',
+                borderColor: stepColor,
+                opacity: 0.3,
+              }}
+              animate={{
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+            
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute inset-0 rounded-[1.25rem]"
+                style={{
+                  border: '2px solid',
+                  borderColor: stepColor,
+                  opacity: 0,
+                }}
+                animate={{
+                  opacity: [0, 0.3, 0],
+                  scale: [1, 1.15, 1.3],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.6,
+                  ease: 'easeOut',
+                }}
+              />
+            ))}
+          </motion.div>
         )}
       </AnimatePresence>
 
       <motion.div
         key={`tooltip-${currentStep.id}`}
         className="absolute pointer-events-auto"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -20, scale: 0.95 }}
+        transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
         style={{
           top: tooltipPosition.top,
           left: tooltipPosition.left,
         }}
       >
-        <Card className="w-[400px] bg-card/95 backdrop-blur-md border-2 border-primary/30 shadow-2xl">
-          <CardContent className="p-6 space-y-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <Sparkle size={24} weight="duotone" className="text-primary animate-pulse" />
-                <h3 className="text-lg font-bold text-foreground">
-                  {currentStep.title}
-                </h3>
+        <Card className="w-[500px] bg-card/98 backdrop-blur-xl border-2 border-primary/40 shadow-2xl relative overflow-hidden">
+          <div 
+            className="absolute top-0 left-0 right-0 h-1 opacity-80"
+            style={{
+              background: `linear-gradient(90deg, ${stepColor}, ${stepColor}80, ${stepColor})`,
+            }}
+          />
+          
+          <div 
+            className="absolute inset-0 opacity-5 pointer-events-none"
+            style={{
+              background: `radial-gradient(circle at 20% 20%, ${stepColor} 0%, transparent 50%)`,
+            }}
+          />
+          
+          <CardContent className="p-8 space-y-6 relative">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-4">
+                  <motion.div
+                    className="relative"
+                    animate={{
+                      rotate: [0, 5, -5, 0],
+                      scale: [1, 1.1, 1.1, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    <div 
+                      className="absolute inset-0 rounded-xl opacity-30 blur-xl"
+                      style={{ backgroundColor: stepColor }}
+                    />
+                    <div 
+                      className="relative rounded-xl p-3"
+                      style={{
+                        backgroundColor: `${stepColor}20`,
+                        border: `2px solid ${stepColor}40`,
+                      }}
+                    >
+                      <StepIcon 
+                        size={32} 
+                        weight="duotone" 
+                        style={{ color: stepColor }}
+                      />
+                    </div>
+                  </motion.div>
+                  
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-foreground leading-tight">
+                      {currentStep.title}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs font-medium text-muted-foreground">
+                        Step {currentStepIndex + 1} of {totalSteps}
+                      </span>
+                      <div className="flex gap-1">
+                        {Array.from({ length: totalSteps }).map((_, index) => (
+                          <motion.div
+                            key={index}
+                            className="h-1 w-6 rounded-full"
+                            style={{
+                              backgroundColor: index <= currentStepIndex ? stepColor : 'oklch(0.28 0.025 260)',
+                            }}
+                            initial={false}
+                            animate={{
+                              scale: index === currentStepIndex ? [1, 1.2, 1] : 1,
+                            }}
+                            transition={{
+                              duration: 0.8,
+                              repeat: index === currentStepIndex ? Infinity : 0,
+                              ease: 'easeInOut',
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-base text-muted-foreground leading-relaxed">
+                  {currentStep.description}
+                </p>
               </div>
+
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 -mt-1 -mr-1"
+                className="h-9 w-9 rounded-full hover:bg-destructive/20 hover:text-destructive -mt-1"
                 onClick={skipOnboarding}
               >
-                <X size={18} />
+                <X size={20} weight="bold" />
               </Button>
             </div>
 
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {currentStep.description}
-            </p>
+            {currentStep.position === 'center' && (
+              <motion.div
+                className="flex items-center justify-center py-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <div className="relative">
+                  {[...Array(8)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute"
+                      style={{
+                        left: '50%',
+                        top: '50%',
+                        marginLeft: '-4px',
+                        marginTop: '-4px',
+                      }}
+                      animate={{
+                        x: Math.cos((i / 8) * Math.PI * 2) * 60,
+                        y: Math.sin((i / 8) * Math.PI * 2) * 60,
+                        opacity: [0, 1, 0],
+                        scale: [0, 1, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        delay: i * 0.1,
+                        ease: 'easeOut',
+                      }}
+                    >
+                      <Sparkle size={16} weight="fill" style={{ color: stepColor }} />
+                    </motion.div>
+                  ))}
+                  
+                  <motion.div
+                    animate={{
+                      rotate: 360,
+                      scale: [1, 1.1, 1],
+                    }}
+                    transition={{
+                      rotate: { duration: 4, repeat: Infinity, ease: 'linear' },
+                      scale: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
+                    }}
+                  >
+                    <Hand size={48} weight="duotone" style={{ color: stepColor }} />
+                  </motion.div>
+                </div>
+              </motion.div>
+            )}
 
-            <div className="flex items-center justify-between pt-2">
-              <div className="text-xs text-muted-foreground font-medium">
-                Step {currentStepIndex + 1} of {totalSteps}
-              </div>
-
+            <div className="flex items-center justify-between pt-2 border-t border-border/50">
               <div className="flex items-center gap-2">
                 {currentStepIndex > 0 && (
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     onClick={previousStep}
-                    className="gap-2"
+                    className="gap-2 border-border/50 hover:border-border"
                   >
-                    <ArrowLeft size={16} />
+                    <ArrowLeft size={16} weight="bold" />
                     Back
                   </Button>
                 )}
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={skipOnboarding}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  Skip tour
+                </Button>
                 
                 <Button
                   size="sm"
                   onClick={nextStep}
-                  className="gap-2 bg-primary hover:bg-primary/90"
+                  className="gap-2 relative overflow-hidden group"
+                  style={{
+                    backgroundColor: stepColor,
+                    color: 'white',
+                  }}
                 >
-                  {currentStepIndex === totalSteps - 1 ? (
-                    <>
-                      Finish ✦
-                    </>
-                  ) : (
-                    <>
-                      Next
-                      <ArrowRight size={16} />
-                    </>
-                  )}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute inset-0 bg-white/20" />
+                  </div>
+                  <span className="relative z-10">
+                    {currentStepIndex === totalSteps - 1 ? (
+                      <>
+                        Finish ✦
+                      </>
+                    ) : (
+                      <>
+                        Next
+                        <ArrowRight size={16} weight="bold" />
+                      </>
+                    )}
+                  </span>
                 </Button>
               </div>
-            </div>
-
-            <div className="flex gap-1.5 pt-2">
-              {Array.from({ length: totalSteps }).map((_, index) => (
-                <div
-                  key={index}
-                  className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
-                    index === currentStepIndex
-                      ? 'bg-primary'
-                      : index < currentStepIndex
-                      ? 'bg-primary/50'
-                      : 'bg-muted'
-                  }`}
-                />
-              ))}
             </div>
           </CardContent>
         </Card>
