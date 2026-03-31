@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Sparkle, Heart } from '@phosphor-icons/react'
 import type { StickerStyle } from '@/lib/stickerStyles'
+import { InteractiveHotspot } from '@/components/InteractiveHotspot'
 
 interface StickerStyleCardProps {
   style: StickerStyle
@@ -63,18 +64,26 @@ export function StickerStyleCard({ style, onClick, isFavorite = false, onToggleF
           </motion.div>
 
           {onToggleFavorite && (
-            <Button
-              size="icon"
-              variant="ghost"
-              className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background/95 transition-all duration-300"
-              onClick={handleFavoriteClick}
+            <InteractiveHotspot
+              id={`style-favorite-${style.id}`}
+              title="Save to Favorites"
+              description="Click the heart ♥ to save this style to your favorites collection for quick access anytime ✦"
+              position="left"
+              autoShow={false}
             >
-              <Heart 
-                size={20} 
-                weight={isFavorite ? 'fill' : 'regular'}
-                className={isFavorite ? 'text-accent' : 'text-muted-foreground'}
-              />
-            </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background/95 transition-all duration-300"
+                onClick={handleFavoriteClick}
+              >
+                <Heart 
+                  size={20} 
+                  weight={isFavorite ? 'fill' : 'regular'}
+                  className={isFavorite ? 'text-accent' : 'text-muted-foreground'}
+                />
+              </Button>
+            </InteractiveHotspot>
           )}
 
           <motion.div

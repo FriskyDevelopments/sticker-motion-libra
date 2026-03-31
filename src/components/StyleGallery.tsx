@@ -10,6 +10,7 @@ import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useFavorites } from '@/hooks/use-favorites'
 import { toast } from 'sonner'
+import { InteractiveHotspot } from '@/components/InteractiveHotspot'
 
 interface StyleGalleryProps {
   onStyleSelect?: (style: StickerStyle) => void
@@ -116,22 +117,49 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                   {featuredStyles.length}
                 </Badge>
               </TabsTrigger>
-              <TabsTrigger 
-                value="favorites"
-                className="py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-accent/30 transition-all duration-300"
+              <InteractiveHotspot
+                id="favorites-tab"
+                title="Save Your Favorite Styles"
+                description="Click the heart ♥ on any style card to save it here for quick access later. Build your personal collection of magic ✦"
+                position="bottom"
+                autoShow={false}
               >
-                <Heart size={16} weight={hasFavorites ? 'fill' : 'regular'} className="mr-1.5" />
-                Favorites
-                {hasFavorites && (
-                  <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
-                    {favoriteCount}
-                  </Badge>
-                )}
-              </TabsTrigger>
+                <TabsTrigger 
+                  value="favorites"
+                  className="py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-accent/30 transition-all duration-300 w-full"
+                >
+                  <Heart size={16} weight={hasFavorites ? 'fill' : 'regular'} className="mr-1.5" />
+                  Favorites
+                  {hasFavorites && (
+                    <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
+                      {favoriteCount}
+                    </Badge>
+                  )}
+                </TabsTrigger>
+              </InteractiveHotspot>
               {vibeCategories.map((vibe, index) => {
                 const info = vibeInfo[vibe]
                 const count = featuredStyles.filter(s => s.vibe === vibe).length
-                return (
+                return index === 0 ? (
+                  <InteractiveHotspot
+                    key={vibe}
+                    id={`vibe-filter-${vibe}`}
+                    title="Filter by Vibe"
+                    description={`${info.name} styles: ${info.description} Perfect for ${info.emoji} vibes. Click to see only ${info.name.toLowerCase()} styles.`}
+                    position="bottom"
+                    autoShow={false}
+                  >
+                    <TabsTrigger 
+                      value={vibe} 
+                      className="py-3 text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 w-full"
+                    >
+                      {info.name}
+                      <Badge variant="secondary" className="ml-2 text-xs bg-muted/80">
+                        {count}
+                      </Badge>
+                    </TabsTrigger>
+                  </InteractiveHotspot>
+                ) : (
                   <TabsTrigger 
                     key={vibe} 
                     value={vibe} 
