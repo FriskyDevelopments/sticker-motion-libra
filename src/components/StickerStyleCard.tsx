@@ -74,13 +74,13 @@ export function StickerStyleCard({ style, onClick, isFavorite = false, onToggleF
               <Button
                 size="icon"
                 variant="ghost"
-                className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background/95 transition-all duration-300"
+                className="absolute top-3 right-3 z-20 w-10 h-10 md:w-11 md:h-11 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background/95 transition-all duration-300"
                 onClick={handleFavoriteClick}
               >
                 <Heart 
                   size={20} 
                   weight={isFavorite ? 'fill' : 'regular'}
-                  className={isFavorite ? 'text-accent' : 'text-muted-foreground'}
+                  className={`md:w-6 md:h-6 ${isFavorite ? 'text-accent' : 'text-muted-foreground'}`}
                 />
               </Button>
             </InteractiveHotspot>

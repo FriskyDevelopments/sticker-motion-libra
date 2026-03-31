@@ -57,20 +57,20 @@ export function TransformationControls({
           exit={{ opacity: 0, y: 20 }}
           className={cn('w-full', className)}
         >
-          <Card className="p-4 bg-card/50 backdrop-blur-md border-border/50">
+          <Card className="p-4 md:p-5 bg-card/50 backdrop-blur-md border-border/50">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                <Sparkle size={20} weight="duotone" className="text-primary flex-shrink-0" />
+                <Sparkle size={20} weight="duotone" className="md:w-6 md:h-6 text-primary flex-shrink-0" />
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-semibold text-foreground truncate">
+                  <p className="text-sm md:text-base font-semibold text-foreground truncate">
                     {appliedStyle ? appliedStyle.name : 'Magic Applied'}
                   </p>
                   {appliedStyle && (
                     <div className="flex items-center gap-2 mt-1 flex-wrap">
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="secondary" className="text-xs md:text-sm">
                         {appliedStyle.mask.name}
                       </Badge>
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="outline" className="text-xs md:text-sm">
                         {appliedStyle.motion.name}
                       </Badge>
                     </div>
@@ -78,9 +78,9 @@ export function TransformationControls({
                 </div>
               </div>
 
-              <Separator orientation="vertical" className="h-10 hidden md:block" />
+              <Separator orientation="vertical" className="h-10 md:h-12 hidden md:block" />
 
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-2 md:gap-3 flex-wrap">
                 <InteractiveHotspot
                   id="undo-button"
                   title="Undo Changes"
@@ -93,9 +93,9 @@ export function TransformationControls({
                     size="sm"
                     onClick={onUndo}
                     disabled={!canUndo}
-                    className="gap-2"
+                    className="gap-2 min-h-[44px]"
                   >
-                    <ArrowCounterClockwise size={16} weight="bold" />
+                    <ArrowCounterClockwise size={16} weight="bold" className="md:w-5 md:h-5" />
                     <span className="hidden sm:inline">Undo</span>
                   </Button>
                 </InteractiveHotspot>
@@ -105,13 +105,13 @@ export function TransformationControls({
                   size="sm"
                   onClick={onRedo}
                   disabled={!canRedo}
-                  className="gap-2"
+                  className="gap-2 min-h-[44px]"
                 >
-                  <ArrowClockwise size={16} weight="bold" />
+                  <ArrowClockwise size={16} weight="bold" className="md:w-5 md:h-5" />
                   <span className="hidden sm:inline">Redo</span>
                 </Button>
 
-                <Separator orientation="vertical" className="h-6" />
+                <Separator orientation="vertical" className="h-6 md:h-8" />
 
                 <InteractiveHotspot
                   id="revert-button"
@@ -125,14 +125,14 @@ export function TransformationControls({
                     size="sm"
                     onClick={onRevert}
                     disabled={!hasTransformation}
-                    className="gap-2 text-muted-foreground hover:text-foreground"
+                    className="gap-2 min-h-[44px] text-muted-foreground hover:text-foreground"
                   >
-                    <ArrowUUpLeft size={16} weight="bold" />
+                    <ArrowUUpLeft size={16} weight="bold" className="md:w-5 md:h-5" />
                     <span className="hidden sm:inline">Revert</span>
                   </Button>
                 </InteractiveHotspot>
 
-                <Separator orientation="vertical" className="h-6" />
+                <Separator orientation="vertical" className="h-6 md:h-8" />
 
                 {hasBatchExport && (
                   <>
@@ -147,14 +147,14 @@ export function TransformationControls({
                         variant="outline"
                         size="sm"
                         onClick={() => setBatchExportDialogOpen(true)}
-                        className="gap-2"
+                        className="gap-2 min-h-[44px]"
                       >
-                        <Package size={16} weight="bold" />
+                        <Package size={16} weight="bold" className="md:w-5 md:h-5" />
                         <span className="hidden sm:inline">Batch Export ✦</span>
                         <span className="sm:hidden">Batch</span>
                       </Button>
                     </InteractiveHotspot>
-                    <Separator orientation="vertical" className="h-6" />
+                    <Separator orientation="vertical" className="h-6 md:h-8" />
                   </>
                 )}
 
@@ -170,9 +170,9 @@ export function TransformationControls({
                     size="sm"
                     onClick={() => setExportDialogOpen(true)}
                     disabled={!hasTransformation}
-                    className="gap-2 bg-primary hover:bg-primary/90"
+                    className="gap-2 min-h-[44px] bg-primary hover:bg-primary/90"
                   >
-                    <DownloadSimple size={16} weight="bold" />
+                    <DownloadSimple size={16} weight="bold" className="md:w-5 md:h-5" />
                     <span className="hidden sm:inline">Download ✦</span>
                     <span className="sm:hidden">Export</span>
                   </Button>

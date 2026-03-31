@@ -167,9 +167,9 @@ export function ImageUpload({ onImageSelect, currentImage, onClear, className }:
                 <Button
                   variant="secondary"
                   size="sm"
-                  className="gap-2"
+                  className="gap-2 min-h-[44px]"
                 >
-                  <Upload size={16} />
+                  <Upload size={16} className="md:w-5 md:h-5" />
                   Change image
                 </Button>
               </div>
@@ -178,10 +178,10 @@ export function ImageUpload({ onImageSelect, currentImage, onClear, className }:
                 <Button
                   variant="destructive"
                   size="icon"
-                  className="absolute top-3 right-3 h-8 w-8 rounded-full"
+                  className="absolute top-3 right-3 h-9 w-9 md:h-11 md:w-11 rounded-full"
                   onClick={handleClear}
                 >
-                  <X size={18} weight="bold" />
+                  <X size={18} weight="bold" className="md:w-5 md:h-5" />
                 </Button>
               )}
             </motion.div>
