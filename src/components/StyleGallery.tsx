@@ -82,7 +82,7 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
           </motion.div>
           
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center gradient-text px-4">
-            Pick a style
+            Choose Your Style ✦
           </h2>
           
           <motion.div
@@ -144,8 +144,8 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                   <InteractiveHotspot
                     key={vibe}
                     id={`vibe-filter-${vibe}`}
-                    title="Filter by Vibe"
-                    description={`${info.name} styles: ${info.description} Perfect for ${info.emoji} vibes. Click to see only ${info.name.toLowerCase()} styles.`}
+                    title="Filter Sticker Styles by Vibe"
+                    description={`${info.name} styles: ${info.description} Perfect for creating ${info.name.toLowerCase()} Telegram stickers. Click to filter.`}
                     position="bottom"
                     autoShow={false}
                   >

@@ -41,18 +41,18 @@ export function ExampleTransformation({ className }: ExampleTransformationProps)
             }}
             transition={{ duration: 5, repeat: Infinity }}
           >
-            How it comes to life ✦
+            Create Your Sticker ✦
           </motion.h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            See how your image transforms with mask refinement and motion magic
+            Pick a style → Apply to your image → Edge refined → Motion infused → Ready for Telegram
           </p>
         </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4 items-center max-w-5xl mx-auto">
         <TransformStep
           image={logoExample}
-          label="Your Image"
-          description="Upload or select"
+          label="Your image ○"
+          description="Upload"
           delay={0}
         />
 
@@ -61,7 +61,7 @@ export function ExampleTransformation({ className }: ExampleTransformationProps)
         <TransformStep
           image={logoExample}
           label="Edge refined △"
-          description="Mask applied"
+          description="Finish applied"
           delay={0.2}
           withGlow
         />
@@ -70,8 +70,8 @@ export function ExampleTransformation({ className }: ExampleTransformationProps)
 
         <TransformStep
           image={exampleGif}
-          label="Motion infused ✧"
-          description="Magic added"
+          label="Movement infused ✧"
+          description="Style applied"
           delay={0.4}
           withGlow
           withPulse
@@ -82,8 +82,8 @@ export function ExampleTransformation({ className }: ExampleTransformationProps)
 
         <TransformStep
           image={exampleGif}
-          label="Ready to apply ✦"
-          description="Your sticker"
+          label="Ready for Telegram ✦"
+          description="Export sticker"
           delay={0.6}
           withGlow
           withPulse
@@ -99,7 +99,7 @@ export function ExampleTransformation({ className }: ExampleTransformationProps)
             transition={{ delay: 0.8 }}
           >
             <Badge variant="outline" className="bg-accent/10 border-accent/30 text-accent-foreground shadow-lg shadow-accent/10">
-              All magic happens in one flow
+              Simple flow • Premium results • Ready for Telegram
             </Badge>
           </motion.div>
         </div>

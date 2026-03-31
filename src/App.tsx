@@ -62,16 +62,20 @@ function App() {
               <Sparkle size={48} weight="duotone" className="sm:w-14 sm:h-14 text-accent animate-pulse drop-shadow-[0_0_20px_oklch(0.72_0.19_320/0.5)]" />
             </div>
             
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold gradient-text tracking-tight mb-4 sm:mb-6 drop-shadow-2xl px-2">
-              STIX MAGIC
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold gradient-text tracking-tight mb-3 sm:mb-4 drop-shadow-2xl px-2">
+              STIX MΛGIC
             </h1>
             
-            <p className="text-lg sm:text-xl md:text-3xl text-foreground/90 max-w-2xl mx-auto leading-relaxed font-medium px-4">
-              Pick a style ✦ Bring it to life ✦ Create your sticker
+            <p className="text-xl sm:text-2xl md:text-3xl text-foreground/90 max-w-2xl mx-auto leading-tight font-semibold px-4 mb-2">
+              Telegram Sticker Engine
             </p>
             
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground/80 max-w-xl mx-auto px-4">
-              Transform any image into animated magic with ready-made styles
+            <p className="text-base sm:text-lg md:text-xl text-foreground/80 max-w-xl mx-auto px-4 mb-3">
+              Create animated stickers for Telegram
+            </p>
+            
+            <p className="text-sm sm:text-base text-muted-foreground/70 max-w-lg mx-auto px-4">
+              Pick a style ✦ Apply to your image ○ Preview in motion ✧ Export for Telegram ✦
             </p>
 
             <div className="mt-8 sm:mt-10 max-w-3xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden video-glow relative">
@@ -96,21 +100,21 @@ function App() {
           <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 h-auto p-2 gap-2 bg-card/50 backdrop-blur-md border border-border/50 shadow-xl">
             <InteractiveHotspot
               id="styles-tab"
-              title="Browse Style Gallery"
-              description="Explore our curated collection of animated sticker styles. Each style combines unique motion, edge effects, and visual magic ✦"
+              title="Choose Your Telegram Sticker Style"
+              description="Pick from ready-made animated sticker styles. Each one includes edge effects, motion, and visual magic — ready to apply to your image ✦"
               position="bottom"
               autoShow={true}
               delay={2000}
             >
               <TabsTrigger value="styles" className="flex items-center justify-center gap-2 sm:gap-3 py-4 sm:py-5 px-4 text-sm sm:text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300 min-h-[52px] md:min-h-[56px]">
                 <Funnel size={22} weight="duotone" className="sm:w-6 sm:h-6" />
-                <span className="whitespace-nowrap">Pick a Style ✦</span>
+                <span className="whitespace-nowrap">Styles ✦</span>
               </TabsTrigger>
             </InteractiveHotspot>
             <InteractiveHotspot
               id="upload-tab"
               title="Upload Your Image"
-              description="Add your own image to transform it with STIX MAGIC. Supports PNG, JPG, and GIF files up to 10MB."
+              description="Add your image to create your Telegram sticker. Supports PNG, JPG, and GIF files up to 10MB. Edge and motion will be added with your chosen style."
               position="bottom"
               autoShow={false}
             >
@@ -157,10 +161,10 @@ function App() {
                   <div className="text-center p-8 rounded-xl bg-muted/30 border-2 border-dashed border-border">
                     <Sparkle size={48} weight="duotone" className="mx-auto mb-4 text-muted-foreground" />
                     <p className="text-lg font-semibold text-foreground mb-2">
-                      Ready for magic ✦
+                      Ready to create your sticker ✦
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Switch to the "Pick a Style" tab to transform your image
+                      Switch to "Styles" to pick a style and bring your sticker to life
                     </p>
                   </div>
                 )}
@@ -183,10 +187,10 @@ function App() {
             
             <div className="space-y-2 sm:space-y-3">
               <p className="text-base sm:text-lg font-bold gradient-text">
-                STIX MAGIC
+                STIX MΛGIC
               </p>
               <p className="text-xs sm:text-sm text-muted-foreground/70 max-w-md leading-relaxed px-4">
-                Transform images into animated stickers with ready-made magic ✦
+                Telegram Sticker Engine • Create animated stickers with style ✦
               </p>
             </div>
 
