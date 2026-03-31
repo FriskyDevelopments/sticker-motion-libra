@@ -93,7 +93,7 @@ function App() {
         <ExampleTransformation className="mb-12 sm:mb-16" />
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-8 sm:space-y-10">
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 h-auto p-1 sm:p-1.5 gap-1 sm:gap-0 bg-card/50 backdrop-blur-md border border-border/50 shadow-xl">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 h-auto p-2 gap-2 bg-card/50 backdrop-blur-md border border-border/50 shadow-xl">
             <InteractiveHotspot
               id="styles-tab"
               title="Browse Style Gallery"
@@ -102,8 +102,8 @@ function App() {
               autoShow={true}
               delay={2000}
             >
-              <TabsTrigger value="styles" className="flex items-center justify-center gap-2 sm:gap-3 py-3 sm:py-4 text-sm sm:text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300 min-h-[44px]">
-                <Funnel size={20} weight="duotone" className="sm:w-[22px] sm:h-[22px]" />
+              <TabsTrigger value="styles" className="flex items-center justify-center gap-2 sm:gap-3 py-4 sm:py-5 px-4 text-sm sm:text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300 min-h-[52px] md:min-h-[56px]">
+                <Funnel size={22} weight="duotone" className="sm:w-6 sm:h-6" />
                 <span className="whitespace-nowrap">Pick a Style ✦</span>
               </TabsTrigger>
             </InteractiveHotspot>
@@ -114,8 +114,8 @@ function App() {
               position="bottom"
               autoShow={false}
             >
-              <TabsTrigger data-tour="upload-tab" value="upload" className="flex items-center justify-center gap-2 sm:gap-3 py-3 sm:py-4 text-sm sm:text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg transition-all duration-300 min-h-[44px]">
-                <ImageIcon size={20} weight="duotone" className="sm:w-[22px] sm:h-[22px]" />
+              <TabsTrigger data-tour="upload-tab" value="upload" className="flex items-center justify-center gap-2 sm:gap-3 py-4 sm:py-5 px-4 text-sm sm:text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg transition-all duration-300 min-h-[52px] md:min-h-[56px]">
+                <ImageIcon size={22} weight="duotone" className="sm:w-6 sm:h-6" />
                 <span className="whitespace-nowrap">Your Image</span>
               </TabsTrigger>
             </InteractiveHotspot>

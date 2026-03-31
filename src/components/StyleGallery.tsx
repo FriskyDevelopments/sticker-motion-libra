@@ -107,13 +107,13 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.4 }}
           >
-            <TabsList className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 h-auto p-1 sm:p-1.5 gap-1 sm:gap-0 bg-card/60 backdrop-blur-md border border-border/40 shadow-xl">
+            <TabsList className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 h-auto p-2 gap-2 sm:gap-2 bg-card/60 backdrop-blur-md border border-border/40 shadow-xl">
               <TabsTrigger 
                 value="all" 
-                className="py-2.5 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 min-h-[44px]"
+                className="py-3 sm:py-4 px-3 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 min-h-[48px] md:min-h-[52px]"
               >
                 <span className="truncate">All Styles</span>
-                <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs bg-muted/80">
+                <Badge variant="secondary" className="ml-2 text-xs bg-muted/80 py-1 px-2">
                   {featuredStyles.length}
                 </Badge>
               </TabsTrigger>
@@ -126,12 +126,12 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
               >
                 <TabsTrigger 
                   value="favorites"
-                  className="py-2.5 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-accent/30 transition-all duration-300 w-full min-h-[44px]"
+                  className="py-3 sm:py-4 px-3 text-xs sm:text-sm data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-accent/30 transition-all duration-300 w-full min-h-[48px] md:min-h-[52px]"
                 >
-                  <Heart size={14} weight={hasFavorites ? 'fill' : 'regular'} className="mr-1 sm:mr-1.5 sm:w-4 sm:h-4" />
+                  <Heart size={16} weight={hasFavorites ? 'fill' : 'regular'} className="mr-2 sm:w-5 sm:h-5" />
                   <span className="truncate">Favorites</span>
                   {hasFavorites && (
-                    <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs bg-muted/80">
+                    <Badge variant="secondary" className="ml-2 text-xs bg-muted/80 py-1 px-2">
                       {favoriteCount}
                     </Badge>
                   )}
@@ -151,10 +151,10 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                   >
                     <TabsTrigger 
                       value={vibe} 
-                      className="py-2.5 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 w-full min-h-[44px]"
+                      className="py-3 sm:py-4 px-3 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 w-full min-h-[48px] md:min-h-[52px]"
                     >
                       <span className="truncate">{info.name}</span>
-                      <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs bg-muted/80">
+                      <Badge variant="secondary" className="ml-2 text-xs bg-muted/80 py-1 px-2">
                         {count}
                       </Badge>
                     </TabsTrigger>
@@ -163,10 +163,10 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                   <TabsTrigger 
                     key={vibe} 
                     value={vibe} 
-                    className="py-2.5 sm:py-3 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 min-h-[44px]"
+                    className="py-3 sm:py-4 px-3 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/30 transition-all duration-300 min-h-[48px] md:min-h-[52px]"
                   >
                     <span className="truncate">{info.name}</span>
-                    <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs bg-muted/80">
+                    <Badge variant="secondary" className="ml-2 text-xs bg-muted/80 py-1 px-2">
                       {count}
                     </Badge>
                   </TabsTrigger>
@@ -214,7 +214,7 @@ export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
                 </motion.div>
               ) : (
                 <motion.div 
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

@@ -74,13 +74,13 @@ export function StickerStyleCard({ style, onClick, isFavorite = false, onToggleF
               <Button
                 size="icon"
                 variant="ghost"
-                className="absolute top-3 right-3 z-20 w-10 h-10 md:w-11 md:h-11 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background/95 transition-all duration-300"
+                className="absolute top-3 right-3 z-20 min-w-[48px] min-h-[48px] w-12 h-12 md:w-14 md:h-14 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background/95 transition-all duration-300"
                 onClick={handleFavoriteClick}
               >
                 <Heart 
-                  size={20} 
+                  size={22} 
                   weight={isFavorite ? 'fill' : 'regular'}
-                  className={`md:w-6 md:h-6 ${isFavorite ? 'text-accent' : 'text-muted-foreground'}`}
+                  className={`md:w-7 md:h-7 ${isFavorite ? 'text-accent' : 'text-muted-foreground'}`}
                 />
               </Button>
             </InteractiveHotspot>
@@ -100,7 +100,7 @@ export function StickerStyleCard({ style, onClick, isFavorite = false, onToggleF
           <div className="absolute top-3 left-3">
             <Badge 
               variant="secondary" 
-              className="text-xs font-medium bg-background/95 backdrop-blur-md border-border/50 shadow-sm group-hover:border-accent/40 transition-colors duration-300"
+              className="text-xs md:text-sm font-medium bg-background/95 backdrop-blur-md border-border/50 shadow-sm group-hover:border-accent/40 transition-colors duration-300 py-1.5 px-3"
             >
               {style.intensity}
             </Badge>
@@ -109,40 +109,40 @@ export function StickerStyleCard({ style, onClick, isFavorite = false, onToggleF
           <div className="absolute bottom-3 left-3">
             <Badge 
               variant="outline" 
-              className="text-xs font-medium bg-background/90 backdrop-blur-sm border-border/40"
+              className="text-xs md:text-sm font-medium bg-background/90 backdrop-blur-sm border-border/40 py-1.5 px-3"
             >
               {getSpeedDisplay(style.motion.speed)}
             </Badge>
           </div>
         </div>
 
-        <div className="p-5 space-y-3 bg-card relative z-10">
+        <div className="p-5 md:p-6 space-y-4 bg-card relative z-10">
           <div>
-            <h3 className="text-lg font-bold mb-1 group-hover:gradient-text transition-all duration-300">
+            <h3 className="text-lg md:text-xl font-bold mb-2 group-hover:gradient-text transition-all duration-300">
               {style.name}
             </h3>
-            <p className="text-xs text-muted-foreground line-clamp-1 mb-2">
+            <p className="text-sm md:text-base text-muted-foreground line-clamp-1 mb-2">
               {style.movementPersonality}
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-2">
             {style.tags.slice(0, 3).map((tag) => (
               <Badge 
                 key={tag}
                 variant="outline" 
-                className="text-xs border-accent/30 text-accent/90 group-hover:border-accent/60 group-hover:bg-accent/5 transition-all duration-300"
+                className="text-xs md:text-sm border-accent/30 text-accent/90 group-hover:border-accent/60 group-hover:bg-accent/5 transition-all duration-300 py-1.5 px-3"
               >
                 {tag}
               </Badge>
             ))}
           </div>
 
-          <div className="pt-2 border-t border-border/50 group-hover:border-accent/30 transition-colors duration-300">
-            <div className="flex items-center justify-between text-sm">
+          <div className="pt-3 border-t border-border/50 group-hover:border-accent/30 transition-colors duration-300">
+            <div className="flex items-center justify-between text-sm md:text-base">
               <span className="text-muted-foreground">{style.mask.name}</span>
               <motion.span
-                className="font-medium text-primary group-hover:text-accent transition-colors duration-300"
+                className="font-medium text-primary group-hover:text-accent transition-colors duration-300 text-lg"
                 animate={{ 
                   scale: [1, 1.2, 1],
                   rotate: [0, 12, -12, 0]
