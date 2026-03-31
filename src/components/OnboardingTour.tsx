@@ -270,13 +270,56 @@ export function OnboardingTour() {
                   {currentStep.description}
                 </p>
                 
+                {currentStep.tutorialHighlights && currentStep.tutorialHighlights.length > 0 && (
+                  <motion.div
+                    className="mt-5 space-y-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    {currentStep.tutorialHighlights.map((highlight, index) => (
+                      <motion.div
+                        key={index}
+                        className="flex items-start gap-3 text-sm"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 + index * 0.1 }}
+                      >
+                        <div 
+                          className="mt-0.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                          style={{ backgroundColor: stepColor }}
+                        />
+                        <span className="text-foreground/80 leading-relaxed">{highlight}</span>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
+                
                 {currentStep.videoUrl && (
                   <motion.div
                     className="relative mt-6"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
+                    transition={{ delay: 0.4 }}
                   >
+                    <div className="mb-3 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div 
+                          className="w-2 h-2 rounded-full animate-pulse"
+                          style={{ backgroundColor: stepColor }}
+                        />
+                        <span className="text-sm font-semibold text-foreground">
+                          Video Tutorial
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/40 border border-border/30">
+                        <Sparkle size={12} weight="fill" style={{ color: stepColor }} />
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Step {currentStepIndex + 1}
+                        </span>
+                      </div>
+                    </div>
+                    
                     <div className="relative rounded-xl overflow-hidden border-2 border-border/50 video-glow">
                       <video
                         ref={videoRef}
@@ -303,25 +346,40 @@ export function OnboardingTour() {
                           whileHover={{ backgroundColor: 'oklch(0.12 0.015 260 / 0.7)' }}
                         >
                           <motion.div
-                            className="w-20 h-20 rounded-full bg-primary/90 backdrop-blur flex items-center justify-center"
+                            className="relative"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
-                            style={{
-                              boxShadow: `0 10px 40px ${stepColor}60`,
-                            }}
                           >
-                            <Play size={36} weight="fill" className="text-primary-foreground ml-1" />
+                            <div 
+                              className="absolute inset-0 rounded-full opacity-40 blur-2xl"
+                              style={{ backgroundColor: stepColor }}
+                            />
+                            <div 
+                              className="relative w-20 h-20 rounded-full bg-primary/95 backdrop-blur flex items-center justify-center border-2"
+                              style={{
+                                borderColor: stepColor,
+                                boxShadow: `0 10px 50px ${stepColor}70`,
+                              }}
+                            >
+                              <Play size={36} weight="fill" className="text-primary-foreground ml-1" />
+                            </div>
                           </motion.div>
                         </motion.button>
                       )}
-                    </div>
-                    
-                    <div className="flex items-center justify-center gap-2 mt-3">
-                      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/30">
-                        <Sparkle size={14} weight="fill" style={{ color: stepColor }} />
-                        <span className="text-xs font-medium text-muted-foreground">
-                          {isVideoPlaying ? 'Playing tutorial' : 'Tap to watch tutorial'}
-                        </span>
+                      
+                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                        <div 
+                          className="flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md border"
+                          style={{
+                            backgroundColor: 'oklch(0.12 0.015 260 / 0.8)',
+                            borderColor: `${stepColor}40`,
+                          }}
+                        >
+                          <Sparkle size={14} weight="fill" style={{ color: stepColor }} />
+                          <span className="text-xs font-medium text-foreground">
+                            {isVideoPlaying ? 'Tutorial playing...' : 'Click to play'}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </motion.div>

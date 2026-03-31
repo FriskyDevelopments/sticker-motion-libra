@@ -2,6 +2,10 @@ import { useKV } from '@github/spark/hooks'
 import { useEffect, useState } from 'react'
 import welcomeVideo from '@/assets/video/stix-magic.mp4'
 import welcomePoster from '@/assets/images/stix-magic-poster.png'
+import tutorialStyleGallery from '@/assets/video/stix-magic.mp4'
+import tutorialStylePreview from '@/assets/video/stix-magic.mp4'
+import tutorialUpload from '@/assets/video/stix-magic.mp4'
+import tutorialComplete from '@/assets/video/stix-magic.mp4'
 
 export type OnboardingStep = {
   id: string
@@ -12,53 +16,79 @@ export type OnboardingStep = {
   action?: string
   videoUrl?: string
   videoPoster?: string
+  tutorialHighlights?: string[]
 }
 
 const ONBOARDING_STEPS: OnboardingStep[] = [
   {
     id: 'welcome',
     title: 'Welcome to STIX MAGIC ✦',
-    description: 'Transform any image into animated magic with ready-made styles. Watch this quick intro to see how it works.',
+    description: 'Transform any image into animated magic with ready-made styles. This tutorial will guide you through the complete workflow in just a few steps.',
     targetSelector: 'body',
     position: 'center',
     videoUrl: welcomeVideo,
     videoPoster: welcomePoster,
+    tutorialHighlights: [
+      'Browse curated animated styles',
+      'Upload and transform your images',
+      'Export as animated stickers',
+    ],
   },
   {
     id: 'pick-style',
     title: 'Pick a style ✦',
-    description: 'Browse our curated collection of animated styles. Each one combines edge finish and motion into a ready-made result. Click any card to see the magic in action.',
+    description: 'Browse our curated collection of animated styles. Each card shows a live preview with unique motion and finish. Watch how different styles create different vibes.',
     targetSelector: '[data-tour="style-gallery"]',
     position: 'top',
-    videoUrl: welcomeVideo,
+    videoUrl: tutorialStyleGallery,
     videoPoster: welcomePoster,
+    tutorialHighlights: [
+      'Scroll through style categories',
+      'See live animated previews',
+      'Read vibe tags and descriptions',
+    ],
   },
   {
     id: 'preview-style',
     title: 'See it come to life',
-    description: 'Click any style card to preview it in detail and see how the motion and finish work together. Every style is fully animated and ready to apply.',
+    description: 'Click any style card to open the detail panel. See a larger preview, understand the motion personality, and learn when to use this style. You can also toggle extra magic for more control.',
     targetSelector: '[data-tour="style-card"]',
     position: 'bottom',
-    videoUrl: welcomeVideo,
+    videoUrl: tutorialStylePreview,
     videoPoster: welcomePoster,
+    tutorialHighlights: [
+      'Click card to open detail view',
+      'Watch larger animated preview',
+      'Toggle extra magic options',
+    ],
   },
   {
     id: 'upload-image',
     title: 'Apply to your image ✦',
-    description: 'Switch to the "Your Image" tab to upload your photo. Once uploaded, apply any style with one click and watch your image transform into an animated sticker.',
+    description: 'Switch to the "Your Image" tab to upload your photo. Drag and drop or click to browse. Once uploaded, go back to styles and click "Apply" to see your image transform with motion and magic.',
     targetSelector: '[data-tour="upload-tab"]',
     position: 'bottom',
-    videoUrl: welcomeVideo,
+    videoUrl: tutorialUpload,
     videoPoster: welcomePoster,
+    tutorialHighlights: [
+      'Switch to "Your Image" tab',
+      'Upload via drag-drop or browse',
+      'Apply styles with one click',
+    ],
   },
   {
     id: 'complete',
     title: 'You\'re ready to go ✦',
-    description: 'That\'s it! Pick a style, upload your image, and watch the magic happen. Your transformed sticker will be ready to download as an animated GIF or share online.',
+    description: 'That\'s the complete workflow! Pick styles, upload images, apply transformations, and export animated stickers. You can restart this tour anytime from settings.',
     targetSelector: 'body',
     position: 'center',
-    videoUrl: welcomeVideo,
+    videoUrl: tutorialComplete,
     videoPoster: welcomePoster,
+    tutorialHighlights: [
+      'Explore unlimited style combinations',
+      'Download as animated GIF',
+      'Create magic sticker packs',
+    ],
   },
 ]
 
