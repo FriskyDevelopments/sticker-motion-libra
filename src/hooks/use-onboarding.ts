@@ -2,10 +2,9 @@ import { useKV } from '@github/spark/hooks'
 import { useEffect, useState } from 'react'
 import welcomeVideo from '@/assets/video/stix-magic.mp4'
 import welcomePoster from '@/assets/images/stix-magic-poster.png'
-import tutorialStyleGallery from '@/assets/video/stix-magic.mp4'
-import tutorialStylePreview from '@/assets/video/stix-magic.mp4'
-import tutorialUpload from '@/assets/video/stix-magic.mp4'
-import tutorialComplete from '@/assets/video/stix-magic.mp4'
+import styleGalleryGif from '@/assets/images/gemini_generated_video_7DC02353.gif'
+import transformationGif from '@/assets/images/Untitled_2.gif'
+import watermarkGif from '@/assets/images/4E8234E0-7702-4E37-9300-B345284E630F_2026-03-21T12-29-00_create_a_minimal__watermarked_2.gif'
 
 export type OnboardingStep = {
   id: string
@@ -40,7 +39,7 @@ const ONBOARDING_STEPS: OnboardingStep[] = [
     description: 'Browse our curated collection of animated styles. Each card shows a live preview with unique motion and finish. Watch how different styles create different vibes.',
     targetSelector: '[data-tour="style-gallery"]',
     position: 'top',
-    videoUrl: tutorialStyleGallery,
+    videoUrl: styleGalleryGif,
     videoPoster: welcomePoster,
     tutorialHighlights: [
       'Scroll through style categories',
@@ -54,7 +53,7 @@ const ONBOARDING_STEPS: OnboardingStep[] = [
     description: 'Click any style card to open the detail panel. See a larger preview, understand the motion personality, and learn when to use this style. You can also toggle extra magic for more control.',
     targetSelector: '[data-tour="style-card"]',
     position: 'bottom',
-    videoUrl: tutorialStylePreview,
+    videoUrl: transformationGif,
     videoPoster: welcomePoster,
     tutorialHighlights: [
       'Click card to open detail view',
@@ -68,7 +67,7 @@ const ONBOARDING_STEPS: OnboardingStep[] = [
     description: 'Switch to the "Your Image" tab to upload your photo. Drag and drop or click to browse. Once uploaded, go back to styles and click "Apply" to see your image transform with motion and magic.',
     targetSelector: '[data-tour="upload-tab"]',
     position: 'bottom',
-    videoUrl: tutorialUpload,
+    videoUrl: watermarkGif,
     videoPoster: welcomePoster,
     tutorialHighlights: [
       'Switch to "Your Image" tab',
@@ -82,7 +81,7 @@ const ONBOARDING_STEPS: OnboardingStep[] = [
     description: 'That\'s the complete workflow! Pick styles, upload images, apply transformations, and export animated stickers. You can restart this tour anytime from settings.',
     targetSelector: 'body',
     position: 'center',
-    videoUrl: tutorialComplete,
+    videoUrl: welcomeVideo,
     videoPoster: welcomePoster,
     tutorialHighlights: [
       'Explore unlimited style combinations',

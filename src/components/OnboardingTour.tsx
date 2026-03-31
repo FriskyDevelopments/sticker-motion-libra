@@ -321,50 +321,60 @@ export function OnboardingTour() {
                     </div>
                     
                     <div className="relative rounded-xl overflow-hidden border-2 border-border/50 video-glow">
-                      <video
-                        ref={videoRef}
-                        className="w-full h-auto"
-                        poster={currentStep.videoPoster}
-                        loop
-                        muted
-                        playsInline
-                        onPlay={() => setIsVideoPlaying(true)}
-                        onPause={() => setIsVideoPlaying(false)}
-                        onEnded={() => setIsVideoPlaying(false)}
-                        autoPlay
-                      >
-                        <source src={currentStep.videoUrl} type="video/mp4" />
-                      </video>
-                      
-                      {!isVideoPlaying && (
-                        <motion.button
-                          className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm cursor-pointer group"
-                          onClick={() => videoRef.current?.play()}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          whileHover={{ backgroundColor: 'oklch(0.12 0.015 260 / 0.7)' }}
-                        >
-                          <motion.div
-                            className="relative"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
+                      {currentStep.videoUrl.endsWith('.gif') ? (
+                        <img 
+                          src={currentStep.videoUrl} 
+                          alt={`${currentStep.title} tutorial`}
+                          className="w-full h-auto"
+                        />
+                      ) : (
+                        <>
+                          <video
+                            ref={videoRef}
+                            className="w-full h-auto"
+                            poster={currentStep.videoPoster}
+                            loop
+                            muted
+                            playsInline
+                            onPlay={() => setIsVideoPlaying(true)}
+                            onPause={() => setIsVideoPlaying(false)}
+                            onEnded={() => setIsVideoPlaying(false)}
+                            autoPlay
                           >
-                            <div 
-                              className="absolute inset-0 rounded-full opacity-40 blur-2xl"
-                              style={{ backgroundColor: stepColor }}
-                            />
-                            <div 
-                              className="relative w-20 h-20 rounded-full bg-primary/95 backdrop-blur flex items-center justify-center border-2"
-                              style={{
-                                borderColor: stepColor,
-                                boxShadow: `0 10px 50px ${stepColor}70`,
-                              }}
+                            <source src={currentStep.videoUrl} type="video/mp4" />
+                          </video>
+                          
+                          {!isVideoPlaying && (
+                            <motion.button
+                              className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm cursor-pointer group"
+                              onClick={() => videoRef.current?.play()}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              whileHover={{ backgroundColor: 'oklch(0.12 0.015 260 / 0.7)' }}
                             >
-                              <Play size={36} weight="fill" className="text-primary-foreground ml-1" />
-                            </div>
-                          </motion.div>
-                        </motion.button>
+                              <motion.div
+                                className="relative"
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
+                              >
+                                <div 
+                                  className="absolute inset-0 rounded-full opacity-40 blur-2xl"
+                                  style={{ backgroundColor: stepColor }}
+                                />
+                                <div 
+                                  className="relative w-20 h-20 rounded-full bg-primary/95 backdrop-blur flex items-center justify-center border-2"
+                                  style={{
+                                    borderColor: stepColor,
+                                    boxShadow: `0 10px 50px ${stepColor}70`,
+                                  }}
+                                >
+                                  <Play size={36} weight="fill" className="text-primary-foreground ml-1" />
+                                </div>
+                              </motion.div>
+                            </motion.button>
+                          )}
+                        </>
                       )}
                       
                       <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
@@ -377,7 +387,11 @@ export function OnboardingTour() {
                         >
                           <Sparkle size={14} weight="fill" style={{ color: stepColor }} />
                           <span className="text-xs font-medium text-foreground">
-                            {isVideoPlaying ? 'Tutorial playing...' : 'Click to play'}
+                            {currentStep.videoUrl.endsWith('.gif') 
+                              ? 'Animated guide' 
+                              : isVideoPlaying 
+                              ? 'Tutorial playing...' 
+                              : 'Click to play'}
                           </span>
                         </div>
                       </div>
