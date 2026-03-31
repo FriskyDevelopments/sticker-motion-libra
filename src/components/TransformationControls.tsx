@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ExportDialog } from '@/components/ExportDialog'
 import { BatchExportDialog } from '@/components/BatchExportDialog'
+import { InteractiveHotspot } from '@/components/InteractiveHotspot'
 import { cn } from '@/lib/utils'
 import type { StickerStyle } from '@/lib/stickerStyles'
 import type { TransformationStep } from '@/lib/transformationEngine'
@@ -80,16 +81,24 @@ export function TransformationControls({
               <Separator orientation="vertical" className="h-10 hidden md:block" />
 
               <div className="flex items-center gap-2 flex-wrap">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onUndo}
-                  disabled={!canUndo}
-                  className="gap-2"
+                <InteractiveHotspot
+                  id="undo-button"
+                  title="Undo Changes"
+                  description="Go back to previous transformations. Each style application creates a new history point you can return to."
+                  position="top"
+                  autoShow={false}
                 >
-                  <ArrowCounterClockwise size={16} weight="bold" />
-                  <span className="hidden sm:inline">Undo</span>
-                </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={onUndo}
+                    disabled={!canUndo}
+                    className="gap-2"
+                  >
+                    <ArrowCounterClockwise size={16} weight="bold" />
+                    <span className="hidden sm:inline">Undo</span>
+                  </Button>
+                </InteractiveHotspot>
 
                 <Button
                   variant="ghost"
@@ -104,46 +113,70 @@ export function TransformationControls({
 
                 <Separator orientation="vertical" className="h-6" />
 
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={onRevert}
-                  disabled={!hasTransformation}
-                  className="gap-2 text-muted-foreground hover:text-foreground"
+                <InteractiveHotspot
+                  id="revert-button"
+                  title="Revert to Original"
+                  description="Remove all transformations and return to your original uploaded image."
+                  position="top"
+                  autoShow={false}
                 >
-                  <ArrowUUpLeft size={16} weight="bold" />
-                  <span className="hidden sm:inline">Revert</span>
-                </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={onRevert}
+                    disabled={!hasTransformation}
+                    className="gap-2 text-muted-foreground hover:text-foreground"
+                  >
+                    <ArrowUUpLeft size={16} weight="bold" />
+                    <span className="hidden sm:inline">Revert</span>
+                  </Button>
+                </InteractiveHotspot>
 
                 <Separator orientation="vertical" className="h-6" />
 
                 {hasBatchExport && (
                   <>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setBatchExportDialogOpen(true)}
-                      className="gap-2"
+                    <InteractiveHotspot
+                      id="batch-export-button"
+                      title="Batch Export ✦"
+                      description="Export multiple transformations at once as individual files or as an animated GIF."
+                      position="top"
+                      autoShow={false}
                     >
-                      <Package size={16} weight="bold" />
-                      <span className="hidden sm:inline">Batch Export ✦</span>
-                      <span className="sm:hidden">Batch</span>
-                    </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setBatchExportDialogOpen(true)}
+                        className="gap-2"
+                      >
+                        <Package size={16} weight="bold" />
+                        <span className="hidden sm:inline">Batch Export ✦</span>
+                        <span className="sm:hidden">Batch</span>
+                      </Button>
+                    </InteractiveHotspot>
                     <Separator orientation="vertical" className="h-6" />
                   </>
                 )}
 
-                <Button
-                  data-tour="export-button"
-                  size="sm"
-                  onClick={() => setExportDialogOpen(true)}
-                  disabled={!hasTransformation}
-                  className="gap-2 bg-primary hover:bg-primary/90"
+                <InteractiveHotspot
+                  id="download-button"
+                  title="Download Your Sticker ✦"
+                  description="Export your transformed sticker as PNG, JPG, or animated GIF. Perfect for use in messages, social media, and more!"
+                  position="top"
+                  autoShow={false}
                 >
-                  <DownloadSimple size={16} weight="bold" />
-                  <span className="hidden sm:inline">Download ✦</span>
-                  <span className="sm:hidden">Export</span>
-                </Button>
+                  <Button
+                    data-tour="export-button"
+                    size="sm"
+                    onClick={() => setExportDialogOpen(true)}
+                    disabled={!hasTransformation}
+                    className="gap-2 bg-primary hover:bg-primary/90"
+                  >
+                    <DownloadSimple size={16} weight="bold" />
+                    <span className="hidden sm:inline">Download ✦</span>
+                    <span className="sm:hidden">Export</span>
+                  </Button>
+                </InteractiveHotspot>
               </div>
             </div>
           </Card>

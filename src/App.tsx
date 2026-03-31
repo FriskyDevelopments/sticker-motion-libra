@@ -8,6 +8,7 @@ import { ParticleField } from '@/components/ParticleField'
 import { TransformationControls } from '@/components/TransformationControls'
 import { OnboardingTour } from '@/components/OnboardingTour'
 import { SettingsMenu } from '@/components/SettingsMenu'
+import { InteractiveHotspot } from '@/components/InteractiveHotspot'
 import { useTransformation } from '@/hooks/use-transformation'
 import { useState, useEffect } from 'react'
 import logoImage from '@/assets/images/stixmagic2.jpeg'
@@ -93,14 +94,31 @@ function App() {
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-10">
           <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 h-auto p-1.5 bg-card/50 backdrop-blur-md border border-border/50 shadow-xl">
-            <TabsTrigger value="styles" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300">
-              <Funnel size={22} weight="duotone" />
-              Pick a Style ✦
-            </TabsTrigger>
-            <TabsTrigger data-tour="upload-tab" value="upload" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg transition-all duration-300">
-              <ImageIcon size={22} weight="duotone" />
-              Your Image
-            </TabsTrigger>
+            <InteractiveHotspot
+              id="styles-tab"
+              title="Browse Style Gallery"
+              description="Explore our curated collection of animated sticker styles. Each style combines unique motion, edge effects, and visual magic ✦"
+              position="bottom"
+              autoShow={true}
+              delay={2000}
+            >
+              <TabsTrigger value="styles" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300">
+                <Funnel size={22} weight="duotone" />
+                Pick a Style ✦
+              </TabsTrigger>
+            </InteractiveHotspot>
+            <InteractiveHotspot
+              id="upload-tab"
+              title="Upload Your Image"
+              description="Add your own image to transform it with STIX MAGIC. Supports PNG, JPG, and GIF files up to 10MB."
+              position="bottom"
+              autoShow={false}
+            >
+              <TabsTrigger data-tour="upload-tab" value="upload" className="flex items-center gap-3 py-4 text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-lg transition-all duration-300">
+                <ImageIcon size={22} weight="duotone" />
+                Your Image
+              </TabsTrigger>
+            </InteractiveHotspot>
           </TabsList>
 
           <TabsContent value="styles" className="space-y-8 mt-0">
