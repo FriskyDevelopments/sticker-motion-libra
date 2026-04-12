@@ -139,13 +139,13 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
 
         <div className="space-y-8 py-6">
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'preview' | 'upload')} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="preview" className="gap-2">
-                <Sparkle size={16} weight="duotone" />
+            <TabsList className="grid w-full grid-cols-2 mb-6 h-auto p-2 gap-2">
+              <TabsTrigger value="preview" className="gap-2.5 py-4 px-4 text-base min-h-[56px]">
+                <Sparkle size={20} weight="duotone" />
                 Style Preview
               </TabsTrigger>
-              <TabsTrigger value="upload" className="gap-2">
-                <ImageSquare size={16} weight="duotone" />
+              <TabsTrigger value="upload" className="gap-2.5 py-4 px-4 text-base min-h-[56px]">
+                <ImageSquare size={20} weight="duotone" />
                 Your Image
               </TabsTrigger>
             </TabsList>
@@ -288,14 +288,14 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
                       <Label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                         Energy ✧
                       </Label>
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-3 gap-3">
                         {(['clean', 'enhanced', 'intense'] as MagicLevel[]).map((level) => (
                           <Button
                             key={level}
                             variant={enhancement.energy === level ? 'default' : 'outline'}
-                            size="sm"
+                            size="lg"
                             onClick={() => setEnhancement({ ...enhancement, energy: level })}
-                            className={enhancement.energy === level ? 'bg-accent hover:bg-accent/90' : ''}
+                            className={`min-h-[52px] text-base ${enhancement.energy === level ? 'bg-accent hover:bg-accent/90' : ''}`}
                           >
                             {getEnergyLabel(level).split(' ')[0]}
                           </Button>
@@ -312,14 +312,14 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
                       <Label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                         Speed △
                       </Label>
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-3 gap-3">
                         {(['slow', 'normal', 'fast'] as SpeedLevel[]).map((level) => (
                           <Button
                             key={level}
                             variant={enhancement.speed === level ? 'default' : 'outline'}
-                            size="sm"
+                            size="lg"
                             onClick={() => setEnhancement({ ...enhancement, speed: level })}
-                            className={enhancement.speed === level ? 'bg-accent hover:bg-accent/90' : ''}
+                            className={`min-h-[52px] text-base ${enhancement.speed === level ? 'bg-accent hover:bg-accent/90' : ''}`}
                           >
                             {getSpeedLabel(level).split(' ')[0]}
                           </Button>

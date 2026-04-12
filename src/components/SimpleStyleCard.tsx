@@ -91,22 +91,22 @@ export function SimpleStyleCard({ style, onClick, index }: SimpleStyleCardProps)
           </motion.div>
         </div>
 
-        <div className="p-5 space-y-3 bg-card relative z-10">
+        <div className="p-6 md:p-7 space-y-4 bg-card relative z-10">
           <div>
             <motion.h3 
-              className="text-lg font-bold mb-1 group-hover:gradient-text transition-all duration-300"
+              className="text-xl md:text-2xl font-bold mb-2 group-hover:gradient-text transition-all duration-300"
               initial={{ x: 0 }}
               whileHover={{ x: 4 }}
             >
               {style.name}
             </motion.h3>
-            <p className="text-sm text-muted-foreground line-clamp-1">
+            <p className="text-base md:text-lg text-muted-foreground line-clamp-2">
               {style.description}
             </p>
           </div>
 
           <motion.div 
-            className="flex flex-wrap gap-1.5"
+            className="flex flex-wrap gap-2.5"
             initial={{ opacity: 0.8 }}
             whileHover={{ opacity: 1 }}
           >
@@ -119,7 +119,7 @@ export function SimpleStyleCard({ style, onClick, index }: SimpleStyleCardProps)
               >
                 <Badge 
                   variant="outline" 
-                  className="text-xs border-accent/30 text-accent/90 group-hover:border-accent/60 group-hover:bg-accent/5 transition-all duration-300"
+                  className="text-sm md:text-base px-3 py-1.5 border-accent/30 text-accent/90 group-hover:border-accent/60 group-hover:bg-accent/5 transition-all duration-300"
                 >
                   {tag}
                 </Badge>
@@ -128,10 +128,10 @@ export function SimpleStyleCard({ style, onClick, index }: SimpleStyleCardProps)
           </motion.div>
 
           <motion.div 
-            className="pt-2 border-t border-border/50 group-hover:border-accent/30 transition-colors duration-300"
+            className="pt-3 border-t border-border/50 group-hover:border-accent/30 transition-colors duration-300"
             whileHover={{ x: 2 }}
           >
-            <div className="flex items-center gap-2 text-sm font-medium text-primary group-hover:text-accent transition-colors duration-300">
+            <div className="flex items-center gap-2.5 text-base md:text-lg font-medium text-primary group-hover:text-accent transition-colors duration-300">
               <span>Try this</span>
               <motion.span
                 animate={{ 
@@ -143,6 +143,7 @@ export function SimpleStyleCard({ style, onClick, index }: SimpleStyleCardProps)
                   repeat: Infinity,
                   repeatDelay: 1
                 }}
+                className="text-xl"
               >
                 ✦
               </motion.span>

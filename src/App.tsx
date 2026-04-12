@@ -65,19 +65,19 @@ function App() {
         <ExampleTransformation className="mb-8 sm:mb-12" />
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6 sm:space-y-8">
-          <TabsList className="grid w-full max-w-xl mx-auto grid-cols-2 h-auto p-2 gap-3 bg-card/80 backdrop-blur-sm border border-border shadow-lg rounded-xl">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 h-auto p-3 gap-4 bg-card/80 backdrop-blur-sm border border-border shadow-lg rounded-2xl">
             <TabsTrigger 
               value="styles" 
-              className="flex items-center justify-center gap-2 sm:gap-3 py-5 sm:py-6 px-4 text-base sm:text-lg font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-200 rounded-lg min-h-[60px] touch-manipulation"
+              className="flex items-center justify-center gap-3 py-6 sm:py-7 px-5 text-lg sm:text-xl font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-200 rounded-xl min-h-[68px] sm:min-h-[76px] touch-manipulation"
             >
-              <Funnel size={24} weight="duotone" className="sm:w-7 sm:h-7" />
+              <Funnel size={28} weight="duotone" className="sm:w-8 sm:h-8" />
               <span>Styles ✦</span>
             </TabsTrigger>
             <TabsTrigger 
               value="upload" 
-              className="flex items-center justify-center gap-2 sm:gap-3 py-5 sm:py-6 px-4 text-base sm:text-lg font-semibold data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-md transition-all duration-200 rounded-lg min-h-[60px] touch-manipulation"
+              className="flex items-center justify-center gap-3 py-6 sm:py-7 px-5 text-lg sm:text-xl font-semibold data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-md transition-all duration-200 rounded-xl min-h-[68px] sm:min-h-[76px] touch-manipulation"
             >
-              <ImageIcon size={24} weight="duotone" className="sm:w-7 sm:h-7" />
+              <ImageIcon size={28} weight="duotone" className="sm:w-8 sm:h-8" />
               <span>Your Image</span>
             </TabsTrigger>
           </TabsList>
