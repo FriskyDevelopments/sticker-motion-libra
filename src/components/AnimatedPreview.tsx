@@ -1,4 +1,4 @@
-import { motion, type Transition } from 'framer-motion'
+import { motion, type TargetAndTransition } from 'framer-motion'
 import { MotionPreset } from '@/lib/motionPresets'
 
 interface AnimatedPreviewProps {
@@ -7,7 +7,7 @@ interface AnimatedPreviewProps {
 }
 
 interface AnimationConfig {
-  animate: Record<string, any>
+  animate: TargetAndTransition
 }
 
 const getAnimationVariants = (preset: MotionPreset): AnimationConfig => {

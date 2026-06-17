@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { DownloadSimple, CheckSquare, Square, Sparkle, Package, X } from '@phosphor-icons/react'
+import { DownloadSimple, CheckSquare, Square, Sparkle, Package } from '@phosphor-icons/react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -30,8 +30,7 @@ interface ExportItem {
 export function BatchExportDialog({
   open,
   onOpenChange,
-  transformationHistory,
-  originalImage
+  transformationHistory
 }: BatchExportDialogProps) {
   const [exportItems, setExportItems] = useState<ExportItem[]>(() => {
     return transformationHistory.map((step) => ({

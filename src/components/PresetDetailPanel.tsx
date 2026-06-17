@@ -46,7 +46,7 @@ export function PresetDetailPanel({ preset, open, onOpenChange, onOpenPlayground
       toast.success(`Exported as ${format.toUpperCase()}`, {
         description: `${preset.name} preset downloaded successfully`
       })
-    } catch (error) {
+    } catch {
       toast.error('Export failed', {
         description: 'There was an error exporting the preset'
       })

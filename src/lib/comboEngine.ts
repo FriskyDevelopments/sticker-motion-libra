@@ -1,4 +1,4 @@
-import type { BaseStyle } from './styleLibrary'
+import type { BaseStyle, AssetCompatibility } from './styleLibrary'
 import type { Overlay } from './overlaySystem'
 import { motionPresets } from './motionPresets'
 import type { MotionPreset } from './motionPresets'
@@ -126,7 +126,7 @@ function generateComboDescription(
   overlay: Overlay | null,
   motion: MotionPreset
 ): string {
-  let parts = [
+  const parts = [
     baseStyle.description,
     `with ${motion.name.toLowerCase()} animation`
   ]
@@ -228,7 +228,7 @@ export function filterCombos(combos: StyleCombo[], filter: ComboFilter): StyleCo
     }
     
     if (filter.assetCompatibility && 
-        !combo.baseStyle.compatibleAssets.includes(filter.assetCompatibility as any)) {
+        !combo.baseStyle.compatibleAssets.includes(filter.assetCompatibility as AssetCompatibility)) {
       return false
     }
     

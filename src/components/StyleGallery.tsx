@@ -16,17 +16,11 @@ interface StyleGalleryProps {
   onStyleSelect?: (style: StickerStyle) => void
 }
 
-export function StyleGallery({ onStyleSelect }: StyleGalleryProps = {}) {
+export function StyleGallery({ onStyleSelect: _onStyleSelect }: StyleGalleryProps = {}) {
   const [selectedStyleId, setSelectedStyleId] = useState<string | null>(null)
   const [selectedVibe, setSelectedVibe] = useState<VibeCategory | 'all' | 'favorites'>('all')
   const { isFavorite, toggleFavorite, getFavoriteStyles, hasFavorites, favoriteCount } = useFavorites()
   
-  const handleStyleSelect = (style: StickerStyle) => {
-    if (onStyleSelect) {
-      onStyleSelect(style)
-    }
-  }
-
   const handleToggleFavorite = (styleId: string) => {
     const style = featuredStyles.find(s => s.id === styleId)
     const willBeFavorite = !isFavorite(styleId)

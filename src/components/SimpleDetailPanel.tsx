@@ -86,7 +86,7 @@ export function SimpleDetailPanel({ style, open, onOpenChange }: SimpleDetailPan
             description: result.error || 'Please try a different image'
           })
         }
-      } catch (error) {
+      } catch {
         setBgRemovalEnabled(false)
         toast.error('Processing failed', {
           id: 'bg-removal',

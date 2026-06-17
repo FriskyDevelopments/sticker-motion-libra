@@ -1,4 +1,4 @@
-import type { MaskType, VibeCategory, MaskPreset, StickerStyle } from './stickerStyles'
+import type { MaskType, StickerStyle } from './stickerStyles'
 
 export const featuredStyles: StickerStyle[] = [
   {

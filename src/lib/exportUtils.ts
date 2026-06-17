@@ -505,42 +505,48 @@ function applyMotionToContext(
   const t = progress * Math.PI * 2
 
   switch (motion.id) {
-    case 'breathing-glow':
+    case 'breathing-glow': {
       const glowScale = 1 + Math.sin(t) * 0.08
       ctx.scale(glowScale, glowScale)
       ctx.globalAlpha = 0.7 + Math.sin(t) * 0.3
       break
+    }
 
     case 'spin':
       ctx.rotate(t)
       break
 
-    case 'wobble':
+    case 'wobble': {
       const wobbleAngle = Math.sin(t * 2) * 0.15
       ctx.rotate(wobbleAngle)
       break
+    }
 
-    case 'bounce':
+    case 'bounce': {
       const bounceY = Math.abs(Math.sin(t)) * -20
       ctx.translate(0, bounceY)
       break
+    }
 
-    case 'heartbeat':
+    case 'heartbeat': {
       const beatScale = 1 + Math.sin(t * 4) * 0.1
       ctx.scale(beatScale, beatScale)
       break
+    }
 
-    case 'sway':
+    case 'sway': {
       const swayX = Math.sin(t) * 10
       const swayRotate = Math.sin(t) * 0.05
       ctx.translate(swayX, 0)
       ctx.rotate(swayRotate)
       break
+    }
 
-    case 'pulse-ring':
+    case 'pulse-ring': {
       const pulseScale = 1 + Math.sin(t * 3) * 0.12
       ctx.scale(pulseScale, pulseScale)
       break
+    }
 
     case 'flicker':
       ctx.globalAlpha = Math.random() > 0.3 ? 1 : 0.7
@@ -572,7 +578,7 @@ export async function exportStickerPack(
     }
     
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)
-    const zipName = `${toKebabCase(packName)}-pack-${timestamp}.zip`
+    const _zipName = `${toKebabCase(packName)}-pack-${timestamp}.zip`
     
     return {
       success: false,

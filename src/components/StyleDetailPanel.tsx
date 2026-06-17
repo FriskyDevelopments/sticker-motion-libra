@@ -86,7 +86,7 @@ export function StyleDetailPanel({ style, open, onOpenChange }: StyleDetailPanel
             description: result.error || 'Please try a different image'
           })
         }
-      } catch (error) {
+      } catch {
         setBgRemovalEnabled(false)
         toast.error('Processing failed', {
           id: 'bg-removal',

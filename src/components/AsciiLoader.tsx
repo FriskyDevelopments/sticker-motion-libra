@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { asciiAnimations, heroLoadingScenes, getFrameAtTime, type AsciiAnimation } from '@/lib/asciiAnimations'
+import { asciiAnimations, heroLoadingScenes, getFrameAtTime } from '@/lib/asciiAnimations'
 import { cn } from '@/lib/utils'
 
 interface AsciiLoaderProps {
@@ -74,10 +74,8 @@ interface HeroLoaderProps {
 export function HeroLoader({ sceneKey, className, onComplete }: HeroLoaderProps) {
   const scene = heroLoadingScenes[sceneKey]
   const [currentFrame, setCurrentFrame] = useState(scene.frames[0].content)
-  const [frameIndex, setFrameIndex] = useState(0)
 
   useEffect(() => {
-    setFrameIndex(0)
     setCurrentFrame(scene.frames[0].content)
 
     let currentIndex = 0
@@ -91,7 +89,6 @@ export function HeroLoader({ sceneKey, className, onComplete }: HeroLoaderProps)
         currentIndex++
       }
       
-      setFrameIndex(currentIndex)
       setCurrentFrame(scene.frames[currentIndex].content)
       
       if (currentIndex < scene.frames.length - 1 || scene.frames.length > 1) {

@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
+import { motion, type Easing } from 'framer-motion'
 import {
   Dialog,
   DialogContent,
@@ -18,11 +18,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch'
 import { MotionPreset, motionPresets } from '@/lib/motionPresets'
 import { 
-  Play, 
-  Pause, 
-  ArrowCounterClockwise, 
-  Copy, 
-  FileJs, 
+  Play,
+  Pause,
+  ArrowCounterClockwise,
+  FileJs,
   FileTs, 
   FileCss,
   Sliders
@@ -109,7 +108,7 @@ export function AnimationPlayground({ open, onOpenChange, initialPreset }: Anima
   const transitionConfig = useMemo(() => ({
     duration: params.duration,
     delay: params.delay,
-    ease: params.easing as any,
+    ease: params.easing as Easing,
     repeat: params.iterations === 'infinite' ? Infinity : params.iterations,
     repeatDelay: params.repeatDelay,
   }), [params])

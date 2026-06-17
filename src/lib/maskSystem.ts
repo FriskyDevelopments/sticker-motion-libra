@@ -70,7 +70,7 @@ export function getMaskStyles(maskType: MaskType): React.CSSProperties {
 export function applyStyleToImage(
   imageDataUrl: string,
   maskType: MaskType,
-  motionId: string
+  _motionId: string
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const img = new Image()

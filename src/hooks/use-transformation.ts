@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { transformationEngine, type TransformationState, type TransformationResult } from '@/lib/transformationEngine'
 import type { StickerStyle } from '@/lib/stickerStyles'
 import { toast } from 'sonner'
@@ -40,7 +40,7 @@ export function useTransformation() {
 
       updateState()
       return result
-    } catch (error) {
+    } catch {
       toast.dismiss(loadingToast)
       toast.error('Transformation failed', {
         description: 'An unexpected error occurred'
