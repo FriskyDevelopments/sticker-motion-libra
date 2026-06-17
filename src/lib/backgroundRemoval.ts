@@ -53,8 +53,9 @@ Return the result as a valid JSON object with a single property called "analysis
 }
 
 async function simulateBackgroundRemoval(imageDataUrl: string, edgeHandling: string): Promise<string> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const img = new Image()
+    img.onerror = () => reject(new Error('Failed to load image for background removal'))
     img.onload = () => {
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')
