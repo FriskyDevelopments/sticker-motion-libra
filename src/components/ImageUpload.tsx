@@ -47,6 +47,7 @@ export function ImageUpload({ onImageSelect, currentImage, onClear, className }:
       })
     }
     reader.readAsDataURL(file)
+    reader.onerror = () => { toast.error('Failed to read file', { description: 'Please try again or try a different file.' }) }
   }
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

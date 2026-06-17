@@ -78,20 +78,22 @@ export function ExportDialog({ open, onOpenChange, imageDataUrl, appliedStyle }:
       style: appliedStyle || undefined
     }
 
-    const result = await exportSticker(imageDataUrl, exportOptions)
+    try {
+      const result = await exportSticker(imageDataUrl, exportOptions)
 
-    if (result.success) {
-      toast.success('Export complete ✦', {
-        description: `Your sticker has been downloaded`
-      })
-      onOpenChange(false)
-    } else {
-      toast.error('Export failed', {
-        description: result.error || 'Please try again'
-      })
+      if (result.success) {
+        toast.success('Export complete ✦', {
+          description: `Your sticker has been downloaded`
+        })
+        onOpenChange(false)
+      } else {
+        toast.error('Export failed', {
+          description: result.error || 'Please try again'
+        })
+      }
+    } finally {
+      setExporting(false)
     }
-
-    setExporting(false)
   }
 
   return (
